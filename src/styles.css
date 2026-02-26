@@ -405,6 +405,20 @@ body {
   font-size: 12px;
 }
 
+.token-select-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.token-select-preview {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  border: 1px solid #1f2937;
+  box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.8);
+}
+
 .token-input::placeholder {
   color: var(--ds-fg-muted);
 }

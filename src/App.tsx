@@ -964,8 +964,11 @@ const SECTIONS: SectionConfig[] = [
     description: 'Configure valores definidos para padding, margin, gap e outros.',
     rows: [
       { token: 'space-xs', light: '4px', dark: '4px', mantineVar: 'theme.spacing.xs' },
-      { token: 'space-md', light: '12px', dark: '12px', mantineVar: 'theme.spacing.md' },
-      { token: 'space-xl', light: '24px', dark: '24px', mantineVar: 'theme.spacing.xl' },
+      { token: 'space-sm', light: '8px', dark: '8px', mantineVar: 'theme.spacing.sm' },
+      { token: 'space-md', light: '16px', dark: '16px', mantineVar: 'theme.spacing.md' },
+      { token: 'space-lg', light: '24px', dark: '24px', mantineVar: 'theme.spacing.lg' },
+      { token: 'space-xl', light: '32px', dark: '32px', mantineVar: 'theme.spacing.xl' },
+      { token: 'space-2xl', light: '48px', dark: '48px', mantineVar: 'theme.spacing.xxl' },
     ],
   },
   {
@@ -973,9 +976,12 @@ const SECTIONS: SectionConfig[] = [
     name: 'Radius',
     description: 'Arredondamento de cantos para inputs, cards, buttons e pills.',
     rows: [
-      { token: 'radius-sm', light: '6px', dark: '6px', mantineVar: 'theme.radius.sm' },
-      { token: 'radius-md', light: '10px', dark: '10px', mantineVar: 'theme.radius.md' },
-      { token: 'radius-full', light: '999px', dark: '999px', mantineVar: 'theme.radius.xl' },
+      { token: 'radius-xs', light: '2px', dark: '2px', mantineVar: 'theme.radius.xs' },
+      { token: 'radius-sm', light: '4px', dark: '4px', mantineVar: 'theme.radius.sm' },
+      { token: 'radius-md', light: '8px', dark: '8px', mantineVar: 'theme.radius.md' },
+      { token: 'radius-lg', light: '12px', dark: '12px', mantineVar: 'theme.radius.lg' },
+      { token: 'radius-xl', light: '16px', dark: '16px', mantineVar: 'theme.radius.xl' },
+      { token: 'radius-full', light: '9999px', dark: '9999px', mantineVar: 'theme.radius.full' },
     ],
   },
   {
@@ -1367,6 +1373,144 @@ export function App() {
     URL.revokeObjectURL(url);
   };
 
+  const handleExportFigmaSpacingJson = (): void => {
+    if (activeSectionId !== 'spacing') {
+      alert('A exportação de espaçamento para o Figma está disponível apenas na seção de espaçamento.');
+      return;
+    }
+
+    const spacingSection = SECTIONS.find((section) => section.id === 'spacing');
+    if (!spacingSection) {
+      return;
+    }
+
+    const toFigmaSpacingValue = (value: string): number => {
+      const numeric = Number.parseFloat(value);
+      if (Number.isNaN(numeric)) {
+        return 0;
+      }
+      return numeric;
+    };
+
+    const collectionPrefix = '2';
+    const modeKey = `${collectionPrefix}:0`;
+
+    const variableIds: string[] = [];
+
+    const variables = spacingSection.rows.map((row, index) => {
+      const variableId = `VariableID:${collectionPrefix}:${index + 1}`;
+      const variableName = row.token;
+
+      variableIds.push(variableId);
+
+      const otherKey = `${spacingSection.id}:${row.token}`;
+      const rawValue = otherValues[otherKey] ?? row.light;
+      const value = toFigmaSpacingValue(rawValue);
+
+      return {
+        id: variableId,
+        name: variableName,
+        description: '',
+        type: 'FLOAT',
+        valuesByMode: {
+          [modeKey]: value,
+        },
+        resolvedValuesByMode: {
+          [modeKey]: { resolvedValue: value, alias: null },
+        },
+        scopes: [],
+        hiddenFromPublishing: false,
+        codeSyntax: {},
+      };
+    });
+
+    const collection = {
+      id: `VariableCollectionId:${collectionPrefix}:0`,
+      name: 'Espaçamento',
+      modes: {
+        [modeKey]: 'Default',
+      },
+      variableIds,
+      variables,
+    };
+
+    const json = JSON.stringify(collection, null, 2);
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'Espacamento.json';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  const handleExportFigmaRadiusJson = (): void => {
+    if (activeSectionId !== 'radius') {
+      alert('A exportação de radius para o Figma está disponível apenas na seção de radius.');
+      return;
+    }
+
+    const radiusSection = SECTIONS.find((section) => section.id === 'radius');
+    if (!radiusSection) {
+      return;
+    }
+
+    const toRadiusNumber = (value: string): number => {
+      const numeric = Number.parseFloat(value);
+      if (Number.isNaN(numeric)) {
+        return 0;
+      }
+      return numeric;
+    };
+
+    const tokens: Record<
+      string,
+      {
+        $type: 'number';
+        $value: number;
+        $extensions: {
+          'com.figma.scopes': string[];
+        };
+      }
+    > = {};
+
+    radiusSection.rows.forEach((row) => {
+      const otherKey = `${radiusSection.id}:${row.token}`;
+      const rawValue = otherValues[otherKey] ?? row.light;
+      const value = toRadiusNumber(rawValue);
+
+      tokens[row.token] = {
+        $type: 'number',
+        $value: value,
+        $extensions: {
+          'com.figma.scopes': ['CORNER_RADIUS'],
+        },
+      };
+    });
+
+    const json = JSON.stringify(
+      {
+        ...tokens,
+        $extensions: {
+          'com.figma.modeName': 'Dark',
+        },
+      },
+      null,
+      2,
+    );
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'Radius.json';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   const activeSection = SECTIONS.find((section) => section.id === activeSectionId)!;
 
   const filteredRows = activeSection.rows.filter((row) => {
@@ -1484,9 +1628,6 @@ export function App() {
           </div>
 
           <div className="main-actions">
-            <button type="button" className="secondary-button">
-              Importar JSON do Figma
-            </button>
             <button
               type="button"
               className="secondary-button"
@@ -1497,7 +1638,13 @@ export function App() {
             <button
               type="button"
               className="primary-button"
-              onClick={handleExportFigmaJson}
+              onClick={
+                activeSectionId === 'spacing'
+                    ? handleExportFigmaSpacingJson
+                    : activeSectionId === 'radius'
+                      ? handleExportFigmaRadiusJson
+                      : handleExportFigmaJson
+              }
             >
               Exportar JSON para o Figma
             </button>
@@ -1601,6 +1748,7 @@ export function App() {
                     <th>Valor (Dark)</th>
                   ) : null}
                   {activeSectionId === 'spacing' ||
+                  activeSectionId === 'sizes' ||
                   activeSectionId === 'radius' ||
                   activeSectionId === 'typography' ? (
                     <th>Preview</th>
@@ -1670,50 +1818,68 @@ export function App() {
                           {isSemanticToken && !isOverlayOrFeedbackSemantic ? (
                             <>
                               <td>
-                                <select
-                                  className="token-select"
-                                  value={selectedLightBase?.token ?? ''}
-                                  onChange={(event) => {
-                                    const baseToken = basePaletteOptions.find(
-                                      (baseRow) => baseRow.token === event.target.value,
-                                    );
-                                    if (!baseToken) return;
-                                    setLightColors((previous) => ({
-                                      ...previous,
-                                      [row.token]: baseToken.light,
-                                    }));
-                                  }}
-                                >
-                                  <option value="">Custom</option>
-                                  {basePaletteOptions.map((baseRow) => (
-                                    <option key={baseRow.token} value={baseRow.token}>
-                                      {baseRow.token}
-                                    </option>
-                                  ))}
-                                </select>
+                                <div className="token-select-wrapper">
+                                  <select
+                                    className="token-select"
+                                    value={selectedLightBase?.token ?? ''}
+                                    onChange={(event) => {
+                                      const baseToken = basePaletteOptions.find(
+                                        (baseRow) => baseRow.token === event.target.value,
+                                      );
+                                      if (!baseToken) return;
+                                      setLightColors((previous) => ({
+                                        ...previous,
+                                        [row.token]: baseToken.light,
+                                      }));
+                                    }}
+                                  >
+                                    <option value="">Custom</option>
+                                    {basePaletteOptions.map((baseRow) => (
+                                      <option key={baseRow.token} value={baseRow.token}>
+                                        {baseRow.token}
+                                      </option>
+                                    ))}
+                                  </select>
+                                  <span
+                                    className="token-select-preview"
+                                    style={{
+                                      backgroundColor:
+                                        selectedLightBase?.light ?? lightColor,
+                                    }}
+                                  />
+                                </div>
                               </td>
                               <td>
-                                <select
-                                  className="token-select"
-                                  value={selectedDarkBase?.token ?? ''}
-                                  onChange={(event) => {
-                                    const baseToken = basePaletteOptions.find(
-                                      (baseRow) => baseRow.token === event.target.value,
-                                    );
-                                    if (!baseToken) return;
-                                    setDarkColors((previous) => ({
-                                      ...previous,
-                                      [row.token]: baseToken.dark,
-                                    }));
-                                  }}
-                                >
-                                  <option value="">Custom</option>
-                                  {basePaletteOptions.map((baseRow) => (
-                                    <option key={baseRow.token} value={baseRow.token}>
-                                      {baseRow.token}
-                                    </option>
-                                  ))}
-                                </select>
+                                <div className="token-select-wrapper">
+                                  <select
+                                    className="token-select"
+                                    value={selectedDarkBase?.token ?? ''}
+                                    onChange={(event) => {
+                                      const baseToken = basePaletteOptions.find(
+                                        (baseRow) => baseRow.token === event.target.value,
+                                      );
+                                      if (!baseToken) return;
+                                      setDarkColors((previous) => ({
+                                        ...previous,
+                                        [row.token]: baseToken.dark,
+                                      }));
+                                    }}
+                                  >
+                                    <option value="">Custom</option>
+                                    {basePaletteOptions.map((baseRow) => (
+                                      <option key={baseRow.token} value={baseRow.token}>
+                                        {baseRow.token}
+                                      </option>
+                                    ))}
+                                  </select>
+                                  <span
+                                    className="token-select-preview"
+                                    style={{
+                                      backgroundColor:
+                                        selectedDarkBase?.dark ?? darkColor,
+                                    }}
+                                  />
+                                </div>
                               </td>
                             </>
                           ) : (
