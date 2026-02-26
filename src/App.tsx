@@ -1827,18 +1827,19 @@ export function App() {
     const modeKey = `${collectionPrefix}:0`;
 
     const variableIds: string[] = [];
+    const tokenToPrimitiveId: Record<string, string> = {};
 
     const variables = typographySection.rows.map((row, index) => {
       const variableId = `VariableID:${collectionPrefix}:${index + 1}`;
       const variableName = row.token;
 
       variableIds.push(variableId);
+      tokenToPrimitiveId[row.token] = variableId;
 
       const otherKey = `${typographySection.id}:${row.token}`;
       const rawValue = otherValues[otherKey] ?? row.light;
 
       const isFontFamily = variableName.startsWith('font-family-');
-      const isNumberLike = !isFontFamily;
 
       if (isFontFamily) {
         const stringValue = rawValue;
@@ -1880,6 +1881,65 @@ export function App() {
       };
     });
 
+    const baseConfig: TypographyStyleConfig = {
+      fontToken: 'font-family-base',
+      sizeToken: 'typography/size/md',
+      lineHeightToken: 'line-height-normal',
+    };
+    const styleLabel = (name: string): string => name.replace('/', ' ');
+    let styleVarIndex = typographySection.rows.length;
+
+    const pushStyleVar = (
+      name: string,
+      type: 'STRING' | 'FLOAT',
+      aliasId: string,
+      scopes: string[],
+    ) => {
+      const id = `VariableID:${collectionPrefix}:${++styleVarIndex}`;
+      variableIds.push(id);
+      variables.push({
+        id,
+        name,
+        description: '',
+        type,
+        valuesByMode: {
+          [modeKey]: { type: 'VARIABLE_ALIAS', id: aliasId },
+        },
+        resolvedValuesByMode: {
+          [modeKey]: {
+            resolvedValue: type === 'FLOAT' ? 0 : '',
+            alias: aliasId,
+          },
+        },
+        scopes,
+        hiddenFromPublishing: false,
+        codeSyntax: {},
+      });
+    };
+
+    TYPOGRAPHY_STYLES.forEach((style) => {
+      const config = typographyStylesConfig[style.name] ?? baseConfig;
+      const label = styleLabel(style.name);
+      const fontToken = config.fontToken ?? 'font-family-base';
+      const sizeToken = config.sizeToken ?? 'typography/size/md';
+      const lineToken = config.lineHeightToken ?? 'line-height-normal';
+      const aliasIdFont = tokenToPrimitiveId[fontToken];
+      const aliasIdSize = tokenToPrimitiveId[sizeToken];
+      const aliasIdLine = tokenToPrimitiveId[lineToken];
+      const aliasIdRegular = tokenToPrimitiveId['font-weight-regular'];
+      const aliasIdMedium = tokenToPrimitiveId['font-weight-medium'];
+      const aliasIdBold = tokenToPrimitiveId['font-weight-bold'];
+
+      if (!aliasIdFont || !aliasIdSize || !aliasIdLine || !aliasIdRegular || !aliasIdMedium || !aliasIdBold) return;
+
+      pushStyleVar(`${label}/Font Family`, 'STRING', aliasIdFont, ['FONT_FAMILY']);
+      pushStyleVar(`${label}/Size`, 'FLOAT', aliasIdSize, ['FONT_SIZE']);
+      pushStyleVar(`${label}/Line`, 'FLOAT', aliasIdLine, ['LINE_HEIGHT']);
+      pushStyleVar(`${label}/Weight Regular`, 'FLOAT', aliasIdRegular, ['FONT_WEIGHT']);
+      pushStyleVar(`${label}/Weight Medium`, 'FLOAT', aliasIdMedium, ['FONT_WEIGHT']);
+      pushStyleVar(`${label}/Weight Bold`, 'FLOAT', aliasIdBold, ['FONT_WEIGHT']);
+    });
+
     const collection = {
       id: `VariableCollectionId:${collectionPrefix}:0`,
       name: 'Tipografia',
@@ -1896,129 +1956,6 @@ export function App() {
     const link = document.createElement('a');
     link.href = url;
     link.download = 'Tipografia.json';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  };
-
-  const handleExportFigmaTypescaleJson = (): void => {
-    if (activeSectionId !== 'typography') {
-      alert(
-        'A exportação de Typescale está disponível apenas na seção de tipografia.',
-      );
-      return;
-    }
-
-    const typSection = SECTIONS.find((s) => s.id === 'typography');
-    if (!typSection) return;
-
-    const TIPOGRAFIA_COLLECTION_PREFIX = '4';
-    const TIPOGRAFIA_MODE = `${TIPOGRAFIA_COLLECTION_PREFIX}:0`;
-    const tokenToPrimitiveId = typSection.rows.reduce<Record<string, string>>(
-      (acc, row, idx) => {
-        acc[row.token] = `VariableID:${TIPOGRAFIA_COLLECTION_PREFIX}:${idx + 1}`;
-        return acc;
-      },
-      {},
-    );
-
-    const TYPESCALE_COLLECTION_PREFIX = '5';
-    const typescaleModeKey = `${TYPESCALE_COLLECTION_PREFIX}:0`;
-    const variableIds: string[] = [];
-    const variables: Array<{
-      id: string;
-      name: string;
-      description: string;
-      type: 'STRING' | 'FLOAT';
-      valuesByMode: Record<string, { type: 'VARIABLE_ALIAS'; id: string }>;
-      resolvedValuesByMode: Record<
-        string,
-        { resolvedValue: number | string; alias: string; aliasName?: string }
-      >;
-      scopes: string[];
-      hiddenFromPublishing: boolean;
-      codeSyntax: Record<string, string>;
-    }> = [];
-
-    let typescaleVarIndex = 0;
-    const nextTypescaleId = () =>
-      `VariableID:${TYPESCALE_COLLECTION_PREFIX}:${++typescaleVarIndex}`;
-
-    const baseConfig: TypographyStyleConfig = {
-      fontToken: 'font-family-base',
-      sizeToken: 'typography/size/md',
-      lineHeightToken: 'line-height-normal',
-    };
-
-    const styleLabel = (name: string): string => name.replace('/', ' ');
-
-    TYPOGRAPHY_STYLES.forEach((style) => {
-      const config = typographyStylesConfig[style.name] ?? baseConfig;
-      const label = styleLabel(style.name);
-      const fontToken = config.fontToken ?? 'font-family-base';
-      const sizeToken = config.sizeToken ?? 'typography/size/md';
-      const lineToken =
-        config.lineHeightToken ?? 'line-height-normal';
-      const aliasIdFont = tokenToPrimitiveId[fontToken];
-      const aliasIdSize = tokenToPrimitiveId[sizeToken];
-      const aliasIdLine = tokenToPrimitiveId[lineToken];
-      const aliasIdRegular = tokenToPrimitiveId['font-weight-regular'];
-      const aliasIdMedium = tokenToPrimitiveId['font-weight-medium'];
-      const aliasIdBold = tokenToPrimitiveId['font-weight-bold'];
-
-      if (!aliasIdFont || !aliasIdSize || !aliasIdLine || !aliasIdRegular || !aliasIdMedium || !aliasIdBold) return;
-
-      const pushVar = (
-        name: string,
-        type: 'STRING' | 'FLOAT',
-        aliasId: string,
-        scopes: string[],
-      ) => {
-        const id = nextTypescaleId();
-        variableIds.push(id);
-        variables.push({
-          id,
-          name,
-          description: '',
-          type,
-          valuesByMode: {
-            [typescaleModeKey]: { type: 'VARIABLE_ALIAS', id: aliasId },
-          },
-          resolvedValuesByMode: {
-            [typescaleModeKey]: {
-              resolvedValue: type === 'FLOAT' ? 0 : '',
-              alias: aliasId,
-            },
-          },
-          scopes,
-          hiddenFromPublishing: false,
-          codeSyntax: {},
-        });
-      };
-
-      pushVar(`${label}/Font Family`, 'STRING', aliasIdFont, ['FONT_FAMILY']);
-      pushVar(`${label}/Size`, 'FLOAT', aliasIdSize, ['FONT_SIZE']);
-      pushVar(`${label}/Line`, 'FLOAT', aliasIdLine, ['LINE_HEIGHT']);
-      pushVar(`${label}/Weight Regular`, 'FLOAT', aliasIdRegular, ['FONT_WEIGHT']);
-      pushVar(`${label}/Weight Medium`, 'FLOAT', aliasIdMedium, ['FONT_WEIGHT']);
-      pushVar(`${label}/Weight Bold`, 'FLOAT', aliasIdBold, ['FONT_WEIGHT']);
-    });
-
-    const collection = {
-      id: `VariableCollectionId:${TYPESCALE_COLLECTION_PREFIX}:0`,
-      name: 'Typescale',
-      modes: { [typescaleModeKey]: 'Baseline' },
-      variableIds,
-      variables,
-    };
-
-    const json = JSON.stringify(collection, null, 2);
-    const blob = new Blob([json], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'Typescale.json';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -2157,15 +2094,6 @@ export function App() {
             >
               Exportar STYLE_GUIDE.md
             </button>
-            {activeSectionId === 'typography' ? (
-              <button
-                type="button"
-                className="secondary-button"
-                onClick={handleExportFigmaTypescaleJson}
-              >
-                Criar type style
-              </button>
-            ) : null}
             <button
               type="button"
               className="primary-button"
