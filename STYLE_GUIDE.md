@@ -82,6 +82,42 @@ No código e no Figma, use a mesma estrutura semântica:
 
 ## Tokens de Cor
 
+### Regras de agrupamento e nomenclatura (cores semânticas)
+
+As cores semânticas seguem **duas regras obrigatórias** para evitar conflitos e manter consistência entre código, tema Mantine e Figma.
+
+#### 1. Agrupamento por uso (não segregado)
+
+Todos os tokens semânticos de cor pertencem a **um único grupo por tipo de uso**:
+
+| Grupo | Prefixo | Escopo típico (Figma) |
+|-------|---------|------------------------|
+| **Background** | `semantic/bg/*` | FRAME_FILL, SHAPE_FILL |
+| **Texto** | `semantic/text/*` | TEXT_FILL |
+| **Borda** | `semantic/border/*` | STROKE_COLOR |
+| **Ícone** | `semantic/icon/*` | SHAPE_FILL |
+
+- **Brand, accent e tertiary** não formam grupos próprios: ficam **dentro** de Background, Texto e Ícone (ex.: `semantic/bg/brand-default`, `semantic/text/brand-subtle`, `semantic/icon/brand`).
+- **Feedback** (success, error, warning, info) também fica nos grupos de uso: backgrounds em `semantic/bg/*`, texto em `semantic/text/*`, borda em `semantic/border/*`.
+
+#### 2. Nomenclatura sem conflito (sufixos obrigatórios)
+
+Para que um mesmo “tipo” (ex.: brand) não gere vários tokens com o mesmo nome em grupos diferentes, usa-se **sufixo explícito** no nome do token:
+
+- **Brand / Accent / Tertiary**
+  - Background: `brand-default`, `brand-hover`, `brand-subtle` (e equivalente `accent-*`, `tertiary-*`).
+  - Texto: `brand-subtle`, `accent-subtle`, `tertiary-subtle` (em `semantic/text/*`).
+  - Ícone: `brand`, `accent`, `tertiary` (em `semantic/icon/*`; uma variante por cor).
+
+- **Feedback (success, error, warning, info)**
+  - Background: `success-bg`, `error-bg`, `warning-bg`, `info-bg` (em `semantic/bg/*`).
+  - Texto: `success-text`, `error-text`, `warning-text` (em `semantic/text/*`).
+  - Borda: `error-border` (em `semantic/border/*`).
+
+Assim não há ambiguidade entre, por exemplo, “default” de brand e “default” de accent, nem entre “success” como bg e como texto.
+
+---
+
 ### Paletas Principais
 
 As paletas abaixo são **exemplo de referência**. Ajuste as cores exatas conforme a identidade visual do produto, mantendo a estrutura e intensidades.
@@ -124,12 +160,8 @@ No **modo dark**, as intensidades podem ser remapeadas (por exemplo, usar valore
 
 ### Cores Semânticas
 
-- `color-success-500`: sucesso/positivo.
-- `color-danger-500`: erro/crítico.
-- `color-warning-500`: aviso.
-- `color-info-500`: informação.
-
-Cada uma pode ter variações (`100`, `200`, `700`, etc.) para hover, foco, backgrounds leves e bordas.
+- No **código e no Figma** as cores semânticas de uso (sucesso, erro, aviso, info, brand, accent, tertiary) seguem o esquema **agrupado por uso** com **nomes sem conflito**: `semantic/bg/success-bg`, `semantic/text/error-text`, `semantic/border/error-border`, `semantic/bg/brand-default`, etc. Ver **Regras de agrupamento e nomenclatura** acima.
+- Em referências genéricas à paleta de feedback: sucesso, erro/crítico, aviso, informação podem ter variações (bg, texto, borda) sempre com sufixo explícito (`-bg`, `-text`, `-border`).
 
 ---
 
@@ -469,6 +501,19 @@ O projeto suporta dois modos visuais controlados pelo `ColorSchemeProvider` do M
 | `semantic/bg/hover` | `#F3F4F6` | `#25262B` | `light-dark(gray-1, dark-6)` |
 | `semantic/bg/selected` | `#EFF6FF` | `#1E3A8A` | `light-dark(primary-0, primary-9)` |
 | `semantic/bg/input` | `#FFFFFF` | `#25262B` | `var(--mantine-color-default)` |
+| `semantic/bg/brand-default` | `#2563EB` | `#3B82F6` | `light-dark(primary-6, primary-5)` |
+| `semantic/bg/brand-hover` | `#1D4ED8` | `#2563EB` | `light-dark(primary-7, primary-6)` |
+| `semantic/bg/brand-subtle` | `#DBEAFE` | `#1E3A8A` | `light-dark(primary-1, primary-9)` |
+| `semantic/bg/accent-default` | `#7C3AED` | `#8B5CF6` | `light-dark(secondary-6, secondary-5)` |
+| `semantic/bg/accent-hover` | `#6D28D9` | `#7C3AED` | `light-dark(secondary-7, secondary-6)` |
+| `semantic/bg/accent-subtle` | `#EDE9FE` | `#4C1D95` | `light-dark(secondary-1, secondary-9)` |
+| `semantic/bg/tertiary-default` | `#16A34A` | `#22C55E` | `light-dark(tertiary-6, tertiary-5)` |
+| `semantic/bg/tertiary-hover` | `#15803D` | `#16A34A` | `light-dark(tertiary-7, tertiary-6)` |
+| `semantic/bg/tertiary-subtle` | `#DCFCE7` | `#14532D` | `light-dark(tertiary-1, tertiary-9)` |
+| `semantic/bg/success-bg` | `#DCFCE7` | `#052E16` | feedback (cor explícita) |
+| `semantic/bg/error-bg` | `#FEE2E2` | `#3B0000` | feedback (cor explícita) |
+| `semantic/bg/warning-bg` | `#FEF9C3` | `#2D1B00` | feedback (cor explícita) |
+| `semantic/bg/info-bg` | `#DBEAFE` | `#0F172A` | feedback (cor explícita) |
 
 ### 4.2 Texto
 
@@ -480,9 +525,12 @@ O projeto suporta dois modos visuais controlados pelo `ColorSchemeProvider` do M
 | `semantic/text/placeholder` | `#9CA3AF` | `#909296` | `light-dark(gray-4, dark-2)` |
 | `semantic/text/inverse` | `#FFFFFF` | `#111827` | inline |
 | `semantic/text/link` | `#2563EB` | `#60A5FA` | `light-dark(primary-6, primary-4)` |
-| `semantic/text/error` | `#DC2626` | `#F87171` | `light-dark(red-6, red-4)` |
-| `semantic/text/success` | `#16A34A` | `#4ADE80` | `light-dark(green-6, green-4)` |
-| `semantic/text/warning` | `#854D0E` | `#FCD34D` | `light-dark(yellow-7, yellow-4)` |
+| `semantic/text/error-text` | `#DC2626` | `#F87171` | `light-dark(red-6, red-4)` |
+| `semantic/text/success-text` | `#16A34A` | `#4ADE80` | `light-dark(green-6, green-4)` |
+| `semantic/text/warning-text` | `#854D0E` | `#FCD34D` | `light-dark(yellow-7, yellow-4)` |
+| `semantic/text/brand-subtle` | `#1D4ED8` | `#93C5FD` | `light-dark(primary-7, primary-3)` |
+| `semantic/text/accent-subtle` | `#6D28D9` | `#C4B5FD` | `light-dark(secondary-7, secondary-3)` |
+| `semantic/text/tertiary-subtle` | `#15803D` | `#86EFAC` | `light-dark(tertiary-7, tertiary-3)` |
 
 ### 4.3 Borda
 
@@ -492,25 +540,19 @@ O projeto suporta dois modos visuais controlados pelo `ColorSchemeProvider` do M
 | `semantic/border/subtle` | `#E5E7EB` | `#2C2E33` | `light-dark(gray-2, dark-5)` |
 | `semantic/border/strong` | `#6B7280` | `#5C5F66` | `light-dark(gray-5, dark-3)` |
 | `semantic/border/focus` | `#2563EB` | `#60A5FA` | `light-dark(primary-6, primary-4)` |
-| `semantic/border/error` | `#DC2626` | `#EF4444` | `light-dark(red-6, red-5)` |
+| `semantic/border/error-border` | `#DC2626` | `#EF4444` | `light-dark(red-6, red-5)` |
 
-### 4.4 Brand / Interativo
+### 4.4 Ícone
 
-| Token Figma | Light | Dark |
-|---|---|---|
-| `semantic/brand/default` | `#2563EB` (primary-6) | `#3B82F6` (primary-5) |
-| `semantic/brand/hover` | `#1D4ED8` (primary-7) | `#2563EB` (primary-6) |
-| `semantic/brand/subtle/bg` | `#DBEAFE` (primary-1) | `#1E3A8A` (primary-9) |
-| `semantic/brand/subtle/text` | `#1D4ED8` (primary-7) | `#93C5FD` (primary-3) |
+| Token Figma | Light | Dark | Variável / Função |
+|---|---|---|---|
+| `semantic/icon/default` | `#111827` | `#C1C2C5` | `light-dark(neutral-9, dark-0)` |
+| `semantic/icon/muted` | `#4B5563` | `#909296` | `light-dark(neutral-6, dark-2)` |
+| `semantic/icon/brand` | `#2563EB` | `#3B82F6` | `light-dark(primary-6, primary-5)` |
+| `semantic/icon/accent` | `#7C3AED` | `#8B5CF6` | `light-dark(secondary-6, secondary-5)` |
+| `semantic/icon/tertiary` | `#16A34A` | `#22C55E` | `light-dark(tertiary-6, tertiary-5)` |
 
-### 4.5 Feedback Semântico
-
-| Token | Light bg | Light text | Dark bg | Dark text |
-|---|---|---|---|---|
-| `semantic/success/bg` | `#DCFCE7` | `#166534` | `#052E16` | `#4ADE80` |
-| `semantic/error/bg` | `#FEE2E2` | `#991B1B` | `#3B0000` | `#F87171` |
-| `semantic/warning/bg` | `#FEF9C3` | `#854D0E` | `#2D1B00` | `#FCD34D` |
-| `semantic/info/bg` | `#DBEAFE` | `#1E40AF` | `#0F172A` | `#93C5FD` |
+> Brand, accent e tertiary em **background** e **texto** estão nas tabelas 4.1 e 4.2 (tokens `semantic/bg/*` e `semantic/text/*`). Feedback em background está em 4.1 (`success-bg`, `error-bg`, `warning-bg`, `info-bg`); em texto em 4.2 (`success-text`, `error-text`, `warning-text`); em borda em 4.3 (`error-border`).
 
 ---
 
@@ -787,7 +829,7 @@ export const themeTokens: MantineThemeOverride = {
 | `semantic/text/link` | `light-dark(var(--mantine-color-primary-6), var(--mantine-color-primary-4))` | CSS Module |
 | `semantic/border/default` | `light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4))` | CSS Module |
 | `semantic/border/focus` | `light-dark(var(--mantine-color-primary-6), var(--mantine-color-primary-4))` | CSS Module |
-| `semantic/brand/default` | `color="primary"` (prop Mantine) | `primaryShade` automático |
+| `semantic/bg/brand-default` | `color="primary"` (prop Mantine) | `primaryShade` automático |
 | `color/primary/6` | `theme.colors.primary[6]` | Paleta base estática |
 | `spacing/4` | `theme.spacing.md` | Estático |
 | `radius/md` | `theme.radius.md` | Estático |
@@ -816,7 +858,7 @@ export const themeTokens: MantineThemeOverride = {
 - Usar `light-dark()` em CSS Modules para alternância automática de tema
 - Usar `var(--mantine-color-body/text/dimmed/default)` diretamente
 - Consultar a seção 4 para o token semântico correto de cada uso
-- Sugerir novos tokens seguindo o padrão `semantic/categoria/variante`
+- Sugerir novos tokens seguindo o padrão `semantic/categoria/variante` (categoria = `bg` \| `text` \| `border` \| `icon`; variante com sufixo sem conflito: ex. `brand-default`, `success-bg`, `error-text` — ver seção **Regras de agrupamento e nomenclatura** em Tokens de Cor)
 
 ### O que o Agente NÃO PODE fazer
 

@@ -1,0 +1,732 @@
+{
+  "id": "VariableCollectionId:colors",
+  "name": "Cores",
+  "modes": {
+    "mode:light": "Light",
+    "mode:dark": "Dark"
+  },
+  "variableIds": [
+    "VariableID:colors:0",
+    "VariableID:colors:1",
+    "VariableID:colors:2",
+    "VariableID:colors:3",
+    "VariableID:colors:4",
+    "VariableID:colors:5",
+    "VariableID:colors:6",
+    "VariableID:colors:7",
+    "VariableID:colors:8",
+    "VariableID:colors:9",
+    "VariableID:colors:10",
+    "VariableID:colors:11",
+    "VariableID:colors:12",
+    "VariableID:colors:13",
+    "VariableID:colors:14",
+    "VariableID:colors:15",
+    "VariableID:colors:16",
+    "VariableID:colors:17",
+    "VariableID:colors:18",
+    "VariableID:colors:19",
+    "VariableID:colors:20",
+    "VariableID:colors:21",
+    "VariableID:colors:22",
+    "VariableID:colors:23",
+    "VariableID:colors:24",
+    "VariableID:colors:25",
+    "VariableID:colors:26",
+    "VariableID:colors:27",
+    "VariableID:colors:28",
+    "VariableID:colors:29"
+  },
+  "variables": [
+    {
+      "id": "VariableID:colors:0",
+      "name": "color-primary-0",
+      "description": "",
+      "type": "COLOR",
+      "valuesByMode": {
+        "mode:light": { "r": 0.9373, "g": 0.9647, "b": 1, "a": 1 },
+        "mode:dark": { "r": 0.9373, "g": 0.9647, "b": 1, "a": 1 }
+      },
+      "resolvedValuesByMode": {
+        "mode:light": {
+          "resolvedValue": { "r": 0.9373, "g": 0.9647, "b": 1, "a": 1 },
+          "alias": null
+        },
+        "mode:dark": {
+          "resolvedValue": { "r": 0.9373, "g": 0.9647, "b": 1, "a": 1 },
+          "alias": null
+        }
+      },
+      "scopes": ["FRAME_FILL", "SHAPE_FILL", "TEXT_FILL", "STROKE_COLOR"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:colors:1",
+      "name": "color-primary-1",
+      "description": "",
+      "type": "COLOR",
+      "valuesByMode": {
+        "mode:light": { "r": 0.8588, "g": 0.9176, "b": 0.9961, "a": 1 },
+        "mode:dark": { "r": 0.8588, "g": 0.9176, "b": 0.9961, "a": 1 }
+      },
+      "resolvedValuesByMode": {
+        "mode:light": {
+          "resolvedValue": { "r": 0.8588, "g": 0.9176, "b": 0.9961, "a": 1 },
+          "alias": null
+        },
+        "mode:dark": {
+          "resolvedValue": { "r": 0.8588, "g": 0.9176, "b": 0.9961, "a": 1 },
+          "alias": null
+        }
+      },
+      "scopes": ["FRAME_FILL", "SHAPE_FILL", "TEXT_FILL", "STROKE_COLOR"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:colors:2",
+      "name": "color-primary-2",
+      "description": "",
+      "type": "COLOR",
+      "valuesByMode": {
+        "mode:light": { "r": 0.749, "g": 0.8588, "b": 0.9961, "a": 1 },
+        "mode:dark": { "r": 0.749, "g": 0.8588, "b": 0.9961, "a": 1 }
+      },
+      "resolvedValuesByMode": {
+        "mode:light": {
+          "resolvedValue": { "r": 0.749, "g": 0.8588, "b": 0.9961, "a": 1 },
+          "alias": null
+        },
+        "mode:dark": {
+          "resolvedValue": { "r": 0.749, "g": 0.8588, "b": 0.9961, "a": 1 },
+          "alias": null
+        }
+      },
+      "scopes": ["FRAME_FILL", "SHAPE_FILL", "TEXT_FILL", "STROKE_COLOR"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:colors:3",
+      "name": "color-primary-3",
+      "description": "",
+      "type": "COLOR",
+      "valuesByMode": {
+        "mode:light": { "r": 0.5765, "g": 0.7725, "b": 0.9922, "a": 1 },
+        "mode:dark": { "r": 0.5765, "g": 0.7725, "b": 0.9922, "a": 1 }
+      },
+      "resolvedValuesByMode": {
+        "mode:light": {
+          "resolvedValue": { "r": 0.5765, "g": 0.7725, "b": 0.9922, "a": 1 },
+          "alias": null
+        },
+        "mode:dark": {
+          "resolvedValue": { "r": 0.5765, "g": 0.7725, "b": 0.9922, "a": 1 },
+          "alias": null
+        }
+      },
+      "scopes": ["FRAME_FILL", "SHAPE_FILL", "TEXT_FILL", "STROKE_COLOR"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:colors:4",
+      "name": "color-primary-4",
+      "description": "",
+      "type": "COLOR",
+      "valuesByMode": {
+        "mode:light": { "r": 0.3765, "g": 0.6471, "b": 0.9804, "a": 1 },
+        "mode:dark": { "r": 0.3765, "g": 0.6471, "b": 0.9804, "a": 1 }
+      },
+      "resolvedValuesByMode": {
+        "mode:light": {
+          "resolvedValue": { "r": 0.3765, "g": 0.6471, "b": 0.9804, "a": 1 },
+          "alias": null
+        },
+        "mode:dark": {
+          "resolvedValue": { "r": 0.3765, "g": 0.6471, "b": 0.9804, "a": 1 },
+          "alias": null
+        }
+      },
+      "scopes": ["FRAME_FILL", "SHAPE_FILL", "TEXT_FILL", "STROKE_COLOR"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:colors:5",
+      "name": "color-primary-5",
+      "description": "",
+      "type": "COLOR",
+      "valuesByMode": {
+        "mode:light": { "r": 0.2314, "g": 0.5098, "b": 0.9647, "a": 1 },
+        "mode:dark": { "r": 0.2314, "g": 0.5098, "b": 0.9647, "a": 1 }
+      },
+      "resolvedValuesByMode": {
+        "mode:light": {
+          "resolvedValue": { "r": 0.2314, "g": 0.5098, "b": 0.9647, "a": 1 },
+          "alias": null
+        },
+        "mode:dark": {
+          "resolvedValue": { "r": 0.2314, "g": 0.5098, "b": 0.9647, "a": 1 },
+          "alias": null
+        }
+      },
+      "scopes": ["FRAME_FILL", "SHAPE_FILL", "TEXT_FILL", "STROKE_COLOR"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:colors:6",
+      "name": "color-primary-6",
+      "description": "",
+      "type": "COLOR",
+      "valuesByMode": {
+        "mode:light": { "r": 0.1451, "g": 0.3882, "b": 0.9216, "a": 1 },
+        "mode:dark": { "r": 0.1451, "g": 0.3882, "b": 0.9216, "a": 1 }
+      },
+      "resolvedValuesByMode": {
+        "mode:light": {
+          "resolvedValue": { "r": 0.1451, "g": 0.3882, "b": 0.9216, "a": 1 },
+          "alias": null
+        },
+        "mode:dark": {
+          "resolvedValue": { "r": 0.1451, "g": 0.3882, "b": 0.9216, "a": 1 },
+          "alias": null
+        }
+      },
+      "scopes": ["FRAME_FILL", "SHAPE_FILL", "TEXT_FILL", "STROKE_COLOR"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:colors:7",
+      "name": "color-primary-7",
+      "description": "",
+      "type": "COLOR",
+      "valuesByMode": {
+        "mode:light": { "r": 0.1137, "g": 0.3059, "b": 0.8471, "a": 1 },
+        "mode:dark": { "r": 0.1137, "g": 0.3059, "b": 0.8471, "a": 1 }
+      },
+      "resolvedValuesByMode": {
+        "mode:light": {
+          "resolvedValue": { "r": 0.1137, "g": 0.3059, "b": 0.8471, "a": 1 },
+          "alias": null
+        },
+        "mode:dark": {
+          "resolvedValue": { "r": 0.1137, "g": 0.3059, "b": 0.8471, "a": 1 },
+          "alias": null
+        }
+      },
+      "scopes": ["FRAME_FILL", "SHAPE_FILL", "TEXT_FILL", "STROKE_COLOR"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:colors:8",
+      "name": "color-primary-8",
+      "description": "",
+      "type": "COLOR",
+      "valuesByMode": {
+        "mode:light": { "r": 0.1176, "g": 0.251, "b": 0.6863, "a": 1 },
+        "mode:dark": { "r": 0.1176, "g": 0.251, "b": 0.6863, "a": 1 }
+      },
+      "resolvedValuesByMode": {
+        "mode:light": {
+          "resolvedValue": { "r": 0.1176, "g": 0.251, "b": 0.6863, "a": 1 },
+          "alias": null
+        },
+        "mode:dark": {
+          "resolvedValue": { "r": 0.1176, "g": 0.251, "b": 0.6863, "a": 1 },
+          "alias": null
+        }
+      },
+      "scopes": ["FRAME_FILL", "SHAPE_FILL", "TEXT_FILL", "STROKE_COLOR"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:colors:9",
+      "name": "color-primary-9",
+      "description": "",
+      "type": "COLOR",
+      "valuesByMode": {
+        "mode:light": { "r": 0.1176, "g": 0.2275, "b": 0.5412, "a": 1 },
+        "mode:dark": { "r": 0.1176, "g": 0.2275, "b": 0.5412, "a": 1 }
+      },
+      "resolvedValuesByMode": {
+        "mode:light": {
+          "resolvedValue": { "r": 0.1176, "g": 0.2275, "b": 0.5412, "a": 1 },
+          "alias": null
+        },
+        "mode:dark": {
+          "resolvedValue": { "r": 0.1176, "g": 0.2275, "b": 0.5412, "a": 1 },
+          "alias": null
+        }
+      },
+      "scopes": ["FRAME_FILL", "SHAPE_FILL", "TEXT_FILL", "STROKE_COLOR"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:colors:10",
+      "name": "color-neutral-0",
+      "description": "",
+      "type": "COLOR",
+      "valuesByMode": {
+        "mode:light": { "r": 0.9765, "g": 0.9804, "b": 0.9843, "a": 1 },
+        "mode:dark": { "r": 0.9765, "g": 0.9804, "b": 0.9843, "a": 1 }
+      },
+      "resolvedValuesByMode": {
+        "mode:light": {
+          "resolvedValue": { "r": 0.9765, "g": 0.9804, "b": 0.9843, "a": 1 },
+          "alias": null
+        },
+        "mode:dark": {
+          "resolvedValue": { "r": 0.9765, "g": 0.9804, "b": 0.9843, "a": 1 },
+          "alias": null
+        }
+      },
+      "scopes": ["FRAME_FILL", "SHAPE_FILL", "TEXT_FILL", "STROKE_COLOR"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:colors:11",
+      "name": "color-neutral-1",
+      "description": "",
+      "type": "COLOR",
+      "valuesByMode": {
+        "mode:light": { "r": 0.9529, "g": 0.9569, "b": 0.9647, "a": 1 },
+        "mode:dark": { "r": 0.9529, "g": 0.9569, "b": 0.9647, "a": 1 }
+      },
+      "resolvedValuesByMode": {
+        "mode:light": {
+          "resolvedValue": { "r": 0.9529, "g": 0.9569, "b": 0.9647, "a": 1 },
+          "alias": null
+        },
+        "mode:dark": {
+          "resolvedValue": { "r": 0.9529, "g": 0.9569, "b": 0.9647, "a": 1 },
+          "alias": null
+        }
+      },
+      "scopes": ["FRAME_FILL", "SHAPE_FILL", "TEXT_FILL", "STROKE_COLOR"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:colors:12",
+      "name": "color-neutral-2",
+      "description": "",
+      "type": "COLOR",
+      "valuesByMode": {
+        "mode:light": { "r": 0.898, "g": 0.9059, "b": 0.9216, "a": 1 },
+        "mode:dark": { "r": 0.898, "g": 0.9059, "b": 0.9216, "a": 1 }
+      },
+      "resolvedValuesByMode": {
+        "mode:light": {
+          "resolvedValue": { "r": 0.898, "g": 0.9059, "b": 0.9216, "a": 1 },
+          "alias": null
+        },
+        "mode:dark": {
+          "resolvedValue": { "r": 0.898, "g": 0.9059, "b": 0.9216, "a": 1 },
+          "alias": null
+        }
+      },
+      "scopes": ["FRAME_FILL", "SHAPE_FILL", "TEXT_FILL", "STROKE_COLOR"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:colors:13",
+      "name": "color-neutral-3",
+      "description": "",
+      "type": "COLOR",
+      "valuesByMode": {
+        "mode:light": { "r": 0.8196, "g": 0.8353, "b": 0.8588, "a": 1 },
+        "mode:dark": { "r": 0.8196, "g": 0.8353, "b": 0.8588, "a": 1 }
+      },
+      "resolvedValuesByMode": {
+        "mode:light": {
+          "resolvedValue": { "r": 0.8196, "g": 0.8353, "b": 0.8588, "a": 1 },
+          "alias": null
+        },
+        "mode:dark": {
+          "resolvedValue": { "r": 0.8196, "g": 0.8353, "b": 0.8588, "a": 1 },
+          "alias": null
+        }
+      },
+      "scopes": ["FRAME_FILL", "SHAPE_FILL", "TEXT_FILL", "STROKE_COLOR"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:colors:14",
+      "name": "color-neutral-4",
+      "description": "",
+      "type": "COLOR",
+      "valuesByMode": {
+        "mode:light": { "r": 0.6118, "g": 0.6392, "b": 0.6863, "a": 1 },
+        "mode:dark": { "r": 0.6118, "g": 0.6392, "b": 0.6863, "a": 1 }
+      },
+      "resolvedValuesByMode": {
+        "mode:light": {
+          "resolvedValue": { "r": 0.6118, "g": 0.6392, "b": 0.6863, "a": 1 },
+          "alias": null
+        },
+        "mode:dark": {
+          "resolvedValue": { "r": 0.6118, "g": 0.6392, "b": 0.6863, "a": 1 },
+          "alias": null
+        }
+      },
+      "scopes": ["FRAME_FILL", "SHAPE_FILL", "TEXT_FILL", "STROKE_COLOR"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:colors:15",
+      "name": "color-neutral-5",
+      "description": "",
+      "type": "COLOR",
+      "valuesByMode": {
+        "mode:light": { "r": 0.4196, "g": 0.4471, "b": 0.502, "a": 1 },
+        "mode:dark": { "r": 0.4196, "g": 0.4471, "b": 0.502, "a": 1 }
+      },
+      "resolvedValuesByMode": {
+        "mode:light": {
+          "resolvedValue": { "r": 0.4196, "g": 0.4471, "b": 0.502, "a": 1 },
+          "alias": null
+        },
+        "mode:dark": {
+          "resolvedValue": { "r": 0.4196, "g": 0.4471, "b": 0.502, "a": 1 },
+          "alias": null
+        }
+      },
+      "scopes": ["FRAME_FILL", "SHAPE_FILL", "TEXT_FILL", "STROKE_COLOR"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:colors:16",
+      "name": "color-neutral-6",
+      "description": "",
+      "type": "COLOR",
+      "valuesByMode": {
+        "mode:light": { "r": 0.2941, "g": 0.3333, "b": 0.3882, "a": 1 },
+        "mode:dark": { "r": 0.2941, "g": 0.3333, "b": 0.3882, "a": 1 }
+      },
+      "resolvedValuesByMode": {
+        "mode:light": {
+          "resolvedValue": { "r": 0.2941, "g": 0.3333, "b": 0.3882, "a": 1 },
+          "alias": null
+        },
+        "mode:dark": {
+          "resolvedValue": { "r": 0.2941, "g": 0.3333, "b": 0.3882, "a": 1 },
+          "alias": null
+        }
+      },
+      "scopes": ["FRAME_FILL", "SHAPE_FILL", "TEXT_FILL", "STROKE_COLOR"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:colors:17",
+      "name": "color-neutral-7",
+      "description": "",
+      "type": "COLOR",
+      "valuesByMode": {
+        "mode:light": { "r": 0.2157, "g": 0.2549, "b": 0.3176, "a": 1 },
+        "mode:dark": { "r": 0.2157, "g": 0.2549, "b": 0.3176, "a": 1 }
+      },
+      "resolvedValuesByMode": {
+        "mode:light": {
+          "resolvedValue": { "r": 0.2157, "g": 0.2549, "b": 0.3176, "a": 1 },
+          "alias": null
+        },
+        "mode:dark": {
+          "resolvedValue": { "r": 0.2157, "g": 0.2549, "b": 0.3176, "a": 1 },
+          "alias": null
+        }
+      },
+      "scopes": ["FRAME_FILL", "SHAPE_FILL", "TEXT_FILL", "STROKE_COLOR"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:colors:18",
+      "name": "color-neutral-8",
+      "description": "",
+      "type": "COLOR",
+      "valuesByMode": {
+        "mode:light": { "r": 0.1216, "g": 0.1608, "b": 0.2157, "a": 1 },
+        "mode:dark": { "r": 0.1216, "g": 0.1608, "b": 0.2157, "a": 1 }
+      },
+      "resolvedValuesByMode": {
+        "mode:light": {
+          "resolvedValue": { "r": 0.1216, "g": 0.1608, "b": 0.2157, "a": 1 },
+          "alias": null
+        },
+        "mode:dark": {
+          "resolvedValue": { "r": 0.1216, "g": 0.1608, "b": 0.2157, "a": 1 },
+          "alias": null
+        }
+      },
+      "scopes": ["FRAME_FILL", "SHAPE_FILL", "TEXT_FILL", "STROKE_COLOR"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:colors:19",
+      "name": "color-neutral-9",
+      "description": "",
+      "type": "COLOR",
+      "valuesByMode": {
+        "mode:light": { "r": 0.0667, "g": 0.0941, "b": 0.1529, "a": 1 },
+        "mode:dark": { "r": 0.0667, "g": 0.0941, "b": 0.1529, "a": 1 }
+      },
+      "resolvedValuesByMode": {
+        "mode:light": {
+          "resolvedValue": { "r": 0.0667, "g": 0.0941, "b": 0.1529, "a": 1 },
+          "alias": null
+        },
+        "mode:dark": {
+          "resolvedValue": { "r": 0.0667, "g": 0.0941, "b": 0.1529, "a": 1 },
+          "alias": null
+        }
+      },
+      "scopes": ["FRAME_FILL", "SHAPE_FILL", "TEXT_FILL", "STROKE_COLOR"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:colors:20",
+      "name": "color-dark-0",
+      "description": "",
+      "type": "COLOR",
+      "valuesByMode": {
+        "mode:light": { "r": 0.7569, "g": 0.7608, "b": 0.7725, "a": 1 },
+        "mode:dark": { "r": 0.7569, "g": 0.7608, "b": 0.7725, "a": 1 }
+      },
+      "resolvedValuesByMode": {
+        "mode:light": {
+          "resolvedValue": { "r": 0.7569, "g": 0.7608, "b": 0.7725, "a": 1 },
+          "alias": null
+        },
+        "mode:dark": {
+          "resolvedValue": { "r": 0.7569, "g": 0.7608, "b": 0.7725, "a": 1 },
+          "alias": null
+        }
+      },
+      "scopes": ["FRAME_FILL", "SHAPE_FILL", "TEXT_FILL", "STROKE_COLOR"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:colors:21",
+      "name": "color-dark-1",
+      "description": "",
+      "type": "COLOR",
+      "valuesByMode": {
+        "mode:light": { "r": 0.651, "g": 0.6549, "b": 0.6706, "a": 1 },
+        "mode:dark": { "r": 0.651, "g": 0.6549, "b": 0.6706, "a": 1 }
+      },
+      "resolvedValuesByMode": {
+        "mode:light": {
+          "resolvedValue": { "r": 0.651, "g": 0.6549, "b": 0.6706, "a": 1 },
+          "alias": null
+        },
+        "mode:dark": {
+          "resolvedValue": { "r": 0.651, "g": 0.6549, "b": 0.6706, "a": 1 },
+          "alias": null
+        }
+      },
+      "scopes": ["FRAME_FILL", "SHAPE_FILL", "TEXT_FILL", "STROKE_COLOR"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:colors:22",
+      "name": "color-dark-2",
+      "description": "",
+      "type": "COLOR",
+      "valuesByMode": {
+        "mode:light": { "r": 0.5647, "g": 0.5725, "b": 0.5882, "a": 1 },
+        "mode:dark": { "r": 0.5647, "g": 0.5725, "b": 0.5882, "a": 1 }
+      },
+      "resolvedValuesByMode": {
+        "mode:light": {
+          "resolvedValue": { "r": 0.5647, "g": 0.5725, "b": 0.5882, "a": 1 },
+          "alias": null
+        },
+        "mode:dark": {
+          "resolvedValue": { "r": 0.5647, "g": 0.5725, "b": 0.5882, "a": 1 },
+          "alias": null
+        }
+      },
+      "scopes": ["FRAME_FILL", "SHAPE_FILL", "TEXT_FILL", "STROKE_COLOR"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:colors:23",
+      "name": "color-dark-3",
+      "description": "",
+      "type": "COLOR",
+      "valuesByMode": {
+        "mode:light": { "r": 0.3608, "g": 0.3725, "b": 0.4, "a": 1 },
+        "mode:dark": { "r": 0.3608, "g": 0.3725, "b": 0.4, "a": 1 }
+      },
+      "resolvedValuesByMode": {
+        "mode:light": {
+          "resolvedValue": { "r": 0.3608, "g": 0.3725, "b": 0.4, "a": 1 },
+          "alias": null
+        },
+        "mode:dark": {
+          "resolvedValue": { "r": 0.3608, "g": 0.3725, "b": 0.4, "a": 1 },
+          "alias": null
+        }
+      },
+      "scopes": ["FRAME_FILL", "SHAPE_FILL", "TEXT_FILL", "STROKE_COLOR"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:colors:24",
+      "name": "color-dark-4",
+      "description": "",
+      "type": "COLOR",
+      "valuesByMode": {
+        "mode:light": { "r": 0.2157, "g": 0.2275, "b": 0.251, "a": 1 },
+        "mode:dark": { "r": 0.2157, "g": 0.2275, "b": 0.251, "a": 1 }
+      },
+      "resolvedValuesByMode": {
+        "mode:light": {
+          "resolvedValue": { "r": 0.2157, "g": 0.2275, "b": 0.251, "a": 1 },
+          "alias": null
+        },
+        "mode:dark": {
+          "resolvedValue": { "r": 0.2157, "g": 0.2275, "b": 0.251, "a": 1 },
+          "alias": null
+        }
+      },
+      "scopes": ["FRAME_FILL", "SHAPE_FILL", "TEXT_FILL", "STROKE_COLOR"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:colors:25",
+      "name": "color-dark-5",
+      "description": "",
+      "type": "COLOR",
+      "valuesByMode": {
+        "mode:light": { "r": 0.1725, "g": 0.1804, "b": 0.2, "a": 1 },
+        "mode:dark": { "r": 0.1725, "g": 0.1804, "b": 0.2, "a": 1 }
+      },
+      "resolvedValuesByMode": {
+        "mode:light": {
+          "resolvedValue": { "r": 0.1725, "g": 0.1804, "b": 0.2, "a": 1 },
+          "alias": null
+        },
+        "mode:dark": {
+          "resolvedValue": { "r": 0.1725, "g": 0.1804, "b": 0.2, "a": 1 },
+          "alias": null
+        }
+      },
+      "scopes": ["FRAME_FILL", "SHAPE_FILL", "TEXT_FILL", "STROKE_COLOR"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:colors:26",
+      "name": "color-dark-6",
+      "description": "",
+      "type": "COLOR",
+      "valuesByMode": {
+        "mode:light": { "r": 0.1451, "g": 0.149, "b": 0.1686, "a": 1 },
+        "mode:dark": { "r": 0.1451, "g": 0.149, "b": 0.1686, "a": 1 }
+      },
+      "resolvedValuesByMode": {
+        "mode:light": {
+          "resolvedValue": { "r": 0.1451, "g": 0.149, "b": 0.1686, "a": 1 },
+          "alias": null
+        },
+        "mode:dark": {
+          "resolvedValue": { "r": 0.1451, "g": 0.149, "b": 0.1686, "a": 1 },
+          "alias": null
+        }
+      },
+      "scopes": ["FRAME_FILL", "SHAPE_FILL", "TEXT_FILL", "STROKE_COLOR"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:colors:27",
+      "name": "color-dark-7",
+      "description": "",
+      "type": "COLOR",
+      "valuesByMode": {
+        "mode:light": { "r": 0.102, "g": 0.1059, "b": 0.1176, "a": 1 },
+        "mode:dark": { "r": 0.102, "g": 0.1059, "b": 0.1176, "a": 1 }
+      },
+      "resolvedValuesByMode": {
+        "mode:light": {
+          "resolvedValue": { "r": 0.102, "g": 0.1059, "b": 0.1176, "a": 1 },
+          "alias": null
+        },
+        "mode:dark": {
+          "resolvedValue": { "r": 0.102, "g": 0.1059, "b": 0.1176, "a": 1 },
+          "alias": null
+        }
+      },
+      "scopes": ["FRAME_FILL", "SHAPE_FILL", "TEXT_FILL", "STROKE_COLOR"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:colors:28",
+      "name": "color-dark-8",
+      "description": "",
+      "type": "COLOR",
+      "valuesByMode": {
+        "mode:light": { "r": 0.0784, "g": 0.0824, "b": 0.0902, "a": 1 },
+        "mode:dark": { "r": 0.0784, "g": 0.0824, "b": 0.0902, "a": 1 }
+      },
+      "resolvedValuesByMode": {
+        "mode:light": {
+          "resolvedValue": { "r": 0.0784, "g": 0.0824, "b": 0.0902, "a": 1 },
+          "alias": null
+        },
+        "mode:dark": {
+          "resolvedValue": { "r": 0.0784, "g": 0.0824, "b": 0.0902, "a": 1 },
+          "alias": null
+        }
+      },
+      "scopes": ["FRAME_FILL", "SHAPE_FILL", "TEXT_FILL", "STROKE_COLOR"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:colors:29",
+      "name": "color-dark-9",
+      "description": "",
+      "type": "COLOR",
+      "valuesByMode": {
+        "mode:light": { "r": 0.0627, "g": 0.0667, "b": 0.0745, "a": 1 },
+        "mode:dark": { "r": 0.0627, "g": 0.0667, "b": 0.0745, "a": 1 }
+      },
+      "resolvedValuesByMode": {
+        "mode:light": {
+          "resolvedValue": { "r": 0.0627, "g": 0.0667, "b": 0.0745, "a": 1 },
+          "alias": null
+        },
+        "mode:dark": {
+          "resolvedValue": { "r": 0.0627, "g": 0.0667, "b": 0.0745, "a": 1 },
+          "alias": null
+        }
+      },
+      "scopes": ["FRAME_FILL", "SHAPE_FILL", "TEXT_FILL", "STROKE_COLOR"],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    }
+  ]
+}
