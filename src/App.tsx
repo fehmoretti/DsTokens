@@ -18,6 +18,20 @@ type SectionConfig = {
   readonly rows: TokenRow[];
 };
 
+type TypographyStyleRow = {
+  readonly name: string;
+  readonly size: string;
+  readonly weight: string;
+  readonly lineHeight: string;
+};
+
+type TypographyStyleConfig = {
+  readonly fontToken: string;
+  readonly sizeToken: string;
+  readonly weightToken: string;
+  readonly lineHeightToken: string;
+};
+
 type ColorFieldProps = {
   readonly color: string;
   readonly onChange: (nextColor: string) => void;
@@ -990,22 +1004,101 @@ const SECTIONS: SectionConfig[] = [
     description: 'Tamanhos de fontes, line height, peso e família base.',
     rows: [
       {
-        token: 'font-size-sm',
+        token: 'font-family-base',
+        light: 'Inter, sans-serif',
+        dark: 'Inter, sans-serif',
+        mantineVar: 'theme.fontFamily',
+      },
+      {
+        token: 'font-family-mono',
+        light: 'JetBrains Mono, monospace',
+        dark: 'JetBrains Mono, monospace',
+        mantineVar: 'theme.fontFamilyMonospace',
+      },
+      {
+        token: 'typography/size/xs',
+        light: '10px',
+        dark: '10px',
+        mantineVar: '--mantine-font-size-xs',
+      },
+      {
+        token: 'typography/size/sm',
+        light: '12px',
+        dark: '12px',
+        mantineVar: '--mantine-font-size-sm',
+      },
+      {
+        token: 'typography/size/md',
         light: '14px',
         dark: '14px',
-        mantineVar: 'theme.fontSizes.sm',
+        mantineVar: '--mantine-font-size-md',
       },
       {
-        token: 'font-size-lg',
+        token: 'typography/size/lg',
+        light: '16px',
+        dark: '16px',
+        mantineVar: '--mantine-font-size-lg',
+      },
+      {
+        token: 'typography/size/xl',
         light: '18px',
         dark: '18px',
-        mantineVar: 'theme.fontSizes.lg',
+        mantineVar: '--mantine-font-size-xl',
       },
       {
-        token: 'font-family-base',
-        light: 'Inter, system-ui',
-        dark: 'Inter, system-ui',
-        mantineVar: 'theme.fontFamily',
+        token: 'typography/size/2xl',
+        light: '20px',
+        dark: '20px',
+      },
+      {
+        token: 'typography/size/3xl',
+        light: '24px',
+        dark: '24px',
+      },
+      {
+        token: 'typography/size/4xl',
+        light: '34px',
+        dark: '34px',
+      },
+      {
+        token: 'typography/size/5xl',
+        light: '48px',
+        dark: '48px',
+      },
+      {
+        token: 'typography/size/6xl',
+        light: '60px',
+        dark: '60px',
+      },
+      {
+        token: 'line-height-tight',
+        light: '1.3',
+        dark: '1.3',
+      },
+      {
+        token: 'line-height-normal',
+        light: '1.45',
+        dark: '1.45',
+      },
+      {
+        token: 'line-height-relaxed',
+        light: '1.6',
+        dark: '1.6',
+      },
+      {
+        token: 'font-weight-regular',
+        light: '400',
+        dark: '400',
+      },
+      {
+        token: 'font-weight-medium',
+        light: '500',
+        dark: '500',
+      },
+      {
+        token: 'font-weight-bold',
+        light: '700',
+        dark: '700',
       },
     ],
   },
@@ -1034,6 +1127,59 @@ const SECTIONS: SectionConfig[] = [
       },
     ],
   },
+];
+
+const TYPOGRAPHY_FONT_OPTIONS = [
+  { token: 'font-family-base', label: 'Base · Inter, sans-serif' },
+  { token: 'font-family-mono', label: 'Mono · JetBrains Mono' },
+] as const;
+
+const TYPOGRAPHY_SIZE_OPTIONS = [
+  { token: 'typography/size/xs', label: 'XS · 10px' },
+  { token: 'typography/size/sm', label: 'SM · 12px' },
+  { token: 'typography/size/md', label: 'MD · 14px' },
+  { token: 'typography/size/lg', label: 'LG · 16px' },
+  { token: 'typography/size/xl', label: 'XL · 18px' },
+  { token: 'typography/size/2xl', label: '2XL · 20px' },
+  { token: 'typography/size/3xl', label: '3XL · 24px' },
+  { token: 'typography/size/4xl', label: '4XL · 34px' },
+  { token: 'typography/size/5xl', label: '5XL · 48px' },
+  { token: 'typography/size/6xl', label: '6XL · 60px' },
+] as const;
+
+const TYPOGRAPHY_WEIGHT_OPTIONS = [
+  { token: 'font-weight-regular', label: 'Regular · 400' },
+  { token: 'font-weight-medium', label: 'Medium · 500' },
+  { token: 'font-weight-bold', label: 'Bold · 700' },
+] as const;
+
+const TYPOGRAPHY_LINE_HEIGHT_OPTIONS = [
+  { token: 'line-height-tight', label: 'Tight · 1.3' },
+  { token: 'line-height-normal', label: 'Normal · 1.45' },
+  { token: 'line-height-relaxed', label: 'Relaxed · 1.55' },
+] as const;
+
+const TYPOGRAPHY_STYLES: TypographyStyleRow[] = [
+  // Heading
+  { name: 'Heading/H1', size: '60px', weight: '700', lineHeight: '1.3' }, // 60/78 ≈ 1.3
+  { name: 'Heading/H2', size: '48px', weight: '700', lineHeight: '1.33' }, // 48/64
+  { name: 'Heading/H3', size: '34px', weight: '700', lineHeight: '1.41' }, // 34/48
+
+  // Title
+  { name: 'Title/XL', size: '24px', weight: '700', lineHeight: '1.42' }, // 24/34
+  { name: 'Title/L', size: '18px', weight: '700', lineHeight: '1.55' }, // 18/28
+
+  // Body
+  { name: 'Body/M', size: '16px', weight: '400', lineHeight: '1.75' }, // 16/28
+  { name: 'Body/S', size: '14px', weight: '400', lineHeight: '1.71' }, // 14/24
+  { name: 'Body/XS', size: '12px', weight: '400', lineHeight: '1.67' }, // 12/20
+  { name: 'Body/XXS', size: '10px', weight: '400', lineHeight: '1.4' }, // 10/14
+
+  // Caption
+  { name: 'Caption/XXXS', size: '10px', weight: '400', lineHeight: '1.4' }, // 10/14
+
+  // Code
+  { name: 'Code/Default', size: '13px', weight: '400', lineHeight: '1.5' },
 ];
 
 function isAccentToken(token: string): boolean {
@@ -1120,6 +1266,148 @@ export function App() {
   const [darkShadows, setDarkShadows] =
     useState<Record<string, string>>(initialDarkShadows);
   const [otherValues, setOtherValues] = useState<Record<string, string>>({});
+
+  const [typographyStylesConfig, setTypographyStylesConfig] = useState<
+    Record<string, TypographyStyleConfig>
+  >({
+    // Heading
+    'Heading/H1': {
+      fontToken: 'font-family-base',
+      sizeToken: 'typography/size/6xl',
+      weightToken: 'font-weight-bold',
+      lineHeightToken: 'line-height-tight',
+    },
+    'Heading/H2': {
+      fontToken: 'font-family-base',
+      sizeToken: 'typography/size/5xl',
+      weightToken: 'font-weight-bold',
+      lineHeightToken: 'line-height-tight',
+    },
+    'Heading/H3': {
+      fontToken: 'font-family-base',
+      sizeToken: 'typography/size/4xl',
+      weightToken: 'font-weight-bold',
+      lineHeightToken: 'line-height-tight',
+    },
+
+    // Title
+    'Title/XL': {
+      fontToken: 'font-family-base',
+      sizeToken: 'typography/size/3xl',
+      weightToken: 'font-weight-bold',
+      lineHeightToken: 'line-height-normal',
+    },
+    'Title/L': {
+      fontToken: 'font-family-base',
+      sizeToken: 'typography/size/xl',
+      weightToken: 'font-weight-bold',
+      lineHeightToken: 'line-height-normal',
+    },
+
+    // Body
+    'Body/M': {
+      fontToken: 'font-family-base',
+      sizeToken: 'typography/size/lg',
+      weightToken: 'font-weight-regular',
+      lineHeightToken: 'line-height-relaxed',
+    },
+    'Body/S': {
+      fontToken: 'font-family-base',
+      sizeToken: 'typography/size/md',
+      weightToken: 'font-weight-regular',
+      lineHeightToken: 'line-height-relaxed',
+    },
+    'Body/XS': {
+      fontToken: 'font-family-base',
+      sizeToken: 'typography/size/sm',
+      weightToken: 'font-weight-regular',
+      lineHeightToken: 'line-height-normal',
+    },
+    'Body/XXS': {
+      fontToken: 'font-family-base',
+      sizeToken: 'typography/size/xs',
+      weightToken: 'font-weight-regular',
+      lineHeightToken: 'line-height-normal',
+    },
+
+    // Caption
+    'Caption/XXXS': {
+      fontToken: 'font-family-base',
+      sizeToken: 'typography/size/xs',
+      weightToken: 'font-weight-regular',
+      lineHeightToken: 'line-height-normal',
+    },
+
+    // Code
+    'Code/Default': {
+      fontToken: 'font-family-mono',
+      sizeToken: 'typography/size/sm',
+      weightToken: 'font-weight-regular',
+      lineHeightToken: 'line-height-normal',
+    },
+
+    // Genéricos por tamanho (Text/XS ... Text/6XL)
+    'Text/XS': {
+      fontToken: 'font-family-base',
+      sizeToken: 'typography/size/xs',
+      weightToken: 'font-weight-regular',
+      lineHeightToken: 'line-height-normal',
+    },
+    'Text/SM': {
+      fontToken: 'font-family-base',
+      sizeToken: 'typography/size/sm',
+      weightToken: 'font-weight-regular',
+      lineHeightToken: 'line-height-normal',
+    },
+    'Text/MD': {
+      fontToken: 'font-family-base',
+      sizeToken: 'typography/size/md',
+      weightToken: 'font-weight-regular',
+      lineHeightToken: 'line-height-normal',
+    },
+    'Text/LG': {
+      fontToken: 'font-family-base',
+      sizeToken: 'typography/size/lg',
+      weightToken: 'font-weight-regular',
+      lineHeightToken: 'line-height-normal',
+    },
+    'Text/XL': {
+      fontToken: 'font-family-base',
+      sizeToken: 'typography/size/xl',
+      weightToken: 'font-weight-regular',
+      lineHeightToken: 'line-height-relaxed',
+    },
+    'Text/2XL': {
+      fontToken: 'font-family-base',
+      sizeToken: 'typography/size/2xl',
+      weightToken: 'font-weight-regular',
+      lineHeightToken: 'line-height-relaxed',
+    },
+    'Text/3XL': {
+      fontToken: 'font-family-base',
+      sizeToken: 'typography/size/3xl',
+      weightToken: 'font-weight-regular',
+      lineHeightToken: 'line-height-relaxed',
+    },
+    'Text/4XL': {
+      fontToken: 'font-family-base',
+      sizeToken: 'typography/size/4xl',
+      weightToken: 'font-weight-regular',
+      lineHeightToken: 'line-height-relaxed',
+    },
+    'Text/5XL': {
+      fontToken: 'font-family-base',
+      sizeToken: 'typography/size/5xl',
+      weightToken: 'font-weight-regular',
+      lineHeightToken: 'line-height-relaxed',
+    },
+    'Text/6XL': {
+      fontToken: 'font-family-base',
+      sizeToken: 'typography/size/6xl',
+      weightToken: 'font-weight-regular',
+      lineHeightToken: 'line-height-relaxed',
+    },
+  });
 
   const basePaletteOptions = useMemo(
     () =>
@@ -1465,41 +1753,52 @@ export function App() {
       return numeric;
     };
 
-    const tokens: Record<
-      string,
-      {
-        $type: 'number';
-        $value: number;
-        $extensions: {
-          'com.figma.scopes': string[];
-        };
-      }
-    > = {};
+    const collectionPrefix = '3';
+    const modeKey = `${collectionPrefix}:0`;
 
-    radiusSection.rows.forEach((row) => {
+    const variableIds: string[] = [];
+
+    const variables = radiusSection.rows.map((row, index) => {
+      const variableId = `VariableID:${collectionPrefix}:${index + 1}`;
+      const variableName = row.token;
+
+      variableIds.push(variableId);
+
       const otherKey = `${radiusSection.id}:${row.token}`;
       const rawValue = otherValues[otherKey] ?? row.light;
       const value = toRadiusNumber(rawValue);
 
-      tokens[row.token] = {
-        $type: 'number',
-        $value: value,
-        $extensions: {
-          'com.figma.scopes': ['CORNER_RADIUS'],
+      const scopes =
+        variableName === 'radius-xs' ? ['CORNER_RADIUS'] : ['ALL_SCOPES'];
+
+      return {
+        id: variableId,
+        name: variableName,
+        description: '',
+        type: 'FLOAT',
+        valuesByMode: {
+          [modeKey]: value,
         },
+        resolvedValuesByMode: {
+          [modeKey]: { resolvedValue: value, alias: null },
+        },
+        scopes,
+        hiddenFromPublishing: false,
+        codeSyntax: {},
       };
     });
 
-    const json = JSON.stringify(
-      {
-        ...tokens,
-        $extensions: {
-          'com.figma.modeName': 'Dark',
-        },
+    const collection = {
+      id: `VariableCollectionId:${collectionPrefix}:0`,
+      name: 'Radius',
+      modes: {
+        [modeKey]: 'Radius',
       },
-      null,
-      2,
-    );
+      variableIds,
+      variables,
+    };
+
+    const json = JSON.stringify(collection, null, 2);
     const blob = new Blob([json], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -1511,7 +1810,230 @@ export function App() {
     URL.revokeObjectURL(url);
   };
 
+  const handleExportFigmaTypographyJson = (): void => {
+    if (activeSectionId !== 'typography') {
+      alert(
+        'A exportação de tipografia para o Figma está disponível apenas na seção de tipografia.',
+      );
+      return;
+    }
+
+    const typographySection = SECTIONS.find((section) => section.id === 'typography');
+    if (!typographySection) {
+      return;
+    }
+
+    const collectionPrefix = '4';
+    const modeKey = `${collectionPrefix}:0`;
+
+    const variableIds: string[] = [];
+
+    const variables = typographySection.rows.map((row, index) => {
+      const variableId = `VariableID:${collectionPrefix}:${index + 1}`;
+      const variableName = row.token;
+
+      variableIds.push(variableId);
+
+      const otherKey = `${typographySection.id}:${row.token}`;
+      const rawValue = otherValues[otherKey] ?? row.light;
+
+      const isFontFamily = variableName.startsWith('font-family-');
+      const isNumberLike = !isFontFamily;
+
+      if (isFontFamily) {
+        const stringValue = rawValue;
+
+        return {
+          id: variableId,
+          name: variableName,
+          description: '',
+          type: 'STRING',
+          valuesByMode: {
+            [modeKey]: stringValue,
+          },
+          resolvedValuesByMode: {
+            [modeKey]: { resolvedValue: stringValue, alias: null },
+          },
+          scopes: [],
+          hiddenFromPublishing: false,
+          codeSyntax: {},
+        };
+      }
+
+      const numeric =
+        Number.parseFloat(rawValue.replace('px', '').trim() || rawValue.trim()) || 0;
+
+      return {
+        id: variableId,
+        name: variableName,
+        description: '',
+        type: 'FLOAT',
+        valuesByMode: {
+          [modeKey]: numeric,
+        },
+        resolvedValuesByMode: {
+          [modeKey]: { resolvedValue: numeric, alias: null },
+        },
+        scopes: [],
+        hiddenFromPublishing: false,
+        codeSyntax: {},
+      };
+    });
+
+    const collection = {
+      id: `VariableCollectionId:${collectionPrefix}:0`,
+      name: 'Tipografia',
+      modes: {
+        [modeKey]: 'Default',
+      },
+      variableIds,
+      variables,
+    };
+
+    const json = JSON.stringify(collection, null, 2);
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'Tipografia.json';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  const handleExportFigmaTypescaleJson = (): void => {
+    if (activeSectionId !== 'typography') {
+      alert(
+        'A exportação de Typescale está disponível apenas na seção de tipografia.',
+      );
+      return;
+    }
+
+    const typSection = SECTIONS.find((s) => s.id === 'typography');
+    if (!typSection) return;
+
+    const TIPOGRAFIA_COLLECTION_PREFIX = '4';
+    const TIPOGRAFIA_MODE = `${TIPOGRAFIA_COLLECTION_PREFIX}:0`;
+    const tokenToPrimitiveId = typSection.rows.reduce<Record<string, string>>(
+      (acc, row, idx) => {
+        acc[row.token] = `VariableID:${TIPOGRAFIA_COLLECTION_PREFIX}:${idx + 1}`;
+        return acc;
+      },
+      {},
+    );
+
+    const TYPESCALE_COLLECTION_PREFIX = '5';
+    const typescaleModeKey = `${TYPESCALE_COLLECTION_PREFIX}:0`;
+    const variableIds: string[] = [];
+    const variables: Array<{
+      id: string;
+      name: string;
+      description: string;
+      type: 'STRING' | 'FLOAT';
+      valuesByMode: Record<string, { type: 'VARIABLE_ALIAS'; id: string }>;
+      resolvedValuesByMode: Record<
+        string,
+        { resolvedValue: number | string; alias: string; aliasName?: string }
+      >;
+      scopes: string[];
+      hiddenFromPublishing: boolean;
+      codeSyntax: Record<string, string>;
+    }> = [];
+
+    let typescaleVarIndex = 0;
+    const nextTypescaleId = () =>
+      `VariableID:${TYPESCALE_COLLECTION_PREFIX}:${++typescaleVarIndex}`;
+
+    const baseConfig: TypographyStyleConfig = {
+      fontToken: 'font-family-base',
+      sizeToken: 'typography/size/md',
+      lineHeightToken: 'line-height-normal',
+    };
+
+    const styleLabel = (name: string): string => name.replace('/', ' ');
+
+    TYPOGRAPHY_STYLES.forEach((style) => {
+      const config = typographyStylesConfig[style.name] ?? baseConfig;
+      const label = styleLabel(style.name);
+      const fontToken = config.fontToken ?? 'font-family-base';
+      const sizeToken = config.sizeToken ?? 'typography/size/md';
+      const lineToken =
+        config.lineHeightToken ?? 'line-height-normal';
+      const aliasIdFont = tokenToPrimitiveId[fontToken];
+      const aliasIdSize = tokenToPrimitiveId[sizeToken];
+      const aliasIdLine = tokenToPrimitiveId[lineToken];
+      const aliasIdRegular = tokenToPrimitiveId['font-weight-regular'];
+      const aliasIdMedium = tokenToPrimitiveId['font-weight-medium'];
+      const aliasIdBold = tokenToPrimitiveId['font-weight-bold'];
+
+      if (!aliasIdFont || !aliasIdSize || !aliasIdLine || !aliasIdRegular || !aliasIdMedium || !aliasIdBold) return;
+
+      const pushVar = (
+        name: string,
+        type: 'STRING' | 'FLOAT',
+        aliasId: string,
+        scopes: string[],
+      ) => {
+        const id = nextTypescaleId();
+        variableIds.push(id);
+        variables.push({
+          id,
+          name,
+          description: '',
+          type,
+          valuesByMode: {
+            [typescaleModeKey]: { type: 'VARIABLE_ALIAS', id: aliasId },
+          },
+          resolvedValuesByMode: {
+            [typescaleModeKey]: {
+              resolvedValue: type === 'FLOAT' ? 0 : '',
+              alias: aliasId,
+            },
+          },
+          scopes,
+          hiddenFromPublishing: false,
+          codeSyntax: {},
+        });
+      };
+
+      pushVar(`${label}/Font Family`, 'STRING', aliasIdFont, ['FONT_FAMILY']);
+      pushVar(`${label}/Size`, 'FLOAT', aliasIdSize, ['FONT_SIZE']);
+      pushVar(`${label}/Line`, 'FLOAT', aliasIdLine, ['LINE_HEIGHT']);
+      pushVar(`${label}/Weight Regular`, 'FLOAT', aliasIdRegular, ['FONT_WEIGHT']);
+      pushVar(`${label}/Weight Medium`, 'FLOAT', aliasIdMedium, ['FONT_WEIGHT']);
+      pushVar(`${label}/Weight Bold`, 'FLOAT', aliasIdBold, ['FONT_WEIGHT']);
+    });
+
+    const collection = {
+      id: `VariableCollectionId:${TYPESCALE_COLLECTION_PREFIX}:0`,
+      name: 'Typescale',
+      modes: { [typescaleModeKey]: 'Baseline' },
+      variableIds,
+      variables,
+    };
+
+    const json = JSON.stringify(collection, null, 2);
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'Typescale.json';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   const activeSection = SECTIONS.find((section) => section.id === activeSectionId)!;
+
+  const typographySection = SECTIONS.find((section) => section.id === 'typography');
+  const typographyTokenValues: Record<string, string> =
+    typographySection?.rows.reduce<Record<string, string>>((accumulator, row) => {
+      const key = `typography:${row.token}`;
+      accumulator[row.token] = otherValues[key] ?? row.light;
+      return accumulator;
+    }, {}) ?? {};
 
   const filteredRows = activeSection.rows.filter((row) => {
     const term = search.trim().toLowerCase();
@@ -1635,14 +2157,25 @@ export function App() {
             >
               Exportar STYLE_GUIDE.md
             </button>
+            {activeSectionId === 'typography' ? (
+              <button
+                type="button"
+                className="secondary-button"
+                onClick={handleExportFigmaTypescaleJson}
+              >
+                Criar type style
+              </button>
+            ) : null}
             <button
               type="button"
               className="primary-button"
               onClick={
                 activeSectionId === 'spacing'
-                    ? handleExportFigmaSpacingJson
-                    : activeSectionId === 'radius'
-                      ? handleExportFigmaRadiusJson
+                  ? handleExportFigmaSpacingJson
+                  : activeSectionId === 'radius'
+                    ? handleExportFigmaRadiusJson
+                    : activeSectionId === 'typography'
+                      ? handleExportFigmaTypographyJson
                       : handleExportFigmaJson
               }
             >
@@ -1748,9 +2281,8 @@ export function App() {
                     <th>Valor (Dark)</th>
                   ) : null}
                   {activeSectionId === 'spacing' ||
-                  activeSectionId === 'sizes' ||
                   activeSectionId === 'radius' ||
-                  activeSectionId === 'typography' ? (
+                  activeSectionId === 'shadows' ? (
                     <th>Preview</th>
                   ) : null}
                   {activeSectionId !== 'colors' ? <th>Var Mantine</th> : null}
@@ -1765,7 +2297,6 @@ export function App() {
                   const isColorSection = activeSectionId === 'colors';
                   const isSpacingSection = activeSectionId === 'spacing';
                   const isRadiusSection = activeSectionId === 'radius';
-                  const isTypographySection = activeSectionId === 'typography';
                   const isShadowsSection = activeSectionId === 'shadows';
                   const lightColor =
                     (isColorSection && lightColors[row.token]) || row.light;
@@ -1994,81 +2525,6 @@ export function App() {
                     );
                   }
 
-                  if (isTypographySection) {
-                    const typographyValue = otherValue || '';
-                    const tokenName = row.token;
-
-                    let previewContent: JSX.Element;
-
-                    if (tokenName.startsWith('font-size-')) {
-                      previewContent = (
-                        <span
-                          className="typography-preview-text"
-                          style={{ fontSize: typographyValue || '14px' }}
-                        >
-                          Aa
-                        </span>
-                      );
-                    } else if (tokenName.startsWith('line-height-')) {
-                      previewContent = (
-                        <span
-                          className="typography-preview-text-multiline"
-                          style={{ lineHeight: typographyValue || '1.4' }}
-                        >
-                          Line 1
-                          <br />
-                          Line 2
-                        </span>
-                      );
-                    } else if (tokenName.startsWith('font-weight-')) {
-                      previewContent = (
-                        <span
-                          className="typography-preview-text"
-                          style={{ fontWeight: typographyValue || '400' }}
-                        >
-                          The quick brown fox
-                        </span>
-                      );
-                    } else {
-                      previewContent = (
-                        <span
-                          className="typography-preview-text"
-                          style={{ fontFamily: typographyValue || 'inherit' }}
-                        >
-                          The quick brown fox
-                        </span>
-                      );
-                    }
-
-                    return (
-                      <tr key={row.token}>
-                        <td className="token-name">
-                          <code>{row.token}</code>
-                        </td>
-                        <td>
-                          <input
-                            type="text"
-                            value={otherValue}
-                            onChange={(event) =>
-                              setOtherValues((previous) => ({
-                                ...previous,
-                                [otherKey]: event.target.value,
-                              }))
-                            }
-                            spellCheck={false}
-                            className="token-input"
-                          />
-                        </td>
-                        <td>
-                          <div className="typography-preview">{previewContent}</div>
-                        </td>
-                        <td>
-                          <span className="mantine-var">{row.mantineVar ?? '-'}</span>
-                        </td>
-                      </tr>
-                    );
-                  }
-
                   if (isShadowsSection) {
                     const shadowLight = lightShadows[row.token] ?? row.light;
                     const shadowDark = darkShadows[row.token] ?? row.dark;
@@ -2136,6 +2592,204 @@ export function App() {
               </tbody>
             </table>
           </div>
+
+          {activeSectionId === 'typography' ? (
+            <div className="typography-styles-wrapper">
+              <h3 className="semantic-tokens-title">Estilos de texto</h3>
+              <div className="tokens-table-wrapper">
+                <table className="tokens-table">
+                  <thead>
+                    <tr>
+                      <th>Nome</th>
+                      <th>Fonte</th>
+                      <th>Size</th>
+                      <th>Weight</th>
+                      <th>Line height</th>
+                      <th>Preview</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(() => {
+                      const baseStyles = TYPOGRAPHY_STYLES.filter((style) => {
+                        const term = search.trim().toLowerCase();
+                        if (!term) return true;
+                        return (
+                          style.name.toLowerCase().includes(term) ||
+                          style.size.includes(term) ||
+                          style.weight.includes(term) ||
+                          style.lineHeight.includes(term)
+                        );
+                      });
+
+                      const weightVariants: Array<{
+                        token: 'font-weight-regular' | 'font-weight-medium' | 'font-weight-bold';
+                        suffix: 'Regular' | 'Medium' | 'Bold';
+                        weightValue: string;
+                      }> = [
+                        { token: 'font-weight-regular', suffix: 'Regular', weightValue: '400' },
+                        { token: 'font-weight-medium', suffix: 'Medium', weightValue: '500' },
+                        { token: 'font-weight-bold', suffix: 'Bold', weightValue: '700' },
+                      ];
+
+                      const rows: Array<{
+                        style: TypographyStyleRow;
+                        variant: (typeof weightVariants)[number];
+                      }> = [];
+
+                      baseStyles.forEach((style) => {
+                        weightVariants.forEach((variant) => {
+                          rows.push({ style, variant });
+                        });
+                      });
+
+                      return rows.map(({ style, variant }) => {
+                        const baseConfig: TypographyStyleConfig = {
+                          fontToken: 'font-family-base',
+                          sizeToken: 'typography/size/md',
+                          lineHeightToken: 'line-height-normal',
+                        };
+
+                        const currentConfig =
+                          typographyStylesConfig[style.name] ?? baseConfig;
+                        const baseName = style.name.toLowerCase();
+                        const displayName = `${baseName}/${variant.suffix}`;
+
+                        return (
+                          <tr key={`${style.name}-${variant.suffix}`}>
+                            <td className="token-name">
+                              <code>{displayName}</code>
+                            </td>
+                            <td>
+                              <select
+                                className="token-select"
+                                value={
+                                  typographyStylesConfig[style.name]?.fontToken ??
+                                  'font-family-base'
+                                }
+                                onChange={(event) =>
+                                  setTypographyStylesConfig((previous) => ({
+                                    ...previous,
+                                    [style.name]: {
+                                      ...(previous[style.name] ?? {
+                                        fontToken: 'font-family-base',
+                                        sizeToken: 'typography/size/md',
+                                        lineHeightToken: 'line-height-normal',
+                                      }),
+                                      fontToken: event.target.value,
+                                    },
+                                  }))
+                                }
+                              >
+                                {TYPOGRAPHY_FONT_OPTIONS.map((option) => (
+                                  <option key={option.token} value={option.token}>
+                                    {option.label}
+                                  </option>
+                                ))}
+                              </select>
+                            </td>
+                            <td>
+                              <select
+                                className="token-select"
+                                value={
+                                  typographyStylesConfig[style.name]?.sizeToken ??
+                                  'typography/size/md'
+                                }
+                                onChange={(event) =>
+                                  setTypographyStylesConfig((previous) => ({
+                                    ...previous,
+                                    [style.name]: {
+                                      ...(previous[style.name] ?? {
+                                        fontToken: 'font-family-base',
+                                        sizeToken: 'typography/size/md',
+                                        lineHeightToken: 'line-height-normal',
+                                      }),
+                                      sizeToken: event.target.value,
+                                    },
+                                  }))
+                                }
+                              >
+                                {TYPOGRAPHY_SIZE_OPTIONS.map((option) => (
+                                  <option key={option.token} value={option.token}>
+                                    {option.label}
+                                  </option>
+                                ))}
+                              </select>
+                            </td>
+                            <td>{variant.suffix} · {variant.weightValue}</td>
+                            <td>
+                              <select
+                                className="token-select"
+                                value={
+                                  typographyStylesConfig[style.name]
+                                    ?.lineHeightToken ?? 'line-height-normal'
+                                }
+                                onChange={(event) =>
+                                  setTypographyStylesConfig((previous) => ({
+                                    ...previous,
+                                    [style.name]: {
+                                      ...(previous[style.name] ?? {
+                                        fontToken: 'font-family-base',
+                                        sizeToken: 'typography/size/md',
+                                        lineHeightToken: 'line-height-normal',
+                                      }),
+                                      lineHeightToken: event.target.value,
+                                    },
+                                  }))
+                                }
+                              >
+                                {TYPOGRAPHY_LINE_HEIGHT_OPTIONS.map((option) => (
+                                  <option key={option.token} value={option.token}>
+                                    {option.label}
+                                  </option>
+                                ))}
+                              </select>
+                            </td>
+                            <td>
+                              {(() => {
+                                const config = currentConfig;
+                                const fontToken =
+                                  config?.fontToken ?? 'font-family-base';
+                                const sizeToken =
+                                  config?.sizeToken ?? 'typography/size/md';
+                                const weightToken = variant.token;
+                                const lineHeightToken =
+                                  config?.lineHeightToken ?? 'line-height-normal';
+
+                                const fontFamily =
+                                  typographyTokenValues[fontToken] ?? 'inherit';
+                                const fontSize =
+                                  typographyTokenValues[sizeToken] ?? style.size;
+                                const fontWeight =
+                                  typographyTokenValues[weightToken] ??
+                                  style.weight;
+                                const lineHeight =
+                                  typographyTokenValues[lineHeightToken] ??
+                                  style.lineHeight;
+
+                                return (
+                                  <span
+                                    className="typography-preview-text"
+                                    style={{
+                                      fontFamily,
+                                      fontSize,
+                                      fontWeight,
+                                      lineHeight,
+                                    }}
+                                  >
+                                    Aa
+                                  </span>
+                                );
+                              })()}
+                            </td>
+                          </tr>
+                        );
+                      });
+                    })()}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          ) : null}
         </section>
       </main>
     </div>
