@@ -1,7 +1,9 @@
 import { Fragment, useEffect, useMemo, useState } from 'react';
+import type { ReactNode } from 'react';
+import { IconPalette, IconBoxPadding, IconTypography, IconShadow, IconSparkles, IconPlayerPlay } from '@tabler/icons-react';
 import { HexColorPicker } from 'react-colorful';
 
-type SectionId = 'colors' | 'spacing' | 'radius' | 'typography' | 'shadows';
+type SectionId = 'colors' | 'spacing' | 'radius' | 'typography' | 'shadows' | 'glows' | 'motion';
 
 type TokenRow = {
   readonly token: string;
@@ -31,6 +33,17 @@ type TypographyStyleConfig = {
   readonly weightToken: string;
   readonly lineHeightToken: string;
 };
+
+function getSectionIcon(id: SectionId): ReactNode {
+  if (id === 'colors') return <IconPalette size={18} stroke={1.7} />;
+  if (id === 'spacing') return <IconBoxPadding size={18} stroke={1.7} />;
+  if (id === 'radius') return <IconBoxPadding size={18} stroke={1.7} />;
+  if (id === 'typography') return <IconTypography size={18} stroke={1.7} />;
+  if (id === 'shadows') return <IconShadow size={18} stroke={1.7} />;
+  if (id === 'glows') return <IconSparkles size={18} stroke={1.7} />;
+  if (id === 'motion') return <IconPlayerPlay size={18} stroke={1.7} />;
+  return null;
+}
 
 type ColorFieldProps = {
   readonly color: string;
@@ -1108,26 +1121,119 @@ const SECTIONS: SectionConfig[] = [
     description: 'Níveis de elevação e profundidade visual.',
     rows: [
       {
-        token: 'shadow-xs',
-        light: '0 1px 2px rgba(0,0,0,0.08)',
-        dark: '0 1px 2px rgba(0,0,0,0.7)',
+        token: 'shadow/xs',
+        light: '0 1px 2px rgba(0,0,0,0.30)',
+        dark: '0 1px 2px rgba(0,0,0,0.30)',
         mantineVar: 'theme.shadows.xs',
       },
       {
-        token: 'shadow-md',
-        light: '0 10px 15px rgba(15,23,42,0.1)',
-        dark: '0 10px 25px rgba(0,0,0,0.7)',
+        token: 'shadow/sm',
+        light: '0 1px 3px rgba(0,0,0,0.40)',
+        dark: '0 1px 3px rgba(0,0,0,0.40)',
+        mantineVar: 'theme.shadows.sm',
+      },
+      {
+        token: 'shadow/md',
+        light: '0 4px 6px rgba(0,0,0,0.45)',
+        dark: '0 4px 6px rgba(0,0,0,0.45)',
         mantineVar: 'theme.shadows.md',
       },
       {
-        token: 'shadow-lg',
-        light: '0 20px 25px rgba(15,23,42,0.15)',
-        dark: '0 24px 40px rgba(0,0,0,0.8)',
+        token: 'shadow/lg',
+        light: '0 10px 15px rgba(0,0,0,0.50)',
+        dark: '0 10px 15px rgba(0,0,0,0.50)',
         mantineVar: 'theme.shadows.lg',
+      },
+      {
+        token: 'shadow/xl',
+        light: '0 20px 25px rgba(0,0,0,0.55)',
+        dark: '0 20px 25px rgba(0,0,0,0.55)',
+        mantineVar: 'theme.shadows.xl',
+      },
+    ],
+  },
+  {
+    id: 'glows',
+    name: 'Brilho',
+    description: 'Efeitos de glow para destaque, foco e ênfase visual.',
+    rows: [
+      {
+        token: 'glow/xs',
+        light: '0 0 4px rgba(122,234,243,0.30)',
+        dark: '0 0 4px rgba(122,234,243,0.30)',
+        mantineVar: 'theme.glows.xs',
+      },
+      {
+        token: 'glow/sm',
+        light: '0 0 8px rgba(122,234,243,0.40)',
+        dark: '0 0 8px rgba(122,234,243,0.40)',
+        mantineVar: 'theme.glows.sm',
+      },
+      {
+        token: 'glow/md',
+        light: '0 0 16px rgba(122,234,243,0.45)',
+        dark: '0 0 16px rgba(122,234,243,0.45)',
+        mantineVar: 'theme.glows.md',
+      },
+      {
+        token: 'glow/lg',
+        light: '0 0 24px rgba(122,234,243,0.50)',
+        dark: '0 0 24px rgba(122,234,243,0.50)',
+        mantineVar: 'theme.glows.lg',
+      },
+      {
+        token: 'glow/xl',
+        light: '0 0 36px rgba(122,234,243,0.55)',
+        dark: '0 0 36px rgba(122,234,243,0.55)',
+        mantineVar: 'theme.glows.xl',
+      },
+    ],
+  },
+  {
+    id: 'motion',
+    name: 'Motion',
+    description: 'Durações e curvas de animação para transições e micro-interações.',
+    rows: [
+      {
+        token: 'motion/duration/fast',
+        light: '100ms',
+        dark: '100ms',
+      },
+      {
+        token: 'motion/duration/default',
+        light: '200ms',
+        dark: '200ms',
+      },
+      {
+        token: 'motion/duration/slow',
+        light: '300ms',
+        dark: '300ms',
+      },
+      {
+        token: 'motion/easing/default',
+        light: 'ease',
+        dark: 'ease',
+      },
+      {
+        token: 'motion/easing/in-out',
+        light: 'ease-in-out',
+        dark: 'ease-in-out',
       },
     ],
   },
 ];
+
+const EASING_OPTIONS = [
+  { value: 'linear', label: 'Linear' },
+  { value: 'ease', label: 'Ease' },
+  { value: 'ease-in', label: 'Ease In' },
+  { value: 'ease-out', label: 'Ease Out' },
+  { value: 'ease-in-out', label: 'Ease In Out' },
+  { value: 'cubic-bezier(0.4, 0, 0.2, 1)', label: 'Smooth (Material)' },
+  { value: 'cubic-bezier(0.4, 0, 1, 1)', label: 'Accelerate' },
+  { value: 'cubic-bezier(0, 0, 0.2, 1)', label: 'Decelerate' },
+  { value: 'cubic-bezier(0.68, -0.55, 0.27, 1.55)', label: 'Bounce (Back)' },
+] as const;
 
 const TYPOGRAPHY_FONT_OPTIONS = [
   { token: 'font-family-base', label: 'Base · Inter, sans-serif' },
@@ -1265,6 +1371,36 @@ export function App() {
     useState<Record<string, string>>(initialLightShadows);
   const [darkShadows, setDarkShadows] =
     useState<Record<string, string>>(initialDarkShadows);
+
+  const initialLightGlows = useMemo(() => {
+    const glowsSection = SECTIONS.find((section) => section.id === 'glows');
+    if (!glowsSection) return {};
+
+    const map: Record<string, string> = {};
+    glowsSection.rows.forEach((row) => {
+      map[row.token] = row.light;
+    });
+
+    return map;
+  }, []);
+
+  const initialDarkGlows = useMemo(() => {
+    const glowsSection = SECTIONS.find((section) => section.id === 'glows');
+    if (!glowsSection) return {};
+
+    const map: Record<string, string> = {};
+    glowsSection.rows.forEach((row) => {
+      map[row.token] = row.dark;
+    });
+
+    return map;
+  }, []);
+
+  const [lightGlows, setLightGlows] =
+    useState<Record<string, string>>(initialLightGlows);
+  const [darkGlows, setDarkGlows] =
+    useState<Record<string, string>>(initialDarkGlows);
+
   const [otherValues, setOtherValues] = useState<Record<string, string>>({});
 
   const [typographyStylesConfig, setTypographyStylesConfig] = useState<
@@ -1507,14 +1643,11 @@ export function App() {
     const tokenToId: Record<string, string> = {};
 
     const getScopesForToken = (token: string): string[] => {
-      if (!token.startsWith('semantic/')) {
-        return ['FRAME_FILL', 'SHAPE_FILL', 'TEXT_FILL', 'STROKE_COLOR'];
-      }
-      if (token.startsWith('semantic/bg/')) return ['FRAME_FILL', 'SHAPE_FILL'];
+      if (token.startsWith('semantic/bg/')) return ['FRAME_FILL'];
       if (token.startsWith('semantic/text/')) return ['TEXT_FILL'];
       if (token.startsWith('semantic/border/')) return ['STROKE_COLOR'];
       if (token.startsWith('semantic/icon/')) return ['SHAPE_FILL'];
-      return ['FRAME_FILL', 'SHAPE_FILL', 'TEXT_FILL', 'STROKE_COLOR'];
+      return [];
     };
 
     const variables = exportRows.map((row, index) => {
@@ -1640,7 +1773,7 @@ export function App() {
 
     const collection = {
       id: `VariableCollectionId:${collectionPrefix}:0`,
-      name: 'Cores',
+      name: 'Colors',
       modes: {
         [modeLightKey]: 'Light',
         [modeDarkKey]: 'Dark',
@@ -1654,7 +1787,7 @@ export function App() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'Cores.json';
+    link.download = 'Colors.json';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -1706,7 +1839,7 @@ export function App() {
         resolvedValuesByMode: {
           [modeKey]: { resolvedValue: value, alias: null },
         },
-        scopes: [],
+        scopes: ['GAP'],
         hiddenFromPublishing: false,
         codeSyntax: {},
       };
@@ -1714,7 +1847,7 @@ export function App() {
 
     const collection = {
       id: `VariableCollectionId:${collectionPrefix}:0`,
-      name: 'Espaçamento',
+      name: 'Spacing',
       modes: {
         [modeKey]: 'Default',
       },
@@ -1727,7 +1860,7 @@ export function App() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'Espacamento.json';
+    link.download = 'Spacing.json';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -1829,9 +1962,17 @@ export function App() {
     const variableIds: string[] = [];
     const tokenToPrimitiveId: Record<string, string> = {};
 
+    const toFigmaTypeName = (token: string): string => {
+      if (token.startsWith('font-family-')) return `Typeface/Family/${token}`;
+      if (token.startsWith('typography/size/')) return `Typeface/Size/${token.replace('typography/size/', '')}`;
+      if (token.startsWith('line-height-')) return `Typeface/Line/${token}`;
+      if (token.startsWith('font-weight-')) return `Typeface/Weight/${token}`;
+      return token;
+    };
+
     const variables = typographySection.rows.map((row, index) => {
       const variableId = `VariableID:${collectionPrefix}:${index + 1}`;
-      const variableName = row.token;
+      const variableName = toFigmaTypeName(row.token);
 
       variableIds.push(variableId);
       tokenToPrimitiveId[row.token] = variableId;
@@ -1839,7 +1980,7 @@ export function App() {
       const otherKey = `${typographySection.id}:${row.token}`;
       const rawValue = otherValues[otherKey] ?? row.light;
 
-      const isFontFamily = variableName.startsWith('font-family-');
+      const isFontFamily = row.token.startsWith('font-family-');
 
       if (isFontFamily) {
         const stringValue = rawValue;
@@ -1893,6 +2034,7 @@ export function App() {
       name: string,
       type: 'STRING' | 'FLOAT',
       aliasId: string,
+      aliasToken: string,
       scopes: string[],
     ) => {
       const id = `VariableID:${collectionPrefix}:${++styleVarIndex}`;
@@ -1909,6 +2051,7 @@ export function App() {
           [modeKey]: {
             resolvedValue: type === 'FLOAT' ? 0 : '',
             alias: aliasId,
+            aliasName: toFigmaTypeName(aliasToken),
           },
         },
         scopes,
@@ -1932,17 +2075,17 @@ export function App() {
 
       if (!aliasIdFont || !aliasIdSize || !aliasIdLine || !aliasIdRegular || !aliasIdMedium || !aliasIdBold) return;
 
-      pushStyleVar(`${label}/Font Family`, 'STRING', aliasIdFont, ['FONT_FAMILY']);
-      pushStyleVar(`${label}/Size`, 'FLOAT', aliasIdSize, ['FONT_SIZE']);
-      pushStyleVar(`${label}/Line`, 'FLOAT', aliasIdLine, ['LINE_HEIGHT']);
-      pushStyleVar(`${label}/Weight Regular`, 'FLOAT', aliasIdRegular, ['FONT_WEIGHT']);
-      pushStyleVar(`${label}/Weight Medium`, 'FLOAT', aliasIdMedium, ['FONT_WEIGHT']);
-      pushStyleVar(`${label}/Weight Bold`, 'FLOAT', aliasIdBold, ['FONT_WEIGHT']);
+      pushStyleVar(`Typescale/${label}/Font Family`, 'STRING', aliasIdFont, fontToken, ['FONT_FAMILY']);
+      pushStyleVar(`Typescale/${label}/Size`, 'FLOAT', aliasIdSize, sizeToken, ['FONT_SIZE']);
+      pushStyleVar(`Typescale/${label}/Line`, 'FLOAT', aliasIdLine, lineToken, ['LINE_HEIGHT']);
+      pushStyleVar(`Typescale/${label}/Weight Regular`, 'FLOAT', aliasIdRegular, 'font-weight-regular', ['FONT_WEIGHT']);
+      pushStyleVar(`Typescale/${label}/Weight Medium`, 'FLOAT', aliasIdMedium, 'font-weight-medium', ['FONT_WEIGHT']);
+      pushStyleVar(`Typescale/${label}/Weight Bold`, 'FLOAT', aliasIdBold, 'font-weight-bold', ['FONT_WEIGHT']);
     });
 
     const collection = {
       id: `VariableCollectionId:${collectionPrefix}:0`,
-      name: 'Tipografia',
+      name: 'Typography',
       modes: {
         [modeKey]: 'Default',
       },
@@ -1955,7 +2098,7 @@ export function App() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'Tipografia.json';
+    link.download = 'Typography.json';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -2038,11 +2181,15 @@ export function App() {
     <div className="app-root">
       <aside className="sidebar">
         <header className="sidebar-header">
-          <h1 className="app-title">Design Tokens Manager</h1>
-          <p className="app-subtitle">
-            Configure os valores dos tokens definidos em <code>STYLE_GUIDE.md</code> e
-            gere uma base consistente para implementação em código e Figma.
-          </p>
+          <div className="sidebar-header-title-row">
+            <div className="sidebar-header-text">
+              <h1 className="app-title">Design Tokens Manager</h1>
+              <p className="app-subtitle">
+                Configure os tokens definidos em <code>STYLE_GUIDE.md</code> e gere uma base
+                consistente para código e Figma.
+              </p>
+            </div>
+          </div>
         </header>
 
         <nav className="collections-nav">
@@ -2055,8 +2202,13 @@ export function App() {
               }
               onClick={() => setActiveSectionId(section.id)}
             >
-              <span className="nav-button-title">{section.name}</span>
-              <span className="nav-button-description">{section.description}</span>
+              <span className="nav-button-icon" aria-hidden="true">
+                {getSectionIcon(section.id)}
+              </span>
+              <span className="nav-button-content">
+                <span className="nav-button-title">{section.name}</span>
+                <span className="nav-button-description">{section.description}</span>
+              </span>
             </button>
           ))}
         </nav>
@@ -2201,16 +2353,15 @@ export function App() {
                 <tr>
                   <th>Token</th>
                   <th>
-                    {activeSectionId === 'colors' || activeSectionId === 'shadows'
+                    {activeSectionId === 'colors' || activeSectionId === 'shadows' || activeSectionId === 'glows'
                       ? 'Valor (Light)'
                       : 'Valor'}
                   </th>
-                  {activeSectionId === 'colors' || activeSectionId === 'shadows' ? (
+                  {activeSectionId === 'colors' || activeSectionId === 'shadows' || activeSectionId === 'glows' ? (
                     <th>Valor (Dark)</th>
                   ) : null}
                   {activeSectionId === 'spacing' ||
-                  activeSectionId === 'radius' ||
-                  activeSectionId === 'shadows' ? (
+                  activeSectionId === 'radius' ? (
                     <th>Preview</th>
                   ) : null}
                   {activeSectionId !== 'colors' ? <th>Var Mantine</th> : null}
@@ -2226,6 +2377,7 @@ export function App() {
                   const isSpacingSection = activeSectionId === 'spacing';
                   const isRadiusSection = activeSectionId === 'radius';
                   const isShadowsSection = activeSectionId === 'shadows';
+                  const isGlowsSection = activeSectionId === 'glows';
                   const lightColor =
                     (isColorSection && lightColors[row.token]) || row.light;
                   const darkColor =
@@ -2491,24 +2643,83 @@ export function App() {
                     );
                   }
 
+                  if (isGlowsSection) {
+                    const glowLight = lightGlows[row.token] ?? row.light;
+                    const glowDark = darkGlows[row.token] ?? row.dark;
+
+                    return (
+                      <tr key={row.token}>
+                        <td className="token-name">
+                          <code>{row.token}</code>
+                        </td>
+                        <td>
+                          <ShadowField
+                            value={glowLight}
+                            onChange={(nextValue) =>
+                              setLightGlows((previous) => ({
+                                ...previous,
+                                [row.token]: nextValue,
+                              }))
+                            }
+                          />
+                        </td>
+                        <td>
+                          <ShadowField
+                            value={glowDark}
+                            onChange={(nextValue) =>
+                              setDarkGlows((previous) => ({
+                                ...previous,
+                                [row.token]: nextValue,
+                              }))
+                            }
+                          />
+                        </td>
+                        <td>
+                          <span className="mantine-var">{row.mantineVar ?? '-'}</span>
+                        </td>
+                      </tr>
+                    );
+                  }
+
+                  const isEasingToken = row.token.includes('/easing/');
+
                   return (
                     <tr key={row.token}>
                       <td className="token-name">
                         <code>{row.token}</code>
                       </td>
                       <td>
-                        <input
-                          type="text"
-                          value={otherValue}
-                          onChange={(event) =>
-                            setOtherValues((previous) => ({
-                              ...previous,
-                              [otherKey]: event.target.value,
-                            }))
-                          }
-                          spellCheck={false}
-                          className="token-input"
-                        />
+                        {isEasingToken ? (
+                          <select
+                            className="token-select"
+                            value={otherValue}
+                            onChange={(event) =>
+                              setOtherValues((previous) => ({
+                                ...previous,
+                                [otherKey]: event.target.value,
+                              }))
+                            }
+                          >
+                            {EASING_OPTIONS.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </select>
+                        ) : (
+                          <input
+                            type="text"
+                            value={otherValue}
+                            onChange={(event) =>
+                              setOtherValues((previous) => ({
+                                ...previous,
+                                [otherKey]: event.target.value,
+                              }))
+                            }
+                            spellCheck={false}
+                            className="token-input"
+                          />
+                        )}
                       </td>
                       <td>
                         <span className="mantine-var">{row.mantineVar ?? '-'}</span>

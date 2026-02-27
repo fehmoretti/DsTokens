@@ -92,7 +92,7 @@ Todos os tokens semânticos de cor pertencem a **um único grupo por tipo de uso
 
 | Grupo | Prefixo | Escopo típico (Figma) |
 |-------|---------|------------------------|
-| **Background** | `semantic/bg/*` | FRAME_FILL, SHAPE_FILL |
+| **Background** | `semantic/bg/*` | FRAME_FILL |
 | **Texto** | `semantic/text/*` | TEXT_FILL |
 | **Borda** | `semantic/border/*` | STROKE_COLOR |
 | **Ícone** | `semantic/icon/*` | SHAPE_FILL |
