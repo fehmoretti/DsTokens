@@ -1,7 +1,8 @@
-import { Fragment, useEffect, useMemo, useState } from 'react';
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
-import { IconPalette, IconBoxPadding, IconTypography, IconShadow, IconSparkles, IconPlayerPlay } from '@tabler/icons-react';
+import { IconPalette, IconBoxPadding, IconTypography, IconShadow, IconSparkles, IconPlayerPlay, IconArrowRight, IconFileExport, IconBrandFigma, IconCode, IconDownload, IconUpload } from '@tabler/icons-react';
 import { HexColorPicker } from 'react-colorful';
+import JSZip from 'jszip';
 
 type SectionId = 'colors' | 'spacing' | 'radius' | 'typography' | 'shadows' | 'glows' | 'motion';
 
@@ -32,6 +33,20 @@ type TypographyStyleConfig = {
   readonly sizeToken: string;
   readonly weightToken: string;
   readonly lineHeightToken: string;
+};
+
+type ProjectConfig = {
+  version: 1;
+  lightColors: Record<string, string>;
+  darkColors: Record<string, string>;
+  lightShadows: Record<string, string>;
+  darkShadows: Record<string, string>;
+  lightGlows: Record<string, string>;
+  darkGlows: Record<string, string>;
+  otherValues: Record<string, string>;
+  typographyStylesConfig: Record<string, TypographyStyleConfig>;
+  useSecondary: boolean;
+  useTertiary: boolean;
 };
 
 function getSectionIcon(id: SectionId): ReactNode {
@@ -1223,6 +1238,65 @@ const SECTIONS: SectionConfig[] = [
   },
 ];
 
+const SECTION_HELP: Record<SectionId, { title: string; tips: string[] }> = {
+  colors: {
+    title: 'Cores',
+    tips: [
+      'Defina as paletas primitivas (primary, secondary, tertiary, neutral) e as cores semânticas (success, warning, danger, info).',
+      'As colunas Light e Dark permitem configurar valores distintos para cada modo de tema. Use formatos hex (#RRGGBB) ou rgba().',
+      'Tokens semânticos como bg-surface, fg-primary e border-subtle são derivados das paletas e garantem consistência entre componentes.',
+    ],
+  },
+  spacing: {
+    title: 'Espaçamento',
+    tips: [
+      'Configure a escala de espaçamento usada em padding, margin e gap dos componentes.',
+      'Valores em px. A escala segue progressão consistente (xs → 3xl) para manter ritmo visual uniforme.',
+      'No Mantine, esses tokens mapeiam para props como p="md", m="lg" e gap="sm".',
+    ],
+  },
+  radius: {
+    title: 'Radius',
+    tips: [
+      'Defina os raios de borda para botões, cards, inputs e outros elementos.',
+      'Valores em px. Use escalas menores (xs, sm) para inputs e maiores (lg, xl) para cards e modais.',
+      'No Mantine, esses tokens mapeiam para a prop radius="md" dos componentes.',
+    ],
+  },
+  typography: {
+    title: 'Tipografia',
+    tips: [
+      'Configure famílias de fonte, tamanhos, pesos e alturas de linha para toda a aplicação.',
+      'Os estilos de texto (heading, body, caption, etc.) combinam esses tokens em presets prontos para uso.',
+      'Mantenha a escala tipográfica coerente para garantir hierarquia visual clara.',
+    ],
+  },
+  shadows: {
+    title: 'Sombras',
+    tips: [
+      'Configure as sombras de elevação para simular profundidade entre camadas da interface.',
+      'O formato segue o padrão CSS box-shadow: offsetX offsetY blur spread cor.',
+      'Use escalas menores (xs, sm) para botões e inputs, e maiores (lg, xl) para modais e popovers.',
+    ],
+  },
+  glows: {
+    title: 'Brilho',
+    tips: [
+      'Defina efeitos de glow para destaque, foco e ênfase visual em elementos interativos.',
+      'Glows usam o mesmo formato de box-shadow, porém com blur maior e sem offset.',
+      'Ideal para estados de foco, elementos selecionados e destaques em modo dark.',
+    ],
+  },
+  motion: {
+    title: 'Motion',
+    tips: [
+      'Configure durações e curvas de animação para transições e micro-interações.',
+      'Durações em milissegundos (ms). Use valores menores (fast) para feedbacks rápidos e maiores (slow) para transições elaboradas.',
+      'As curvas de easing controlam a aceleração da animação. Selecione no dropdown a curva mais adequada para cada contexto.',
+    ],
+  },
+};
+
 const EASING_OPTIONS = [
   { value: 'linear', label: 'Linear' },
   { value: 'ease', label: 'Ease' },
@@ -1311,6 +1385,8 @@ function isTertiaryToken(token: string): boolean {
 }
 
 export function App() {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [showWelcome, setShowWelcome] = useState(true);
   const [activeSectionId, setActiveSectionId] = useState<SectionId>('colors');
   const [search, setSearch] = useState('');
   const [useSecondary, setUseSecondary] = useState(true);
@@ -1558,20 +1634,671 @@ export function App() {
     [useSecondary, useTertiary],
   );
 
-  const handleExportStyleGuide = (): void => {
-    const link = document.createElement('a');
-    link.href = '/STYLE_GUIDE.md';
-    link.download = 'STYLE_GUIDE.md';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const generateStyleGuideContent = (): string => {
+    const colorsSection = SECTIONS.find((s) => s.id === 'colors');
+    const spacingSection = SECTIONS.find((s) => s.id === 'spacing');
+    const radiusSection = SECTIONS.find((s) => s.id === 'radius');
+    const typoSection = SECTIONS.find((s) => s.id === 'typography');
+    const shadowsSection = SECTIONS.find((s) => s.id === 'shadows');
+    const glowsSection = SECTIONS.find((s) => s.id === 'glows');
+    const motionSection = SECTIONS.find((s) => s.id === 'motion');
+
+    const getColor = (token: string, mode: 'light' | 'dark'): string => {
+      const map = mode === 'light' ? lightColors : darkColors;
+      const row = colorsSection?.rows.find((r) => r.token === token);
+      return map[token] ?? (mode === 'light' ? row?.light : row?.dark) ?? '';
+    };
+
+    const getOther = (sectionId: string, token: string): string => {
+      const key = `${sectionId}:${token}`;
+      const section = SECTIONS.find((s) => s.id === sectionId);
+      const row = section?.rows.find((r) => r.token === token);
+      return otherValues[key] ?? row?.light ?? '';
+    };
+
+    const getShadow = (token: string, mode: 'light' | 'dark'): string => {
+      const map = mode === 'light' ? lightShadows : darkShadows;
+      const row = shadowsSection?.rows.find((r) => r.token === token);
+      return map[token] ?? (mode === 'light' ? row?.light : row?.dark) ?? '';
+    };
+
+    const getGlow = (token: string, mode: 'light' | 'dark'): string => {
+      const map = mode === 'light' ? lightGlows : darkGlows;
+      const row = glowsSection?.rows.find((r) => r.token === token);
+      return map[token] ?? (mode === 'light' ? row?.light : row?.dark) ?? '';
+    };
+
+    const buildPaletteTable = (prefix: string, label: string): string => {
+      const rows = colorsSection?.rows.filter((r) => r.token.startsWith(prefix)) ?? [];
+      if (rows.length === 0) return '';
+      const lines: string[] = [];
+      lines.push(`### ${label}\n`);
+      lines.push('| Token | HEX |');
+      lines.push('|---|---|');
+      rows.forEach((r) => {
+        lines.push(`| \`${r.token}\` | \`${getColor(r.token, 'light')}\` |`);
+      });
+      lines.push('');
+      return lines.join('\n');
+    };
+
+    const buildSemanticTable = (prefix: string, title: string): string => {
+      const rows = colorsSection?.rows.filter((r) => r.token.startsWith(prefix)) ?? [];
+      if (rows.length === 0) return '';
+      const filtered = rows.filter(
+        (r) =>
+          (!isAccentToken(r.token) || useSecondary) &&
+          (!isTertiaryToken(r.token) || useTertiary),
+      );
+      if (filtered.length === 0) return '';
+      const lines: string[] = [];
+      lines.push(`### ${title}\n`);
+      lines.push('| Token | Light | Dark | Var Mantine |');
+      lines.push('|---|---|---|---|');
+      filtered.forEach((r) => {
+        lines.push(
+          `| \`${r.token}\` | \`${getColor(r.token, 'light')}\` | \`${getColor(r.token, 'dark')}\` | ${r.mantineVar ? `\`${r.mantineVar}\`` : '-'} |`,
+        );
+      });
+      lines.push('');
+      return lines.join('\n');
+    };
+
+    const md: string[] = [];
+
+    md.push('# STYLE_GUIDE.md — Design System · Tokens de Design\n');
+    md.push('> Gerado automaticamente pelo **Design Tokens Manager**.\n');
+    md.push('---\n');
+
+    // Cores — Paletas base
+    md.push('## 1. Tokens de Cor — Paleta Base\n');
+    md.push('> Estáticos. Mesmos valores em Light e Dark.\n');
+    md.push(buildPaletteTable('color/primary/', 'Primary'));
+    if (useSecondary) md.push(buildPaletteTable('color/secondary/', 'Secondary'));
+    if (useTertiary) md.push(buildPaletteTable('color/tertiary/', 'Tertiary'));
+    md.push(buildPaletteTable('color/neutral/', 'Neutral'));
+    md.push(buildPaletteTable('color/dark/', 'Dark'));
+
+    // Cores — Semânticas
+    md.push('## 2. Tokens Semânticos por Tema\n');
+    md.push('> Estes tokens mudam conforme o modo ativo (Light / Dark).\n');
+    md.push(buildSemanticTable('semantic/bg/', '2.1 Background'));
+    md.push(buildSemanticTable('semantic/text/', '2.2 Texto'));
+    md.push(buildSemanticTable('semantic/border/', '2.3 Borda'));
+    md.push(buildSemanticTable('semantic/icon/', '2.4 Ícone'));
+
+    // Tipografia
+    md.push('## 3. Tipografia\n');
+
+    const fontBase = getOther('typography', 'font-family-base');
+    const fontMono = getOther('typography', 'font-family-mono');
+    md.push('### Famílias\n');
+    md.push(`| Token | Valor | Var Mantine |`);
+    md.push(`|---|---|---|`);
+    md.push(`| \`font-family-base\` | \`${fontBase}\` | \`theme.fontFamily\` |`);
+    md.push(`| \`font-family-mono\` | \`${fontMono}\` | \`theme.fontFamilyMonospace\` |\n`);
+
+    md.push('### Tamanhos de fonte\n');
+    md.push('| Token | Valor | Var Mantine |');
+    md.push('|---|---|---|');
+    typoSection?.rows
+      .filter((r) => r.token.startsWith('typography/size/'))
+      .forEach((r) => {
+        md.push(
+          `| \`${r.token}\` | \`${getOther('typography', r.token)}\` | ${r.mantineVar ? `\`${r.mantineVar}\`` : '-'} |`,
+        );
+      });
+    md.push('');
+
+    md.push('### Pesos\n');
+    md.push('| Token | Valor |');
+    md.push('|---|---|');
+    typoSection?.rows
+      .filter((r) => r.token.startsWith('font-weight-'))
+      .forEach((r) => {
+        md.push(`| \`${r.token}\` | \`${getOther('typography', r.token)}\` |`);
+      });
+    md.push('');
+
+    md.push('### Alturas de linha\n');
+    md.push('| Token | Valor |');
+    md.push('|---|---|');
+    typoSection?.rows
+      .filter((r) => r.token.startsWith('line-height-'))
+      .forEach((r) => {
+        md.push(`| \`${r.token}\` | \`${getOther('typography', r.token)}\` |`);
+      });
+    md.push('');
+
+    md.push('### Estilos de Texto (Figma Text Styles)\n');
+    md.push('| Nome | Fonte | Size | Weight | Line Height |');
+    md.push('|---|---|---|---|---|');
+    TYPOGRAPHY_STYLES.forEach((style) => {
+      const config = typographyStylesConfig[style.name];
+      if (!config) return;
+      const font = getOther('typography', config.fontToken);
+      const size = getOther('typography', config.sizeToken);
+      const weight = getOther('typography', config.weightToken ?? 'font-weight-regular');
+      const lh = getOther('typography', config.lineHeightToken);
+      md.push(`| \`${style.name}\` | \`${font}\` | \`${size}\` | \`${weight}\` | \`${lh}\` |`);
+    });
+    md.push('');
+
+    // Espaçamento
+    md.push('## 4. Espaçamento\n');
+    md.push('> Estático — não muda entre temas.\n');
+    md.push('| Token | Valor | Var Mantine |');
+    md.push('|---|---|---|');
+    spacingSection?.rows.forEach((r) => {
+      md.push(
+        `| \`${r.token}\` | \`${getOther('spacing', r.token)}\` | ${r.mantineVar ? `\`${r.mantineVar}\`` : '-'} |`,
+      );
+    });
+    md.push('');
+
+    // Radius
+    md.push('## 5. Bordas e Raios\n');
+    md.push('> Estático — não muda entre temas.\n');
+    md.push('| Token | Valor | Var Mantine |');
+    md.push('|---|---|---|');
+    radiusSection?.rows.forEach((r) => {
+      md.push(
+        `| \`${r.token}\` | \`${getOther('radius', r.token)}\` | ${r.mantineVar ? `\`${r.mantineVar}\`` : '-'} |`,
+      );
+    });
+    md.push('');
+
+    // Sombras
+    md.push('## 6. Sombras por Tema\n');
+    md.push('| Token | Light | Dark | Var Mantine |');
+    md.push('|---|---|---|---|');
+    shadowsSection?.rows.forEach((r) => {
+      md.push(
+        `| \`${r.token}\` | \`${getShadow(r.token, 'light')}\` | \`${getShadow(r.token, 'dark')}\` | ${r.mantineVar ? `\`${r.mantineVar}\`` : '-'} |`,
+      );
+    });
+    md.push('');
+
+    // Brilho
+    md.push('## 7. Brilho (Glow) por Tema\n');
+    md.push('| Token | Light | Dark | Var Mantine |');
+    md.push('|---|---|---|---|');
+    glowsSection?.rows.forEach((r) => {
+      md.push(
+        `| \`${r.token}\` | \`${getGlow(r.token, 'light')}\` | \`${getGlow(r.token, 'dark')}\` | ${r.mantineVar ? `\`${r.mantineVar}\`` : '-'} |`,
+      );
+    });
+    md.push('');
+
+    // Motion
+    md.push('## 8. Motion & Animação\n');
+    md.push('| Token | Valor |');
+    md.push('|---|---|');
+    motionSection?.rows.forEach((r) => {
+      md.push(`| \`${r.token}\` | \`${getOther('motion', r.token)}\` |`);
+    });
+    md.push('');
+
+    // Regras para IA
+    md.push('---\n');
+    md.push('## 9. Regras para IA e MCP\n');
+    md.push('- **Sempre usar tokens semânticos** (`semantic/*`) — nunca paleta base diretamente em componentes.');
+    md.push('- **Toda cor DEVE ter valor para Light e Dark** — usar `light-dark()` ou variáveis automáticas do Mantine.');
+    md.push('- **NÃO usar HEX, RGB ou valores hardcoded** em arquivos de componente.');
+    md.push('- **Novos tokens** exigem atualização de `theme.tokens.ts` + este arquivo.\n');
+    md.push('---\n');
+    md.push(`**Gerado em:** ${new Date().toISOString().split('T')[0]}`);
+
+    return md.join('\n');
   };
 
-  const handleExportFigmaJson = (): void => {
-    if (activeSectionId !== 'colors') {
-      alert('Por enquanto, a exportação para o Figma está disponível apenas para a seção de cores.');
-      return;
-    }
+  const generateFigmaTokensSetupContent = (): string => {
+    const colorsSection = SECTIONS.find((s) => s.id === 'colors');
+    const spacingSection = SECTIONS.find((s) => s.id === 'spacing');
+    const radiusSection = SECTIONS.find((s) => s.id === 'radius');
+    const typoSection = SECTIONS.find((s) => s.id === 'typography');
+    const shadowsSection = SECTIONS.find((s) => s.id === 'shadows');
+    const glowsSection = SECTIONS.find((s) => s.id === 'glows');
+    const motionSection = SECTIONS.find((s) => s.id === 'motion');
+
+    const getColor = (token: string, mode: 'light' | 'dark'): string => {
+      const map = mode === 'light' ? lightColors : darkColors;
+      const row = colorsSection?.rows.find((r) => r.token === token);
+      return map[token] ?? (mode === 'light' ? row?.light : row?.dark) ?? '';
+    };
+    const getOther = (sectionId: string, token: string): string => {
+      const key = `${sectionId}:${token}`;
+      const section = SECTIONS.find((s) => s.id === sectionId);
+      const row = section?.rows.find((r) => r.token === token);
+      return otherValues[key] ?? row?.light ?? '';
+    };
+    const getShadow = (token: string, mode: 'light' | 'dark'): string => {
+      const map = mode === 'light' ? lightShadows : darkShadows;
+      const row = shadowsSection?.rows.find((r) => r.token === token);
+      return map[token] ?? (mode === 'light' ? row?.light : row?.dark) ?? '';
+    };
+    const getGlow = (token: string, mode: 'light' | 'dark'): string => {
+      const map = mode === 'light' ? lightGlows : darkGlows;
+      const row = glowsSection?.rows.find((r) => r.token === token);
+      return map[token] ?? (mode === 'light' ? row?.light : row?.dark) ?? '';
+    };
+
+    const esc = (t: string): string => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const tbl = 'border-collapse:collapse;width:100%;margin-bottom:16px;';
+    const thS = 'border:1px solid #D1D5DB;padding:8px 12px;background:#F3F4F6;text-align:left;font-size:13px;font-weight:600;';
+    const tdS = 'border:1px solid #D1D5DB;padding:8px 12px;font-size:13px;';
+    const cdS = 'background:#F3F4F6;padding:2px 6px;border-radius:4px;font-family:monospace;font-size:12px;';
+    const swS = (c: string): string => `display:inline-block;width:16px;height:16px;border-radius:3px;border:1px solid #ccc;vertical-align:middle;margin-right:6px;background:${c};`;
+    const cd = (t: string): string => `<code style="${cdS}">${esc(t)}</code>`;
+    const h1 = (t: string): string => `<h1 style="font-size:24px;margin:32px 0 8px;">${t}</h1>`;
+    const h2 = (t: string): string => `<h2 style="font-size:20px;margin:28px 0 8px;border-bottom:2px solid #2563EB;padding-bottom:4px;">${t}</h2>`;
+    const h3 = (t: string): string => `<h3 style="font-size:16px;margin:20px 0 6px;">${t}</h3>`;
+    const p = (t: string): string => `<p style="font-size:14px;line-height:1.6;margin:6px 0;">${t}</p>`;
+    const note = (t: string): string => `<p style="color:#6B7280;font-size:13px;font-style:italic;margin:4px 0 12px;">${t}</p>`;
+    const tO = (): string => `<table style="${tbl}"><thead>`;
+    const tC = (): string => '</tbody></table>';
+    const th = (c: string[]): string => `<tr>${c.map((x) => `<th style="${thS}">${x}</th>`).join('')}</tr></thead><tbody>`;
+    const tr = (c: string[]): string => `<tr>${c.map((x) => `<td style="${tdS}">${x}</td>`).join('')}</tr>`;
+    const cc = (hex: string): string => `<span style="${swS(hex)}"></span>${cd(hex)}`;
+    const ul = (items: string[]): string => `<ul style="margin:6px 0 16px;">${items.map((i) => `<li style="margin-bottom:4px;font-size:14px;">${i}</li>`).join('')}</ul>`;
+    const ol = (items: string[]): string => `<ol style="margin:6px 0 16px;">${items.map((i) => `<li style="margin-bottom:6px;font-size:14px;">${i}</li>`).join('')}</ol>`;
+    const hr = (): string => '<hr style="margin:24px 0;border:none;border-top:1px solid #D1D5DB;">';
+
+    const o: string[] = [];
+
+    o.push(`<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">`);
+    o.push(`<head><meta charset="utf-8"><style>body{font-family:'Segoe UI',Arial,sans-serif;color:#111827;padding:24px 32px;max-width:900px;}</style></head><body>`);
+
+    // TÍTULO
+    o.push(h1('Configuração de Tokens no Figma para IA/MCP'));
+    o.push(p('Este documento descreve o <strong>passo a passo</strong> para designers configurarem o Figma de forma alinhada:'));
+    o.push(ul([
+      'Ao <strong>style guide de tokens</strong> (<code>STYLE_GUIDE.md</code>).',
+      'Ao <strong>tema Mantine</strong>.',
+      'Ao consumo por <strong>IA</strong> e <strong>MCP</strong> (modelos precisam encontrar nomes consistentes).',
+    ]));
+    o.push(p('O objetivo é que, ao olhar para um componente no Figma ou no código, o mesmo token de design esteja sendo utilizado.'));
+    o.push(hr());
+
+    // VISÃO GERAL
+    o.push(h2('Visão Geral'));
+    o.push(p('No Figma, usaremos:'));
+    o.push(ul([
+      '<strong>Variables</strong> (variáveis nativas do Figma) para representar tokens.',
+      '<strong>Coleções</strong> para agrupar tokens por domínio (Cores, Espaçamento, Tipografia…).',
+      '<strong>Modes</strong> para representar os temas <code>Light</code> e <code>Dark</code>.',
+    ]));
+    o.push(p('Os <strong>nomes das variáveis</strong> devem espelhar exatamente os tokens definidos em <code>STYLE_GUIDE.md</code>.'));
+    o.push(hr());
+
+    // ESTRUTURA RECOMENDADA
+    o.push(h2('Estrutura Recomendada no Figma'));
+
+    o.push(h3('1. Arquivo de Design Tokens'));
+    o.push(ol([
+      'Crie um arquivo dedicado, por exemplo: <strong>Design System – Tokens</strong>.',
+      'Este arquivo será a <strong>fonte de verdade visual</strong> dos tokens.',
+      'Publique esse arquivo como <strong>Library</strong> para outros arquivos usarem as variáveis.',
+    ]));
+
+    o.push(h3('2. Coleções de Variáveis'));
+    o.push(p('No painel de <strong>Variables</strong> do Figma, crie as seguintes coleções:'));
+    const collections = ['Colors', 'Typography', 'Spacing', 'Radius', 'Shadows', 'Glows', 'Motion'];
+    o.push(ul(collections.map((c) => `<code>${c}</code>`)));
+    o.push(p('Dentro de cada coleção, criaremos as variáveis com os mesmos nomes do código.'));
+
+    o.push(h3('3. Modes (Light/Dark)'));
+    o.push(p('Para as coleções que possuem variação por tema, crie <strong>dois modes</strong>:'));
+    o.push(ul(['<code>Light</code>', '<code>Dark</code>']));
+    o.push(p('Os <strong>nomes das variáveis não mudam</strong> entre modos; apenas os <strong>valores</strong> são diferentes.'));
+    o.push(hr());
+
+    // MAPEAMENTO — CORES
+    o.push(h2('Mapeamento de Nomes – Cores'));
+
+    const pluginNoticeS = 'background:#F3E8FF;border:1px solid #D8B4FE;border-radius:8px;padding:12px 16px;margin:12px 0 20px;';
+    const pluginLink = '<a href="https://www.figma.com/community/plugin/1256972111705530093/export-import-variables" style="color:#7C3AED;font-weight:600;">Export/Import Variables</a>';
+    const pluginFile = (name: string): string => `<code style="background:#EDE9FE;padding:1px 6px;border-radius:4px;font-size:12px;">figma-tokens/${name}.json</code>`;
+    const pushPluginNotice = (fileName: string): void => {
+      o.push(`<div style="${pluginNoticeS}">`);
+      o.push(p(`<strong>⚡ Plugin necessário:</strong> Para importar no Figma, utilize o plugin ${pluginLink}.`));
+      o.push(p(`Após exportar o projeto pelo Design Tokens Manager, importe o arquivo ${pluginFile(fileName)} diretamente pelo plugin.`));
+      o.push('</div>');
+    };
+    pushPluginNotice('Colors');
+
+    o.push(h3('1. Paletas Principais'));
+    o.push(p('Na coleção <code>Colors</code>, crie <strong>todas</strong> as variáveis abaixo. Para cada uma, defina valor em <code>Light</code> e <code>Dark</code>.'));
+
+    const buildPalette = (prefix: string, label: string): void => {
+      const rows = colorsSection?.rows.filter((r) => r.token.startsWith(prefix)) ?? [];
+      if (rows.length === 0) return;
+      o.push(h3(label));
+      o.push(tO());
+      o.push(th(['Variável', 'HEX', 'Uso principal']));
+      rows.forEach((r, i) => {
+        const hex = getColor(r.token, 'light');
+        let uso = '';
+        if (i <= 1) uso = 'Backgrounds sutis, tons muito claros';
+        else if (i <= 3) uso = 'Bordas suaves, hover leve, estados neutros';
+        else if (i <= 5) uso = 'Cor base de ação, botões, ícones';
+        else if (i <= 7) uso = 'Pressed / foco forte, texto sobre fundos claros';
+        else uso = 'Ênfase máxima, tons mais escuros';
+        o.push(tr([cd(r.token), cc(hex), uso]));
+      });
+      o.push(tC());
+    };
+
+    buildPalette('color/primary/', 'Paleta Primária');
+    if (useSecondary) buildPalette('color/secondary/', 'Paleta Secundária');
+    if (useTertiary) buildPalette('color/tertiary/', 'Paleta Terciária');
+    buildPalette('color/neutral/', 'Paleta Neutra');
+    buildPalette('color/dark/', 'Paleta Dark (Superfícies Dark Mode)');
+
+    o.push(p('Para cada variável:'));
+    o.push(ul([
+      'Em <code>Light</code>, defina a cor conforme a paleta clara.',
+      'Em <code>Dark</code>, defina a cor equivalente para o tema escuro (garantindo contraste).',
+    ]));
+
+    o.push(h3('2. Cores Semânticas — Superfícies e Texto'));
+    o.push(p('Também na coleção <code>Colors</code>, crie as variáveis semânticas. Estes tokens <strong>mudam conforme o modo ativo</strong>.'));
+
+    const buildSemantic = (prefix: string, title: string, scope: string): void => {
+      const rows = colorsSection?.rows.filter((r) => r.token.startsWith(prefix)) ?? [];
+      const filtered = rows.filter(
+        (r) =>
+          (!isAccentToken(r.token) || useSecondary) &&
+          (!isTertiaryToken(r.token) || useTertiary),
+      );
+      if (filtered.length === 0) return;
+      o.push(`<h4 style="font-size:14px;margin:16px 0 6px;">${title} — Escopo Figma: <code>${scope}</code></h4>`);
+      o.push(tO());
+      o.push(th(['Variável', 'Light', 'Dark']));
+      filtered.forEach((r) => {
+        o.push(tr([cd(r.token), cc(getColor(r.token, 'light')), cc(getColor(r.token, 'dark'))]));
+      });
+      o.push(tC());
+    };
+
+    buildSemantic('semantic/bg/', 'Fundo', 'FRAME_FILL');
+    buildSemantic('semantic/text/', 'Texto', 'TEXT_FILL');
+    buildSemantic('semantic/border/', 'Bordas', 'STROKE_COLOR');
+    buildSemantic('semantic/icon/', 'Ícones', 'SHAPE_FILL');
+
+    o.push(h3('Como escolher os valores'));
+    const bgBody = getColor('semantic/bg/body', 'light');
+    const bgBodyDark = getColor('semantic/bg/body', 'dark');
+    const textPrimary = getColor('semantic/text/primary', 'light');
+    const textPrimaryDark = getColor('semantic/text/primary', 'dark');
+    const borderDefault = getColor('semantic/border/default', 'light');
+    const borderDefaultDark = getColor('semantic/border/default', 'dark');
+    o.push(ul([
+      `Em <strong>Light</strong>: <code>semantic/bg/body</code> → <code>${bgBody}</code>, <code>semantic/text/primary</code> → <code>${textPrimary}</code>, <code>semantic/border/default</code> → <code>${borderDefault}</code>.`,
+      `Em <strong>Dark</strong>: <code>semantic/bg/body</code> → <code>${bgBodyDark}</code>, <code>semantic/text/primary</code> → <code>${textPrimaryDark}</code>, <code>semantic/border/default</code> → <code>${borderDefaultDark}</code>.`,
+    ]));
+    o.push(p('Esses mapeamentos devem ser coerentes com o que será implementado no tema Mantine.'));
+    o.push(hr());
+
+    // MAPEAMENTO — ESPAÇAMENTO
+    o.push(h2('Mapeamento de Nomes – Espaçamento'));
+    pushPluginNotice('Spacing');
+    o.push(p('Na coleção <code>Spacing</code>, crie as variáveis abaixo (valores iguais em <code>Light</code> e <code>Dark</code>):'));
+    o.push(tO());
+    o.push(th(['Variável', 'Valor', 'Uso sugerido']));
+    const spacingUsage: Record<string, string> = {
+      'space-xs': 'Espaços muito pequenos (chips, tags)',
+      'space-sm': 'Espaços pequenos',
+      'space-md': 'Padding padrão de componentes',
+      'space-lg': 'Gaps entre blocos',
+      'space-xl': 'Seções maiores',
+      'space-2xl': 'Blocos de layout muito espaçados',
+    };
+    spacingSection?.rows.forEach((r) => {
+      o.push(tr([cd(r.token), cd(getOther('spacing', r.token)), spacingUsage[r.token] ?? '']));
+    });
+    o.push(tC());
+    o.push(p('Use valores em <code>px</code>. Esses valores <strong>não precisam mudar entre Light/Dark</strong>.'));
+    o.push(hr());
+
+    // MAPEAMENTO — RADIUS
+    o.push(h2('Mapeamento de Nomes – Radius'));
+    pushPluginNotice('Radius');
+    o.push(p('Na coleção <code>Radius</code>, crie:'));
+    o.push(tO());
+    o.push(th(['Variável', 'Valor', 'Uso sugerido']));
+    const radiusUsage: Record<string, string> = {
+      'radius-xs': 'Tabelas, inputs com cantos quase retos',
+      'radius-sm': 'Inputs e campos simples',
+      'radius-md': 'Botões e cards padrão',
+      'radius-lg': 'Cards mais suaves / layouts especiais',
+      'radius-xl': 'Layouts arredondados',
+      'radius-full': 'Pills, badges totalmente arredondados',
+    };
+    radiusSection?.rows.forEach((r) => {
+      o.push(tr([cd(r.token), cd(getOther('radius', r.token)), radiusUsage[r.token] ?? '']));
+    });
+    o.push(tC());
+    o.push(p('Assim como o espaçamento, normalmente esses valores são iguais em Light/Dark.'));
+    o.push(hr());
+
+    // MAPEAMENTO — TIPOGRAFIA
+    o.push(h2('Mapeamento de Nomes – Tipografia'));
+    pushPluginNotice('Typography');
+    o.push(p('Na coleção <code>Typography</code>, crie ao menos as variáveis abaixo:'));
+
+    o.push(h3('Família tipográfica'));
+    o.push(tO());
+    o.push(th(['Variável', 'Valor', 'Uso sugerido']));
+    o.push(tr([cd('font-family-base'), cd(getOther('typography', 'font-family-base')), 'Fonte principal da interface']));
+    o.push(tr([cd('font-family-mono'), cd(getOther('typography', 'font-family-mono')), 'Código e dados técnicos']));
+    o.push(tC());
+
+    o.push(h3('Tamanhos'));
+    o.push(tO());
+    o.push(th(['Variável', 'Valor', 'Uso sugerido']));
+    const sizeUsage: Record<string, string> = {
+      'typography/size/xs': 'Legendas, helper text',
+      'typography/size/sm': 'Labels, textos de suporte',
+      'typography/size/md': 'Texto padrão de UI',
+      'typography/size/lg': 'Títulos pequenos / destaques',
+      'typography/size/xl': 'Títulos médios',
+      'typography/size/2xl': 'Títulos grandes',
+      'typography/size/3xl': 'Títulos hero',
+      'typography/size/4xl': 'Display pequeno',
+      'typography/size/5xl': 'Display médio',
+      'typography/size/6xl': 'Display grande',
+    };
+    typoSection?.rows
+      .filter((r) => r.token.startsWith('typography/size/'))
+      .forEach((r) => {
+        o.push(tr([cd(r.token), cd(getOther('typography', r.token)), sizeUsage[r.token] ?? '']));
+      });
+    o.push(tC());
+
+    o.push(h3('Alturas de linha'));
+    o.push(tO());
+    o.push(th(['Variável', 'Valor', 'Uso sugerido']));
+    const lhUsage: Record<string, string> = {
+      'line-height-tight': 'Títulos, textos curtos',
+      'line-height-normal': 'Corpo de texto padrão',
+      'line-height-relaxed': 'Textos longos, parágrafos',
+    };
+    typoSection?.rows
+      .filter((r) => r.token.startsWith('line-height-'))
+      .forEach((r) => {
+        o.push(tr([cd(r.token), cd(getOther('typography', r.token)), lhUsage[r.token] ?? '']));
+      });
+    o.push(tC());
+
+    o.push(h3('Pesos'));
+    o.push(tO());
+    o.push(th(['Variável', 'Valor', 'Uso sugerido']));
+    const wUsage: Record<string, string> = {
+      'font-weight-regular': 'Texto padrão',
+      'font-weight-medium': 'Títulos médios, labels',
+      'font-weight-bold': 'Destaques fortes',
+    };
+    typoSection?.rows
+      .filter((r) => r.token.startsWith('font-weight-'))
+      .forEach((r) => {
+        o.push(tr([cd(r.token), cd(getOther('typography', r.token)), wUsage[r.token] ?? '']));
+      });
+    o.push(tC());
+
+    o.push(h3('Estilos de Texto (Text Styles no Figma)'));
+    o.push(p('Crie <strong>Text Styles</strong> baseados nas variáveis acima. Use esses estilos em todos os textos de UI.'));
+    o.push(tO());
+    o.push(th(['Nome do Style', 'Fonte', 'Size', 'Weight', 'Line Height']));
+    TYPOGRAPHY_STYLES.forEach((style) => {
+      const config = typographyStylesConfig[style.name];
+      if (!config) return;
+      o.push(tr([
+        cd(style.name),
+        esc(getOther('typography', config.fontToken)),
+        esc(getOther('typography', config.sizeToken)),
+        esc(getOther('typography', config.weightToken ?? 'font-weight-regular')),
+        esc(getOther('typography', config.lineHeightToken)),
+      ]));
+    });
+    o.push(tC());
+    o.push(hr());
+
+    // MAPEAMENTO — SOMBRAS
+    o.push(h2('Mapeamento de Nomes – Sombras'));
+    o.push(p('Na coleção <code>Shadows</code>, configure como <strong>Effect Styles</strong> (Drop Shadow):'));
+    o.push(tO());
+    o.push(th(['Variável', 'Light', 'Dark']));
+    shadowsSection?.rows.forEach((r) => {
+      o.push(tr([cd(r.token), cd(getShadow(r.token, 'light')), cd(getShadow(r.token, 'dark'))]));
+    });
+    o.push(tC());
+    o.push(p('Essas sombras podem ter variações entre light/dark. Crie Effect Styles separados se os valores diferirem.'));
+    o.push(hr());
+
+    // MAPEAMENTO — BRILHO
+    o.push(h2('Mapeamento de Nomes – Brilho (Glow)'));
+    o.push(p('Na coleção <code>Glows</code>, configure como <strong>Effect Styles</strong> (Drop Shadow com offset 0,0 e cor colorida):'));
+    o.push(tO());
+    o.push(th(['Variável', 'Light', 'Dark']));
+    glowsSection?.rows.forEach((r) => {
+      o.push(tr([cd(r.token), cd(getGlow(r.token, 'light')), cd(getGlow(r.token, 'dark'))]));
+    });
+    o.push(tC());
+    o.push(p('Glows são úteis para estados de foco, elementos em destaque e feedback visual.'));
+    o.push(hr());
+
+    // MAPEAMENTO — MOTION
+    o.push(h2('Mapeamento de Nomes – Motion'));
+    o.push(p('Tokens de motion servem como <strong>referência para prototipagem</strong> (Smart Animate, transições de tela):'));
+    o.push(tO());
+    o.push(th(['Variável', 'Valor', 'Uso sugerido']));
+    const motionUsage: Record<string, string> = {
+      'motion/duration/fast': 'Hovers, toggles rápidos',
+      'motion/duration/default': 'Transições padrão',
+      'motion/duration/slow': 'Modais, expansões',
+      'motion/easing/default': 'Transições gerais',
+      'motion/easing/in-out': 'Entradas e saídas suaves',
+    };
+    motionSection?.rows.forEach((r) => {
+      o.push(tr([cd(r.token), cd(getOther('motion', r.token)), motionUsage[r.token] ?? '']));
+    });
+    o.push(tC());
+    o.push(hr());
+
+    // COMO APLICAR
+    o.push(h2('Como Aplicar Tokens nos Componentes do Figma'));
+
+    o.push(h3('1. Cores'));
+    o.push(p('Ao configurar o <code>Fill</code>/<code>Stroke</code> de um elemento:'));
+    o.push(ol([
+      'Clique no ícone de variável (losango) no seletor de cor.',
+      'Escolha a variável semântica correspondente.',
+    ]));
+    o.push(p('Exemplos:'));
+    o.push(ul([
+      `Fundo de botão primário → <code>semantic/bg/brand-default</code> (${cc(getColor('semantic/bg/brand-default', 'light'))})`,
+      `Texto principal → <code>semantic/text/primary</code> (${cc(getColor('semantic/text/primary', 'light'))})`,
+      `Borda de input → <code>semantic/border/default</code> (${cc(getColor('semantic/border/default', 'light'))})`,
+    ]));
+
+    o.push(h3('2. Espaçamento'));
+    o.push(p('Para componentes com Auto Layout:'));
+    o.push(ol([
+      'Use variáveis nos campos de <code>Padding</code> e <code>Gap</code>.',
+      `Selecione, por exemplo, <code>space-md</code> (${cd(getOther('spacing', 'space-md'))}) para paddings e <code>space-sm</code> (${cd(getOther('spacing', 'space-sm'))}) para gaps menores.`,
+    ]));
+
+    o.push(h3('3. Radius'));
+    o.push(ol([
+      'Selecione o componente.',
+      `Em <code>Corner radius</code>, aplique a variável desejada (ex: <code>radius-md</code> = ${cd(getOther('radius', 'radius-md'))}).`,
+    ]));
+
+    o.push(h3('4. Tipografia'));
+    o.push(ol([
+      'Crie <strong>Text Styles</strong> baseados nas variáveis de tipografia.',
+      'Use esses estilos em todos os textos de UI (títulos, labels, textos de botão).',
+    ]));
+    o.push(hr());
+
+    // SINCRONIZAÇÃO
+    o.push(h2('Sincronização com o Código e IA/MCP'));
+
+    o.push(h3('1. Alinhamento de Nomes'));
+    o.push(p('Os nomes das variáveis no Figma <strong>DEVEM ser idênticos</strong> aos tokens descritos em:'));
+    o.push(ul([
+      '<code>STYLE_GUIDE.md</code>',
+      '<code>AGENTS.md</code> (se houver menções diretas)',
+      'Arquivos de tema (<code>theme.tokens.ts</code>, <code>theme/index.ts</code>)',
+    ]));
+
+    o.push(h3('2. Atualizações de Tokens'));
+    o.push(p('Sempre que houver uma alteração de token:'));
+    o.push(ol([
+      'Atualizar no <strong>Design Tokens Manager</strong> (aplicação web).',
+      'Exportar novo <strong>STYLE_GUIDE.md</strong> e <strong>JSONs para o Figma</strong>.',
+      'Reimportar as variáveis no Figma.',
+      'Atualizar o tema Mantine.',
+    ]));
+
+    o.push(h3('3. IA/MCP'));
+    o.push(p('Para tirar mais proveito de IA/MCP:'));
+    o.push(ul([
+      'Mantenha tokens com nomes <strong>claros e consistentes</strong>.',
+      'Evite abreviações obscuras ou nomes específicos de tela.',
+      'Se possível, documente na descrição da variável no Figma o uso previsto e a referência ao token no código.',
+    ]));
+    o.push(p('Isso ajuda agentes a correlacionarem o que veem no Figma com o que precisam gerar no código.'));
+    o.push(hr());
+
+    // CHECKLIST
+    o.push(h2('Checklist para o Designer'));
+    o.push(ol([
+      '<strong>Criar/abrir</strong> o arquivo <code>Design System – Tokens</code>.',
+      '<strong>Criar coleções de variáveis</strong>: <code>Colors</code>, <code>Typography</code>, <code>Spacing</code>, <code>Radius</code>, <code>Shadows</code>, <code>Glows</code>.',
+      '<strong>Criar modes</strong>: adicionar <code>Light</code> e <code>Dark</code> para coleções com variação de tema.',
+      '<strong>Cadastrar variáveis</strong> seguindo exatamente os nomes de <code>STYLE_GUIDE.md</code>.',
+      '<strong>Definir valores</strong> de light/dark para cada variável, garantindo contraste.',
+      '<strong>Aplicar variáveis</strong> em todos os componentes de UI (fill, stroke, padding, gap, radius, tipografia).',
+      '<strong>Publicar como Library</strong> para que outros arquivos possam usar os tokens.',
+      '<strong>Avisar o time de desenvolvimento</strong> sempre que tokens forem criados/alterados/removidos.',
+    ]));
+
+    o.push(p('Seguindo estes passos, o projeto terá:'));
+    o.push(ul([
+      'Um <strong>style guide centralizado</strong> (<code>STYLE_GUIDE.md</code>).',
+      'Tokens espelhados no Figma, prontos para IA/MCP.',
+      'Tema Mantine alinhado com o design, suportando <strong>cores primárias, secundárias, terciárias</strong> e <strong>modo light/dark</strong> de forma previsível.',
+    ]));
+
+    o.push(`<hr style="margin-top:32px;border:none;border-top:1px solid #D1D5DB;"><p style="color:#9CA3AF;font-size:12px;">Gerado em ${new Date().toISOString().split('T')[0]} pelo Design Tokens Manager</p>`);
+    o.push('</body></html>');
+
+    return '\ufeff' + o.join('\n');
+  };
+
+  const generateFigmaColorsJson = (): string => {
 
     const toFigmaColor = (value: string): { r: number; g: number; b: number; a: number } => {
       const trimmed = value.trim();
@@ -1782,23 +2509,10 @@ export function App() {
       variables,
     };
 
-    const json = JSON.stringify(collection, null, 2);
-    const blob = new Blob([json], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'Colors.json';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+    return JSON.stringify(collection, null, 2);
   };
 
-  const handleExportFigmaSpacingJson = (): void => {
-    if (activeSectionId !== 'spacing') {
-      alert('A exportação de espaçamento para o Figma está disponível apenas na seção de espaçamento.');
-      return;
-    }
+  const generateFigmaSpacingJson = (): string => {
 
     const spacingSection = SECTIONS.find((section) => section.id === 'spacing');
     if (!spacingSection) {
@@ -1855,23 +2569,10 @@ export function App() {
       variables,
     };
 
-    const json = JSON.stringify(collection, null, 2);
-    const blob = new Blob([json], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'Spacing.json';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+    return JSON.stringify(collection, null, 2);
   };
 
-  const handleExportFigmaRadiusJson = (): void => {
-    if (activeSectionId !== 'radius') {
-      alert('A exportação de radius para o Figma está disponível apenas na seção de radius.');
-      return;
-    }
+  const generateFigmaRadiusJson = (): string => {
 
     const radiusSection = SECTIONS.find((section) => section.id === 'radius');
     if (!radiusSection) {
@@ -1931,25 +2632,10 @@ export function App() {
       variables,
     };
 
-    const json = JSON.stringify(collection, null, 2);
-    const blob = new Blob([json], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'Radius.json';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+    return JSON.stringify(collection, null, 2);
   };
 
-  const handleExportFigmaTypographyJson = (): void => {
-    if (activeSectionId !== 'typography') {
-      alert(
-        'A exportação de tipografia para o Figma está disponível apenas na seção de tipografia.',
-      );
-      return;
-    }
+  const generateFigmaTypographyJson = (): string => {
 
     const typographySection = SECTIONS.find((section) => section.id === 'typography');
     if (!typographySection) {
@@ -2093,16 +2779,100 @@ export function App() {
       variables,
     };
 
-    const json = JSON.stringify(collection, null, 2);
-    const blob = new Blob([json], { type: 'application/json' });
+    return JSON.stringify(collection, null, 2);
+  };
+
+  const handleExportProject = async (): Promise<void> => {
+    const zip = new JSZip();
+
+    zip.file('STYLE_GUIDE.md', generateStyleGuideContent());
+    zip.file('FIGMA_TOKENS_SETUP.doc', generateFigmaTokensSetupContent());
+
+    const figmaFolder = zip.folder('figma-tokens')!;
+    figmaFolder.file('Colors.json', generateFigmaColorsJson());
+    figmaFolder.file('Spacing.json', generateFigmaSpacingJson());
+    figmaFolder.file('Radius.json', generateFigmaRadiusJson());
+    figmaFolder.file('Typography.json', generateFigmaTypographyJson());
+
+    zip.file('project-config.json', generateProjectConfigJson());
+
+    const blob = await zip.generateAsync({ type: 'blob' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'Typography.json';
+    link.download = 'design-tokens-project.zip';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
+  };
+
+  const generateProjectConfigJson = (): string => {
+    const allOtherValues: Record<string, string> = {};
+    const otherSections: SectionId[] = ['spacing', 'radius', 'typography', 'motion'];
+    for (const sectionId of otherSections) {
+      const section = SECTIONS.find((s) => s.id === sectionId);
+      if (!section) continue;
+      for (const row of section.rows) {
+        const key = `${sectionId}:${row.token}`;
+        allOtherValues[key] = otherValues[key] ?? row.light;
+      }
+    }
+
+    const config: ProjectConfig = {
+      version: 1,
+      lightColors,
+      darkColors,
+      lightShadows,
+      darkShadows,
+      lightGlows,
+      darkGlows,
+      otherValues: allOtherValues,
+      typographyStylesConfig,
+      useSecondary,
+      useTertiary,
+    };
+    return JSON.stringify(config, null, 2);
+  };
+
+  const handleImportProject = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const raw = e.target?.result;
+        if (typeof raw !== 'string') return;
+
+        const config = JSON.parse(raw) as ProjectConfig;
+
+        if (config.version !== 1) {
+          alert('Versão do arquivo de configuração não suportada.');
+          return;
+        }
+
+        if (config.lightColors) setLightColors(config.lightColors);
+        if (config.darkColors) setDarkColors(config.darkColors);
+        if (config.lightShadows) setLightShadows(config.lightShadows);
+        if (config.darkShadows) setDarkShadows(config.darkShadows);
+        if (config.lightGlows) setLightGlows(config.lightGlows);
+        if (config.darkGlows) setDarkGlows(config.darkGlows);
+        if (config.otherValues) setOtherValues(config.otherValues);
+        if (config.typographyStylesConfig) setTypographyStylesConfig(config.typographyStylesConfig);
+        if (typeof config.useSecondary === 'boolean') setUseSecondary(config.useSecondary);
+        if (typeof config.useTertiary === 'boolean') setUseTertiary(config.useTertiary);
+
+        setShowWelcome(false);
+      } catch {
+        alert('Erro ao importar o arquivo. Verifique se é um JSON válido de configuração.');
+      }
+    };
+    reader.readAsText(file);
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
   };
 
   const activeSection = SECTIONS.find((section) => section.id === activeSectionId)!;
@@ -2177,6 +2947,105 @@ export function App() {
           )
       : filteredRows;
 
+  if (showWelcome) {
+    return (
+      <div className="welcome-screen">
+        <div className="welcome-glow welcome-glow-1" />
+        <div className="welcome-glow welcome-glow-2" />
+
+        <div className="welcome-content">
+          <div className="welcome-badge">Design Tokens Manager</div>
+
+          <h1 className="welcome-title">
+            Configure seus <span className="welcome-highlight">Design Tokens</span> em um só lugar
+          </h1>
+
+          <p className="welcome-subtitle">
+            Defina cores, tipografia, espaçamento, sombras e motion de forma visual.
+            Exporte diretamente para <strong>STYLE_GUIDE.md</strong> e <strong>Figma</strong>.
+          </p>
+
+          <button
+            type="button"
+            className="welcome-cta"
+            onClick={() => setShowWelcome(false)}
+          >
+            Começar configuração
+            <IconArrowRight size={18} stroke={2} />
+          </button>
+
+          <button
+            type="button"
+            className="welcome-cta-secondary"
+            onClick={() => fileInputRef.current?.click()}
+          >
+            <IconUpload size={18} stroke={2} />
+            Importar projeto existente
+          </button>
+
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".json"
+            className="hidden-file-input"
+            onChange={handleImportProject}
+          />
+
+          <div className="welcome-features">
+            <div className="welcome-feature-card">
+              <div className="welcome-feature-icon">
+                <IconPalette size={24} stroke={1.5} />
+              </div>
+              <h3>Cores & Paletas</h3>
+              <p>Primárias, secundárias, terciárias, neutros e tokens semânticos com suporte a Light e Dark.</p>
+            </div>
+
+            <div className="welcome-feature-card">
+              <div className="welcome-feature-icon">
+                <IconTypography size={24} stroke={1.5} />
+              </div>
+              <h3>Tipografia & Escala</h3>
+              <p>Famílias, tamanhos, pesos, alturas de linha e estilos de texto predefinidos.</p>
+            </div>
+
+            <div className="welcome-feature-card">
+              <div className="welcome-feature-icon">
+                <IconShadow size={24} stroke={1.5} />
+              </div>
+              <h3>Sombras, Brilho & Motion</h3>
+              <p>Elevação, efeitos de glow, durações e curvas de easing para micro-interações.</p>
+            </div>
+
+            <div className="welcome-feature-card">
+              <div className="welcome-feature-icon">
+                <IconFileExport size={24} stroke={1.5} />
+              </div>
+              <h3>Exportação Integrada</h3>
+              <p>Gere STYLE_GUIDE.md e FIGMA_TOKENS_SETUP.doc prontos para uso no código e no Figma.</p>
+            </div>
+          </div>
+
+          <div className="welcome-footer">
+            <div className="welcome-footer-item">
+              <IconCode size={16} stroke={1.5} />
+              <span>Mantine UI + Next.js</span>
+            </div>
+            <div className="welcome-footer-divider" />
+            <div className="welcome-footer-item">
+              <IconBrandFigma size={16} stroke={1.5} />
+              <span>Figma Tokens Ready</span>
+            </div>
+            <div className="welcome-footer-divider" />
+            <div className="welcome-footer-item">
+              <IconPalette size={16} stroke={1.5} />
+              <span>Light & Dark Mode</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="app-root">
       <aside className="sidebar">
@@ -2214,15 +3083,10 @@ export function App() {
         </nav>
 
         <section className="help-panel">
-          <h2>Como usar este painel</h2>
-          <p>
-            As colunas <strong>Valor (Light)</strong> e <strong>Valor (Dark)</strong> representam
-            os dois modos obrigatórios descritos no style guide.
-          </p>
-          <p>
-            Use este painel como referência visual para revisar nomes de tokens, categorias
-            e exemplos de valores antes de configurar de fato as coleções no Figma.
-          </p>
+          <h2>Dicas sobre {SECTION_HELP[activeSectionId].title}</h2>
+          {SECTION_HELP[activeSectionId].tips.map((tip, i) => (
+            <p key={i}>{tip}</p>
+          ))}
         </section>
       </aside>
 
@@ -2239,27 +3103,28 @@ export function App() {
           </div>
 
           <div className="main-actions">
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".json"
+              className="hidden-file-input"
+              onChange={handleImportProject}
+            />
             <button
               type="button"
               className="secondary-button"
-              onClick={handleExportStyleGuide}
+              onClick={() => fileInputRef.current?.click()}
             >
-              Exportar STYLE_GUIDE.md
+              <IconUpload size={16} stroke={2} />
+              Importar Projeto
             </button>
             <button
               type="button"
               className="primary-button"
-              onClick={
-                activeSectionId === 'spacing'
-                  ? handleExportFigmaSpacingJson
-                  : activeSectionId === 'radius'
-                    ? handleExportFigmaRadiusJson
-                    : activeSectionId === 'typography'
-                      ? handleExportFigmaTypographyJson
-                      : handleExportFigmaJson
-              }
+              onClick={handleExportProject}
             >
-              Exportar JSON para o Figma
+              <IconDownload size={16} stroke={2} />
+              Exportar Projeto
             </button>
           </div>
         </header>
@@ -2272,27 +3137,35 @@ export function App() {
             </div>
           </header>
 
+          {(['colors', 'spacing', 'radius', 'typography'] as const).includes(activeSectionId as 'colors' | 'spacing' | 'radius' | 'typography') ? (
+            <div className="figma-plugin-notice">
+              <div className="figma-plugin-notice-icon">
+                <IconBrandFigma size={18} stroke={1.5} />
+              </div>
+              <div className="figma-plugin-notice-content">
+                <p>
+                  Para importar no Figma, utilize o plugin{' '}
+                  <a
+                    href="https://www.figma.com/community/plugin/1256972111705530093/export-import-variables"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Export/Import Variables
+                  </a>
+                  . Exporte o projeto e importe o arquivo{' '}
+                  <code>
+                    figma-tokens/
+                    {{ colors: 'Colors', spacing: 'Spacing', radius: 'Radius', typography: 'Typography' }[activeSectionId as 'colors' | 'spacing' | 'radius' | 'typography']}
+                    .json
+                  </code>{' '}
+                  no plugin.
+                </p>
+              </div>
+            </div>
+          ) : null}
+
           {activeSectionId === 'colors' && colorsSection ? (
             <div className="primitive-palettes-wrapper">
-              <div className="palette-options">
-                <span className="palette-options-label">Incluir no projeto:</span>
-                <label className="palette-option-checkbox">
-                  <input
-                    type="checkbox"
-                    checked={useSecondary}
-                    onChange={(e) => setUseSecondary(e.target.checked)}
-                  />
-                  Secundárias (accent)
-                </label>
-                <label className="palette-option-checkbox">
-                  <input
-                    type="checkbox"
-                    checked={useTertiary}
-                    onChange={(e) => setUseTertiary(e.target.checked)}
-                  />
-                  Terciárias
-                </label>
-              </div>
               <h3 className="primitive-palettes-title">Paletas primitivas</h3>
               <div className="tokens-table-wrapper">
                 <table className="tokens-table primitive-palettes-table">
@@ -2343,6 +3216,7 @@ export function App() {
             </div>
           ) : null}
 
+          <div className={activeSectionId === 'colors' ? 'semantic-palettes-wrapper' : undefined}>
           {activeSectionId === 'colors' ? (
             <h3 className="semantic-tokens-title">Cores semânticas</h3>
           ) : null}
@@ -2730,6 +3604,8 @@ export function App() {
                 })()}
               </tbody>
             </table>
+          </div>
+
           </div>
 
           {activeSectionId === 'typography' ? (
