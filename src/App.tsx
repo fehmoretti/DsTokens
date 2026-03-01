@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
-import { IconPalette, IconBoxPadding, IconTypography, IconShadow, IconSparkles, IconPlayerPlay, IconArrowRight, IconFileExport, IconBrandFigma, IconCode, IconDownload, IconUpload } from '@tabler/icons-react';
+import { IconPalette, IconBoxPadding, IconTypography, IconShadow, IconSparkles, IconPlayerPlay, IconArrowRight, IconFileExport, IconBrandFigma, IconCode, IconDownload, IconUpload, IconEye } from '@tabler/icons-react';
 import { HexColorPicker } from 'react-colorful';
 import JSZip from 'jszip';
 
@@ -705,29 +705,29 @@ const SECTIONS: SectionConfig[] = [
       },
       {
         token: 'semantic/bg/body',
-        light: '#F9FAFB',
-        dark: '#1A1B1E',
+        light: 'color/neutral/0',
+        dark: 'color/dark/7',
         mantineVar: 'var(--mantine-color-body)',
         group: 'Semânticas · Background',
       },
       {
         token: 'semantic/bg/surface',
-        light: '#F9FAFB',
-        dark: '#25262B',
+        light: 'color/neutral/0',
+        dark: 'color/dark/6',
         mantineVar: 'var(--mantine-color-default)',
         group: 'Semânticas · Background',
       },
       {
         token: 'semantic/bg/subtle',
-        light: '#F9FAFB',
-        dark: '#141517',
+        light: 'color/neutral/0',
+        dark: 'color/dark/8',
         mantineVar: 'light-dark(gray-0, dark-8)',
         group: 'Semânticas · Background',
       },
       {
         token: 'semantic/bg/muted',
-        light: '#F3F4F6',
-        dark: '#1A1B1E',
+        light: 'color/neutral/1',
+        dark: 'color/dark/7',
         mantineVar: 'light-dark(gray-1, dark-7)',
         group: 'Semânticas · Background',
       },
@@ -739,85 +739,85 @@ const SECTIONS: SectionConfig[] = [
       },
       {
         token: 'semantic/bg/hover',
-        light: '#F3F4F6',
-        dark: '#25262B',
+        light: 'color/neutral/1',
+        dark: 'color/dark/6',
         mantineVar: 'light-dark(gray-1, dark-6)',
         group: 'Semânticas · Background',
       },
       {
         token: 'semantic/bg/selected',
-        light: '#EFF6FF',
-        dark: '#1E3A8A',
+        light: 'color/primary/0',
+        dark: 'color/primary/9',
         mantineVar: 'light-dark(primary-0, primary-9)',
         group: 'Semânticas · Background',
       },
       {
         token: 'semantic/bg/input',
-        light: '#F3F4F6',
-        dark: '#25262B',
+        light: 'color/neutral/1',
+        dark: 'color/dark/6',
         mantineVar: 'var(--mantine-color-default)',
         group: 'Semânticas · Background',
       },
       {
         token: 'semantic/bg/brand-default',
-        light: '#2563EB',
-        dark: '#3B82F6',
+        light: 'color/primary/6',
+        dark: 'color/primary/5',
         mantineVar: 'light-dark(primary-6, primary-5)',
         group: 'Semânticas · Background',
       },
       {
         token: 'semantic/bg/brand-hover',
-        light: '#1D4ED8',
-        dark: '#2563EB',
+        light: 'color/primary/7',
+        dark: 'color/primary/6',
         mantineVar: 'light-dark(primary-7, primary-6)',
         group: 'Semânticas · Background',
       },
       {
         token: 'semantic/bg/brand-subtle',
-        light: '#DBEAFE',
-        dark: '#1E3A8A',
+        light: 'color/primary/1',
+        dark: 'color/primary/9',
         mantineVar: 'light-dark(primary-1, primary-9)',
         group: 'Semânticas · Background',
       },
       {
         token: 'semantic/bg/accent-default',
-        light: '#7C3AED',
-        dark: '#8B5CF6',
+        light: 'color/secondary/6',
+        dark: 'color/secondary/5',
         mantineVar: 'light-dark(secondary-6, secondary-5)',
         group: 'Semânticas · Background',
       },
       {
         token: 'semantic/bg/accent-hover',
-        light: '#6D28D9',
-        dark: '#7C3AED',
+        light: 'color/secondary/7',
+        dark: 'color/secondary/6',
         mantineVar: 'light-dark(secondary-7, secondary-6)',
         group: 'Semânticas · Background',
       },
       {
         token: 'semantic/bg/accent-subtle',
-        light: '#EDE9FE',
-        dark: '#4C1D95',
+        light: 'color/secondary/1',
+        dark: 'color/secondary/9',
         mantineVar: 'light-dark(secondary-1, secondary-9)',
         group: 'Semânticas · Background',
       },
       {
         token: 'semantic/bg/tertiary-default',
-        light: '#16A34A',
-        dark: '#22C55E',
+        light: 'color/tertiary/6',
+        dark: 'color/tertiary/5',
         mantineVar: 'light-dark(tertiary-6, tertiary-5)',
         group: 'Semânticas · Background',
       },
       {
         token: 'semantic/bg/tertiary-hover',
-        light: '#15803D',
-        dark: '#16A34A',
+        light: 'color/tertiary/7',
+        dark: 'color/tertiary/6',
         mantineVar: 'light-dark(tertiary-7, tertiary-6)',
         group: 'Semânticas · Background',
       },
       {
         token: 'semantic/bg/tertiary-subtle',
-        light: '#DCFCE7',
-        dark: '#14532D',
+        light: 'color/tertiary/1',
+        dark: 'color/tertiary/9',
         mantineVar: 'light-dark(tertiary-1, tertiary-9)',
         group: 'Semânticas · Background',
       },
@@ -847,42 +847,42 @@ const SECTIONS: SectionConfig[] = [
       },
       {
         token: 'semantic/text/primary',
-        light: '#111827',
-        dark: '#C1C2C5',
+        light: 'color/neutral/9',
+        dark: 'color/dark/0',
         mantineVar: 'var(--mantine-color-text)',
         group: 'Semânticas · Texto',
       },
       {
         token: 'semantic/text/secondary',
-        light: '#4B5563',
-        dark: '#909296',
+        light: 'color/neutral/6',
+        dark: 'color/dark/2',
         mantineVar: 'var(--mantine-color-dimmed)',
         group: 'Semânticas · Texto',
       },
       {
         token: 'semantic/text/disabled',
-        light: '#6B7280',
-        dark: '#5C5F66',
+        light: 'color/neutral/5',
+        dark: 'color/dark/3',
         mantineVar: 'light-dark(gray-5, dark-3)',
         group: 'Semânticas · Texto',
       },
       {
         token: 'semantic/text/placeholder',
-        light: '#9CA3AF',
-        dark: '#909296',
+        light: 'color/neutral/4',
+        dark: 'color/dark/2',
         mantineVar: 'light-dark(gray-4, dark-2)',
         group: 'Semânticas · Texto',
       },
       {
         token: 'semantic/text/inverse',
-        light: '#F9FAFB',
-        dark: '#111827',
+        light: 'color/neutral/0',
+        dark: 'color/neutral/9',
         group: 'Semânticas · Texto',
       },
       {
         token: 'semantic/text/link',
-        light: '#2563EB',
-        dark: '#60A5FA',
+        light: 'color/primary/6',
+        dark: 'color/primary/4',
         mantineVar: 'light-dark(primary-6, primary-4)',
         group: 'Semânticas · Texto',
       },
@@ -909,50 +909,50 @@ const SECTIONS: SectionConfig[] = [
       },
       {
         token: 'semantic/text/brand-subtle',
-        light: '#1D4ED8',
-        dark: '#93C5FD',
+        light: 'color/primary/7',
+        dark: 'color/primary/3',
         mantineVar: 'light-dark(primary-7, primary-3)',
         group: 'Semânticas · Texto',
       },
       {
         token: 'semantic/text/accent-subtle',
-        light: '#6D28D9',
-        dark: '#C4B5FD',
+        light: 'color/secondary/7',
+        dark: 'color/secondary/3',
         mantineVar: 'light-dark(secondary-7, secondary-3)',
         group: 'Semânticas · Texto',
       },
       {
         token: 'semantic/text/tertiary-subtle',
-        light: '#15803D',
-        dark: '#86EFAC',
+        light: 'color/tertiary/7',
+        dark: 'color/tertiary/3',
         mantineVar: 'light-dark(tertiary-7, tertiary-3)',
         group: 'Semânticas · Texto',
       },
       {
         token: 'semantic/border/default',
-        light: '#D1D5DB',
-        dark: '#373A40',
+        light: 'color/neutral/3',
+        dark: 'color/dark/4',
         mantineVar: 'light-dark(gray-3, dark-4)',
         group: 'Semânticas · Borda',
       },
       {
         token: 'semantic/border/subtle',
-        light: '#E5E7EB',
-        dark: '#2C2E33',
+        light: 'color/neutral/2',
+        dark: 'color/dark/5',
         mantineVar: 'light-dark(gray-2, dark-5)',
         group: 'Semânticas · Borda',
       },
       {
         token: 'semantic/border/strong',
-        light: '#6B7280',
-        dark: '#5C5F66',
+        light: 'color/neutral/5',
+        dark: 'color/dark/3',
         mantineVar: 'light-dark(gray-5, dark-3)',
         group: 'Semânticas · Borda',
       },
       {
         token: 'semantic/border/focus',
-        light: '#2563EB',
-        dark: '#60A5FA',
+        light: 'color/primary/6',
+        dark: 'color/primary/4',
         mantineVar: 'light-dark(primary-6, primary-4)',
         group: 'Semânticas · Borda',
       },
@@ -965,36 +965,36 @@ const SECTIONS: SectionConfig[] = [
       },
       {
         token: 'semantic/icon/default',
-        light: '#111827',
-        dark: '#C1C2C5',
+        light: 'color/neutral/9',
+        dark: 'color/dark/0',
         mantineVar: 'light-dark(neutral-9, dark-0)',
         group: 'Semânticas · Ícone',
       },
       {
         token: 'semantic/icon/muted',
-        light: '#4B5563',
-        dark: '#909296',
+        light: 'color/neutral/6',
+        dark: 'color/dark/2',
         mantineVar: 'light-dark(neutral-6, dark-2)',
         group: 'Semânticas · Ícone',
       },
       {
         token: 'semantic/icon/brand',
-        light: '#2563EB',
-        dark: '#3B82F6',
+        light: 'color/primary/6',
+        dark: 'color/primary/5',
         mantineVar: 'light-dark(primary-6, primary-5)',
         group: 'Semânticas · Ícone',
       },
       {
         token: 'semantic/icon/accent',
-        light: '#7C3AED',
-        dark: '#8B5CF6',
+        light: 'color/secondary/6',
+        dark: 'color/secondary/5',
         mantineVar: 'light-dark(secondary-6, secondary-5)',
         group: 'Semânticas · Ícone',
       },
       {
         token: 'semantic/icon/tertiary',
-        light: '#16A34A',
-        dark: '#22C55E',
+        light: 'color/tertiary/6',
+        dark: 'color/tertiary/5',
         mantineVar: 'light-dark(tertiary-6, tertiary-5)',
         group: 'Semânticas · Ícone',
       },
@@ -1634,6 +1634,16 @@ export function App() {
     [useSecondary, useTertiary],
   );
 
+  const resolveColorRef = (value: string, mode: 'light' | 'dark'): string => {
+    if (!value || !value.startsWith('color/')) return value;
+    const map = mode === 'light' ? lightColors : darkColors;
+    const resolved = map[value];
+    if (resolved && !resolved.startsWith('color/')) return resolved;
+    const section = SECTIONS.find((s) => s.id === 'colors');
+    const row = section?.rows.find((r) => r.token === value);
+    return (mode === 'light' ? row?.light : row?.dark) ?? value;
+  };
+
   const generateStyleGuideContent = (): string => {
     const colorsSection = SECTIONS.find((s) => s.id === 'colors');
     const spacingSection = SECTIONS.find((s) => s.id === 'spacing');
@@ -1646,7 +1656,8 @@ export function App() {
     const getColor = (token: string, mode: 'light' | 'dark'): string => {
       const map = mode === 'light' ? lightColors : darkColors;
       const row = colorsSection?.rows.find((r) => r.token === token);
-      return map[token] ?? (mode === 'light' ? row?.light : row?.dark) ?? '';
+      const raw = map[token] ?? (mode === 'light' ? row?.light : row?.dark) ?? '';
+      return resolveColorRef(raw, mode);
     };
 
     const getOther = (sectionId: string, token: string): string => {
@@ -1864,7 +1875,8 @@ export function App() {
     const getColor = (token: string, mode: 'light' | 'dark'): string => {
       const map = mode === 'light' ? lightColors : darkColors;
       const row = colorsSection?.rows.find((r) => r.token === token);
-      return map[token] ?? (mode === 'light' ? row?.light : row?.dark) ?? '';
+      const raw = map[token] ?? (mode === 'light' ? row?.light : row?.dark) ?? '';
+      return resolveColorRef(raw, mode);
     };
     const getOther = (sectionId: string, token: string): string => {
       const key = `${sectionId}:${token}`;
@@ -2384,8 +2396,10 @@ export function App() {
       variableIds.push(variableId);
       tokenToId[row.token] = variableId;
 
-      const lightValue = lightColors[row.token] ?? row.light;
-      const darkValue = darkColors[row.token] ?? row.dark;
+      const rawLight = lightColors[row.token] ?? row.light;
+      const rawDark = darkColors[row.token] ?? row.dark;
+      const lightValue = resolveColorRef(rawLight, 'light');
+      const darkValue = resolveColorRef(rawDark, 'dark');
       const lightColor = toFigmaColor(lightValue);
       const darkColor = toFigmaColor(darkValue);
 
@@ -2444,34 +2458,11 @@ export function App() {
         return;
       }
 
-      const lightResolved = variable.resolvedValuesByMode[modeLightKey].resolvedValue;
-      const darkResolved = variable.resolvedValuesByMode[modeDarkKey].resolvedValue;
+      const rawLightRef = lightColors[token] ?? exportRows.find((r) => r.token === token)?.light ?? '';
+      const rawDarkRef = darkColors[token] ?? exportRows.find((r) => r.token === token)?.dark ?? '';
 
-      const findBaseTokenForMode = (
-        resolved: { r: number; g: number; b: number; a: number },
-        getBaseValue: (baseToken: string) => string,
-      ): string | undefined =>
-        basePaletteTokens.find((baseToken) => {
-          const baseValue = getBaseValue(baseToken);
-          const baseColor = toFigmaColor(baseValue);
-          return (
-            Math.abs(baseColor.r - resolved.r) < 0.0001 &&
-            Math.abs(baseColor.g - resolved.g) < 0.0001 &&
-            Math.abs(baseColor.b - resolved.b) < 0.0001 &&
-            Math.abs(baseColor.a - resolved.a) < 0.0001
-          );
-        });
-
-      const baseTokenLight = findBaseTokenForMode(lightResolved, (baseToken) =>
-        lightColors[baseToken] ??
-        exportRows.find((row) => row.token === baseToken)?.light ??
-        '',
-      );
-      const baseTokenDark = findBaseTokenForMode(darkResolved, (baseToken) =>
-        darkColors[baseToken] ??
-        exportRows.find((row) => row.token === baseToken)?.dark ??
-        '',
-      );
+      const baseTokenLight = rawLightRef.startsWith('color/') && basePaletteTokens.includes(rawLightRef) ? rawLightRef : undefined;
+      const baseTokenDark = rawDarkRef.startsWith('color/') && basePaletteTokens.includes(rawDarkRef) ? rawDarkRef : undefined;
 
       const baseIdLight = baseTokenLight ? tokenToId[baseTokenLight] : null;
       const baseIdDark = baseTokenDark ? tokenToId[baseTokenDark] : null;
@@ -2795,6 +2786,7 @@ export function App() {
     figmaFolder.file('Typography.json', generateFigmaTypographyJson());
 
     zip.file('project-config.json', generateProjectConfigJson());
+    zip.file('preview.html', generatePreviewPage());
 
     const blob = await zip.generateAsync({ type: 'blob' });
     const url = URL.createObjectURL(blob);
@@ -2833,6 +2825,698 @@ export function App() {
       useTertiary,
     };
     return JSON.stringify(config, null, 2);
+  };
+
+  const generatePreviewPage = (): string => {
+    const colorsSection = SECTIONS.find((s) => s.id === 'colors');
+    const shadowsSection = SECTIONS.find((s) => s.id === 'shadows');
+    const glowsSection = SECTIONS.find((s) => s.id === 'glows');
+
+    const c = (token: string, mode: 'light' | 'dark'): string => {
+      const map = mode === 'light' ? lightColors : darkColors;
+      const row = colorsSection?.rows.find((r) => r.token === token);
+      const raw = map[token] ?? (mode === 'light' ? row?.light : row?.dark) ?? '#000';
+      return resolveColorRef(raw, mode);
+    };
+
+    const v = (sectionId: string, token: string): string => {
+      const key = `${sectionId}:${token}`;
+      const section = SECTIONS.find((s) => s.id === sectionId);
+      const row = section?.rows.find((r) => r.token === token);
+      return otherValues[key] ?? row?.light ?? '';
+    };
+
+    const sh = (token: string, mode: 'light' | 'dark'): string => {
+      const map = mode === 'light' ? lightShadows : darkShadows;
+      const row = shadowsSection?.rows.find((r) => r.token === token);
+      return map[token] ?? (mode === 'light' ? row?.light : row?.dark) ?? 'none';
+    };
+
+    const gl = (token: string, mode: 'light' | 'dark'): string => {
+      const map = mode === 'light' ? lightGlows : darkGlows;
+      const row = glowsSection?.rows.find((r) => r.token === token);
+      return map[token] ?? (mode === 'light' ? row?.light : row?.dark) ?? 'none';
+    };
+
+    const spXs = v('spacing', 'space-xs');
+    const spSm = v('spacing', 'space-sm');
+    const spMd = v('spacing', 'space-md');
+    const spLg = v('spacing', 'space-lg');
+    const spXl = v('spacing', 'space-xl');
+
+    const rdSm = v('radius', 'radius-sm');
+    const rdMd = v('radius', 'radius-md');
+    const rdLg = v('radius', 'radius-lg');
+    const rdFull = v('radius', 'radius-full');
+
+    const durFast = v('motion', 'motion/duration/fast');
+    const durNormal = v('motion', 'motion/duration/normal');
+    const easingDefault = v('motion', 'motion/easing/default');
+
+    const fsXs = v('typography', 'typography/size/xs');
+    const fsSm = v('typography', 'typography/size/sm');
+    const fsMd = v('typography', 'typography/size/md');
+    const fsLg = v('typography', 'typography/size/lg');
+    const fsXl = v('typography', 'typography/size/xl');
+    const fs3xl = v('typography', 'typography/size/3xl');
+    const fwMedium = v('typography', 'font-weight-medium');
+    const fwBold = v('typography', 'font-weight-bold');
+    const lhRelaxed = v('typography', 'line-height-relaxed');
+
+    const contrastColor = (hex: string): string => {
+      const raw = hex.replace('#', '').substring(0, 6);
+      const r = parseInt(raw.substring(0, 2), 16) || 0;
+      const g = parseInt(raw.substring(2, 4), 16) || 0;
+      const b = parseInt(raw.substring(4, 6), 16) || 0;
+      const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+      return lum > 0.55 ? '#000000' : '#FFFFFF';
+    };
+
+    const buildPaletteRow = (label: string, tokenPrefix: string, mode: 'light' | 'dark'): string => {
+      const shades = Array.from({ length: 10 }, (_, i) => c(`${tokenPrefix}${i}`, mode));
+      const hasValues = shades.some((h) => h && h !== '#000');
+      if (!hasValues) return '';
+
+      const midIndex = Math.floor(shades.length / 2);
+      const swatches = shades.map((hex, i) => {
+        const textColor = contrastColor(hex);
+        const isFirst = i === 0;
+        const isLast = i === shades.length - 1;
+        const radius = isFirst ? '10px 0 0 10px' : isLast ? '0 10px 10px 0' : '0';
+        return `<div style="flex:1;background:${hex};padding:32px 6px 10px;border-radius:${radius};display:flex;flex-direction:column;align-items:center;justify-content:flex-end;min-height:80px;position:relative;">
+          <span style="font-size:10px;font-weight:500;color:${textColor};letter-spacing:0.02em;text-transform:uppercase;">${hex.toUpperCase()}</span>
+        </div>`;
+      }).join('');
+
+      const brandColor = shades[midIndex] ?? shades[3] ?? '#000';
+
+      return `<div style="margin-bottom:${spSm};">
+        <div style="display:flex;border-radius:10px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.08);">
+          ${swatches}
+        </div>
+        <div style="text-align:center;margin-top:6px;">
+          <span style="font-size:11px;font-weight:600;color:${brandColor};letter-spacing:0.03em;">${label}</span>
+        </div>
+      </div>`;
+    };
+
+    const buildSemanticSwatchGroup = (
+      label: string,
+      tokens: { token: string; name: string }[],
+      mode: 'light' | 'dark'
+    ): string => {
+      const swatches = tokens.map(({ token, name }) => {
+        const hex = c(token, mode);
+        const textColor = contrastColor(hex);
+        return `<div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+          <div style="width:56px;height:56px;background:${hex};border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.08);display:flex;align-items:flex-end;justify-content:center;padding:4px;">
+            <span style="font-size:8px;font-weight:500;color:${textColor};text-transform:uppercase;">${hex.toUpperCase()}</span>
+          </div>
+          <span style="font-size:9px;color:${c('semantic/text/secondary', mode)};text-align:center;max-width:60px;line-height:1.2;">${name}</span>
+        </div>`;
+      }).join('');
+
+      return `<div style="margin-bottom:${spMd};">
+        <div style="font-size:11px;font-weight:600;color:${c('semantic/text/secondary', mode)};margin-bottom:${spXs};text-transform:uppercase;letter-spacing:0.04em;">${label}</div>
+        <div style="display:flex;flex-wrap:wrap;gap:${spSm};">${swatches}</div>
+      </div>`;
+    };
+
+    const buildTypographyPreview = (mode: 'light' | 'dark'): string => {
+      const txtPri = c('semantic/text/primary', mode);
+      const txtSec = c('semantic/text/secondary', mode);
+      const txtDis = c('semantic/text/disabled', mode);
+      const bgMut = c('semantic/bg/muted', mode);
+
+      const sampleTexts: Record<string, string> = {
+        'Heading/H1': 'Heading H1',
+        'Heading/H2': 'Heading H2',
+        'Heading/H3': 'Heading H3',
+        'Title/XL': 'Title XL',
+        'Title/L': 'Title Large',
+        'Body/M': 'Body Medium — Texto principal para conteúdo de leitura.',
+        'Body/S': 'Body Small — Texto secundário para descrições e metadados.',
+        'Body/XS': 'Body XS — Notas e informações complementares.',
+        'Body/XXS': 'Body XXS — Legendas e notas de rodapé.',
+        'Caption/XXXS': 'Caption XXXS — Legendas e notas de rodapé.',
+        'Code/Default': "Code — const token = 'value';",
+      };
+
+      const colorForStyle = (name: string): string => {
+        if (name.startsWith('Body/XS') || name.startsWith('Body/XXS') || name.startsWith('Body/S')) return txtSec;
+        if (name.startsWith('Caption')) return txtDis;
+        return txtPri;
+      };
+
+      const rows = TYPOGRAPHY_STYLES.map((style) => {
+        const config = typographyStylesConfig[style.name];
+        const fontToken = config?.fontToken ?? 'font-family-base';
+        const sizeToken = config?.sizeToken ?? 'typography/size/md';
+        const weightToken = config?.weightToken ?? 'font-weight-regular';
+        const lineHeightToken = config?.lineHeightToken ?? 'line-height-normal';
+
+        const font = v('typography', fontToken);
+        const size = v('typography', sizeToken);
+        const weight = v('typography', weightToken);
+        const lh = v('typography', lineHeightToken);
+        const text = sampleTexts[style.name] ?? style.name.replace('/', ' ');
+        const color = colorForStyle(style.name);
+        const isCode = style.name === 'Code/Default';
+
+        if (isCode) {
+          return `<div style="margin-bottom:${spXs};">
+            <div style="font-size:${fsXs};color:${txtSec};margin-bottom:2px;font-weight:${fwMedium};">${style.name} <span style="opacity:0.6;">· ${size} / ${weight} / ${lh}</span></div>
+            <code style="font-family:${font};font-size:${size};font-weight:${weight};line-height:${lh};background:${bgMut};padding:${spXs} ${spSm};border-radius:${rdSm};color:${txtPri};display:inline-block;">${text}</code>
+          </div>`;
+        }
+
+        return `<div style="margin-bottom:${spXs};">
+          <div style="font-size:${fsXs};color:${txtSec};margin-bottom:2px;font-weight:${fwMedium};">${style.name} <span style="opacity:0.6;">· ${font.split(',')[0]} · ${size} / ${weight} / ${lh}</span></div>
+          <div style="font-family:${font};font-size:${size};font-weight:${weight};line-height:${lh};color:${color};">${text}</div>
+        </div>`;
+      }).join('');
+
+      return `<div style="display:flex;flex-direction:column;gap:${spSm};">${rows}</div>`;
+    };
+
+    const renderMode = (mode: 'light' | 'dark'): string => {
+      const bgBody = c('semantic/bg/body', mode);
+      const bgSurface = c('semantic/bg/surface', mode);
+      const bgMuted = c('semantic/bg/muted', mode);
+      const bgHover = c('semantic/bg/hover', mode);
+      const bgInput = c('semantic/bg/input', mode);
+      const bgBrand = c('semantic/bg/brand-default', mode);
+      const bgBrandHover = c('semantic/bg/brand-hover', mode);
+      const bgBrandSubtle = c('semantic/bg/brand-subtle', mode);
+      const bgAccent = c('semantic/bg/accent-default', mode);
+      const bgAccentSubtle = c('semantic/bg/accent-subtle', mode);
+      const bgTertiary = c('semantic/bg/tertiary-default', mode);
+      const bgTertiarySubtle = c('semantic/bg/tertiary-subtle', mode);
+      const bgSuccessBg = c('semantic/bg/success-bg', mode);
+      const bgErrorBg = c('semantic/bg/error-bg', mode);
+      const bgWarningBg = c('semantic/bg/warning-bg', mode);
+      const bgInfoBg = c('semantic/bg/info-bg', mode);
+
+      const txtPrimary = c('semantic/text/primary', mode);
+      const txtSecondary = c('semantic/text/secondary', mode);
+      const txtDisabled = c('semantic/text/disabled', mode);
+      const txtPlaceholder = c('semantic/text/placeholder', mode);
+      const txtInverse = c('semantic/text/inverse', mode);
+      const txtLink = c('semantic/text/link', mode);
+      const txtError = c('semantic/text/error-text', mode);
+      const txtSuccess = c('semantic/text/success-text', mode);
+      const txtWarning = c('semantic/text/warning-text', mode);
+      const txtBrandSubtle = c('semantic/text/brand-subtle', mode);
+
+      const borderDefault = c('semantic/border/default', mode);
+      const borderSubtle = c('semantic/border/subtle', mode);
+      const borderFocus = c('semantic/border/focus', mode);
+      const borderError = c('semantic/border/error-border', mode);
+
+      const shadowXs = sh('shadow/xs', mode);
+      const glowMd = gl('glow/md', mode);
+
+      const modeLabel = mode === 'light' ? 'Light Mode' : 'Dark Mode';
+      const iconDefault = c('semantic/icon/default', mode);
+      const iconMuted = c('semantic/icon/muted', mode);
+      const iconBrand = c('semantic/icon/brand', mode);
+
+      const section = (content: string): string =>
+        `<div style="background:${bgSurface};border:1px solid ${borderSubtle};border-radius:${rdLg};padding:${spLg};margin-bottom:${spMd};box-shadow:${shadowXs};">${content}</div>`;
+      const sTitle = (t: string): string =>
+        `<h3 style="font-size:${fsMd};font-weight:${fwMedium};margin:0 0 ${spMd};color:${txtSecondary};text-transform:uppercase;letter-spacing:0.04em;">${t}</h3>`;
+
+      return `
+      <div style="background:${bgBody};color:${txtPrimary};padding:${spXl};flex:1;min-width:480px;">
+        <h2 style="font-size:${fs3xl};font-weight:${fwBold};margin:0 0 ${spLg};">${modeLabel}</h2>
+
+        ${section(`
+          ${sTitle('Color Palettes')}
+          <div style="display:flex;flex-direction:column;gap:${spSm};">
+            ${buildPaletteRow('Primary', 'color/primary/', mode)}
+            ${buildPaletteRow('Secondary', 'color/secondary/', mode)}
+            ${buildPaletteRow('Tertiary', 'color/tertiary/', mode)}
+            ${buildPaletteRow('Neutral Light', 'color/neutral/', mode)}
+            ${buildPaletteRow('Neutral Dark', 'color/dark/', mode)}
+          </div>
+        `)}
+
+        ${section(`
+          ${sTitle('Semantic Colors')}
+          ${buildSemanticSwatchGroup('Background', [
+            { token: 'semantic/bg/body', name: 'Body' },
+            { token: 'semantic/bg/surface', name: 'Surface' },
+            { token: 'semantic/bg/subtle', name: 'Subtle' },
+            { token: 'semantic/bg/muted', name: 'Muted' },
+            { token: 'semantic/bg/hover', name: 'Hover' },
+            { token: 'semantic/bg/selected', name: 'Selected' },
+            { token: 'semantic/bg/input', name: 'Input' },
+            { token: 'semantic/bg/overlay', name: 'Overlay' },
+          ], mode)}
+          ${buildSemanticSwatchGroup('Brand / Accent / Terciária', [
+            { token: 'semantic/bg/brand-default', name: 'Brand' },
+            { token: 'semantic/bg/brand-hover', name: 'Brand Hover' },
+            { token: 'semantic/bg/brand-subtle', name: 'Brand Subtle' },
+            { token: 'semantic/bg/accent-default', name: 'Accent' },
+            { token: 'semantic/bg/accent-hover', name: 'Accent Hover' },
+            { token: 'semantic/bg/accent-subtle', name: 'Accent Subtle' },
+            { token: 'semantic/bg/tertiary-default', name: 'Terciária' },
+            { token: 'semantic/bg/tertiary-hover', name: 'Terc. Hover' },
+            { token: 'semantic/bg/tertiary-subtle', name: 'Terc. Subtle' },
+          ], mode)}
+          ${buildSemanticSwatchGroup('Status', [
+            { token: 'semantic/bg/success-bg', name: 'Success' },
+            { token: 'semantic/bg/error-bg', name: 'Error' },
+            { token: 'semantic/bg/warning-bg', name: 'Warning' },
+            { token: 'semantic/bg/info-bg', name: 'Info' },
+          ], mode)}
+          ${buildSemanticSwatchGroup('Text', [
+            { token: 'semantic/text/primary', name: 'Primary' },
+            { token: 'semantic/text/secondary', name: 'Secondary' },
+            { token: 'semantic/text/disabled', name: 'Disabled' },
+            { token: 'semantic/text/placeholder', name: 'Placeholder' },
+            { token: 'semantic/text/inverse', name: 'Inverse' },
+            { token: 'semantic/text/link', name: 'Link' },
+            { token: 'semantic/text/error-text', name: 'Error' },
+            { token: 'semantic/text/success-text', name: 'Success' },
+            { token: 'semantic/text/warning-text', name: 'Warning' },
+            { token: 'semantic/text/brand-subtle', name: 'Brand' },
+            { token: 'semantic/text/accent-subtle', name: 'Accent' },
+            { token: 'semantic/text/tertiary-subtle', name: 'Terciária' },
+          ], mode)}
+          ${buildSemanticSwatchGroup('Border', [
+            { token: 'semantic/border/default', name: 'Default' },
+            { token: 'semantic/border/subtle', name: 'Subtle' },
+            { token: 'semantic/border/strong', name: 'Strong' },
+            { token: 'semantic/border/focus', name: 'Focus' },
+            { token: 'semantic/border/error-border', name: 'Error' },
+          ], mode)}
+          ${buildSemanticSwatchGroup('Icon', [
+            { token: 'semantic/icon/default', name: 'Default' },
+            { token: 'semantic/icon/muted', name: 'Muted' },
+            { token: 'semantic/icon/brand', name: 'Brand' },
+            { token: 'semantic/icon/accent', name: 'Accent' },
+            { token: 'semantic/icon/tertiary', name: 'Terciária' },
+          ], mode)}
+        `)}
+
+        ${section(`
+          ${sTitle('Button')}
+          <div style="display:flex;flex-wrap:wrap;gap:${spSm};align-items:center;">
+            <button style="background:${bgBrand};color:${txtInverse};border:none;padding:${spSm} ${spLg};border-radius:${rdMd};font-size:${fsMd};font-weight:${fwMedium};cursor:pointer;transition:background ${durFast} ${easingDefault};"
+              onmouseover="this.style.background='${bgBrandHover}'" onmouseout="this.style.background='${bgBrand}'">Primário</button>
+            <button style="background:${bgAccent};color:${txtInverse};border:none;padding:${spSm} ${spLg};border-radius:${rdMd};font-size:${fsMd};font-weight:${fwMedium};cursor:pointer;">Accent</button>
+            <button style="background:${bgTertiary};color:${txtInverse};border:none;padding:${spSm} ${spLg};border-radius:${rdMd};font-size:${fsMd};font-weight:${fwMedium};cursor:pointer;">Terciário</button>
+            <button style="background:transparent;color:${bgBrand};border:1px solid ${bgBrand};padding:${spSm} ${spLg};border-radius:${rdMd};font-size:${fsMd};font-weight:${fwMedium};cursor:pointer;">Outline</button>
+            <button style="background:${bgBrandSubtle};color:${txtBrandSubtle};border:none;padding:${spSm} ${spLg};border-radius:${rdMd};font-size:${fsMd};font-weight:${fwMedium};cursor:pointer;">Subtle</button>
+            <button style="background:${bgMuted};color:${txtDisabled};border:none;padding:${spSm} ${spLg};border-radius:${rdMd};font-size:${fsMd};cursor:default;opacity:0.6;">Disabled</button>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:${spSm};align-items:center;margin-top:${spSm};">
+            <button style="background:${bgBrand};color:${txtInverse};border:none;padding:${spXs} ${spMd};border-radius:${rdSm};font-size:${fsXs};font-weight:${fwMedium};cursor:pointer;">XS</button>
+            <button style="background:${bgBrand};color:${txtInverse};border:none;padding:${spXs} ${spMd};border-radius:${rdSm};font-size:${fsSm};font-weight:${fwMedium};cursor:pointer;">SM</button>
+            <button style="background:${bgBrand};color:${txtInverse};border:none;padding:${spSm} ${spLg};border-radius:${rdMd};font-size:${fsMd};font-weight:${fwMedium};cursor:pointer;">MD</button>
+            <button style="background:${bgBrand};color:${txtInverse};border:none;padding:${spMd} ${spXl};border-radius:${rdMd};font-size:${fsLg};font-weight:${fwMedium};cursor:pointer;">LG</button>
+            <button style="background:${bgBrand};color:${txtInverse};border:none;padding:${spMd} ${spXl};border-radius:${rdMd};font-size:${fsXl};font-weight:${fwMedium};cursor:pointer;">XL</button>
+          </div>
+        `)}
+
+        ${section(`
+          ${sTitle('TextInput / PasswordInput / Textarea')}
+          <div style="display:flex;flex-direction:column;gap:${spMd};">
+            <div>
+              <label style="display:block;font-size:${fsMd};font-weight:${fwMedium};margin-bottom:${spXs};color:${txtPrimary};">TextInput</label>
+              <input type="text" value="Felipe Moretti" readonly style="width:100%;box-sizing:border-box;padding:${spSm} ${spMd};border:1px solid ${borderDefault};border-radius:${rdSm};background:${bgInput};color:${txtPrimary};font-size:${fsMd};outline:none;transition:border-color ${durFast} ${easingDefault};"
+                onfocus="this.style.borderColor='${borderFocus}';this.style.boxShadow='${glowMd}'" onblur="this.style.borderColor='${borderDefault}';this.style.boxShadow='none'" />
+              <span style="font-size:${fsSm};color:${txtSecondary};margin-top:2px;display:block;">Texto auxiliar do campo</span>
+            </div>
+            <div>
+              <label style="display:block;font-size:${fsMd};font-weight:${fwMedium};margin-bottom:${spXs};color:${txtPrimary};">PasswordInput</label>
+              <div style="position:relative;">
+                <input type="password" value="senhasecreta" readonly style="width:100%;box-sizing:border-box;padding:${spSm} ${spMd};padding-right:40px;border:1px solid ${borderDefault};border-radius:${rdSm};background:${bgInput};color:${txtPrimary};font-size:${fsMd};" />
+                <span style="position:absolute;right:${spSm};top:50%;transform:translateY(-50%);color:${iconMuted};cursor:pointer;font-size:${fsLg};">👁</span>
+              </div>
+            </div>
+            <div>
+              <label style="display:block;font-size:${fsMd};font-weight:${fwMedium};margin-bottom:${spXs};color:${txtError};">TextInput com erro</label>
+              <input type="text" value="abc" readonly style="width:100%;box-sizing:border-box;padding:${spSm} ${spMd};border:1px solid ${borderError};border-radius:${rdSm};background:${bgInput};color:${txtPrimary};font-size:${fsMd};" />
+              <span style="font-size:${fsSm};color:${txtError};margin-top:2px;display:block;">Campo obrigatório</span>
+            </div>
+            <div>
+              <label style="display:block;font-size:${fsMd};font-weight:${fwMedium};margin-bottom:${spXs};color:${txtPrimary};">Textarea</label>
+              <textarea readonly style="width:100%;box-sizing:border-box;padding:${spSm} ${spMd};border:1px solid ${borderDefault};border-radius:${rdSm};background:${bgInput};color:${txtPrimary};font-size:${fsMd};min-height:72px;resize:vertical;font-family:inherit;">Conteúdo de exemplo para o textarea com múltiplas linhas de texto.</textarea>
+            </div>
+            <div>
+              <label style="display:block;font-size:${fsMd};font-weight:${fwMedium};margin-bottom:${spXs};color:${txtDisabled};">TextInput desabilitado</label>
+              <input type="text" value="Não editável" disabled style="width:100%;box-sizing:border-box;padding:${spSm} ${spMd};border:1px solid ${borderSubtle};border-radius:${rdSm};background:${bgMuted};color:${txtDisabled};font-size:${fsMd};cursor:not-allowed;" />
+            </div>
+          </div>
+        `)}
+
+        ${section(`
+          ${sTitle('Select / NativeSelect')}
+          <div style="display:flex;flex-direction:column;gap:${spMd};">
+            <div>
+              <label style="display:block;font-size:${fsMd};font-weight:${fwMedium};margin-bottom:${spXs};color:${txtPrimary};">Select</label>
+              <select style="width:100%;box-sizing:border-box;padding:${spSm} ${spMd};border:1px solid ${borderDefault};border-radius:${rdSm};background:${bgInput};color:${txtPrimary};font-size:${fsMd};font-family:inherit;appearance:auto;">
+                <option>Opção A</option><option>Opção B</option><option>Opção C</option>
+              </select>
+            </div>
+            <div>
+              <label style="display:block;font-size:${fsMd};font-weight:${fwMedium};margin-bottom:${spXs};color:${txtPrimary};">Select com placeholder</label>
+              <select style="width:100%;box-sizing:border-box;padding:${spSm} ${spMd};border:1px solid ${borderDefault};border-radius:${rdSm};background:${bgInput};color:${txtPlaceholder};font-size:${fsMd};font-family:inherit;">
+                <option disabled selected>Selecione uma opção</option>
+              </select>
+            </div>
+          </div>
+        `)}
+
+        ${section(`
+          ${sTitle('Checkbox / Radio / Switch')}
+          <div style="display:flex;flex-direction:column;gap:${spMd};">
+            <div style="display:flex;flex-direction:column;gap:${spSm};">
+              <label style="font-size:${fsSm};font-weight:${fwMedium};color:${txtSecondary};margin-bottom:2px;">Checkbox</label>
+              <label style="display:flex;align-items:center;gap:${spSm};font-size:${fsMd};cursor:pointer;">
+                <span style="width:18px;height:18px;border-radius:${rdSm};background:${bgBrand};display:inline-flex;align-items:center;justify-content:center;color:${txtInverse};font-size:${fsSm};font-weight:${fwBold};">✓</span> Opção selecionada
+              </label>
+              <label style="display:flex;align-items:center;gap:${spSm};font-size:${fsMd};cursor:pointer;">
+                <span style="width:18px;height:18px;border-radius:${rdSm};border:2px solid ${borderDefault};display:inline-block;background:${bgInput};"></span> Opção desmarcada
+              </label>
+              <label style="display:flex;align-items:center;gap:${spSm};font-size:${fsMd};color:${txtDisabled};cursor:not-allowed;">
+                <span style="width:18px;height:18px;border-radius:${rdSm};border:2px solid ${borderSubtle};display:inline-block;background:${bgMuted};opacity:0.5;"></span> Desabilitado
+              </label>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:${spSm};">
+              <label style="font-size:${fsSm};font-weight:${fwMedium};color:${txtSecondary};margin-bottom:2px;">Radio</label>
+              <label style="display:flex;align-items:center;gap:${spSm};font-size:${fsMd};cursor:pointer;">
+                <span style="width:18px;height:18px;border-radius:${rdFull};border:2px solid ${bgBrand};display:inline-flex;align-items:center;justify-content:center;">
+                  <span style="width:8px;height:8px;border-radius:${rdFull};background:${bgBrand};"></span>
+                </span> Selecionado
+              </label>
+              <label style="display:flex;align-items:center;gap:${spSm};font-size:${fsMd};cursor:pointer;">
+                <span style="width:18px;height:18px;border-radius:${rdFull};border:2px solid ${borderDefault};display:inline-block;background:${bgInput};"></span> Não selecionado
+              </label>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:${spSm};">
+              <label style="font-size:${fsSm};font-weight:${fwMedium};color:${txtSecondary};margin-bottom:2px;">Switch</label>
+              <div style="display:flex;align-items:center;gap:${spSm};">
+                <span style="width:42px;height:24px;border-radius:${rdFull};background:${bgBrand};display:inline-flex;align-items:center;padding:2px;cursor:pointer;transition:background ${durFast} ${easingDefault};">
+                  <span style="width:20px;height:20px;border-radius:${rdFull};background:${bgSurface};margin-left:auto;box-shadow:${shadowXs};"></span>
+                </span>
+                <span style="font-size:${fsMd};">Ativado</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:${spSm};">
+                <span style="width:42px;height:24px;border-radius:${rdFull};background:${borderDefault};display:inline-flex;align-items:center;padding:2px;cursor:pointer;">
+                  <span style="width:20px;height:20px;border-radius:${rdFull};background:${bgSurface};box-shadow:${shadowXs};"></span>
+                </span>
+                <span style="font-size:${fsMd};">Desativado</span>
+              </div>
+            </div>
+          </div>
+        `)}
+
+        ${section(`
+          ${sTitle('Progress / Slider / Loader')}
+          <div style="display:flex;flex-direction:column;gap:${spLg};">
+            <div>
+              <label style="font-size:${fsSm};font-weight:${fwMedium};color:${txtSecondary};margin-bottom:${spXs};display:block;">Progress</label>
+              <div style="height:8px;border-radius:${rdFull};background:${bgMuted};overflow:hidden;">
+                <div style="width:65%;height:100%;border-radius:${rdFull};background:${bgBrand};transition:width ${durNormal} ${easingDefault};"></div>
+              </div>
+              <div style="display:flex;justify-content:space-between;margin-top:4px;">
+                <span style="font-size:${fsSm};color:${txtSecondary};">65% concluído</span>
+              </div>
+            </div>
+            <div>
+              <label style="font-size:${fsSm};font-weight:${fwMedium};color:${txtSecondary};margin-bottom:${spXs};display:block;">Multi-section Progress</label>
+              <div style="height:8px;border-radius:${rdFull};background:${bgMuted};overflow:hidden;display:flex;">
+                <div style="width:40%;height:100%;background:${bgBrand};"></div>
+                <div style="width:20%;height:100%;background:${bgAccent};"></div>
+                <div style="width:10%;height:100%;background:${bgTertiary};"></div>
+              </div>
+            </div>
+            <div>
+              <label style="font-size:${fsSm};font-weight:${fwMedium};color:${txtSecondary};margin-bottom:${spSm};display:block;">Slider</label>
+              <div style="position:relative;height:20px;display:flex;align-items:center;">
+                <div style="width:100%;height:6px;border-radius:${rdFull};background:${bgMuted};position:absolute;"></div>
+                <div style="width:45%;height:6px;border-radius:${rdFull};background:${bgBrand};position:absolute;"></div>
+                <div style="width:16px;height:16px;border-radius:${rdFull};background:${bgBrand};border:3px solid ${bgSurface};box-shadow:${shadowXs};position:absolute;left:calc(45% - 8px);cursor:pointer;"></div>
+              </div>
+            </div>
+            <div>
+              <label style="font-size:${fsSm};font-weight:${fwMedium};color:${txtSecondary};margin-bottom:${spSm};display:block;">Loader</label>
+              <div style="display:flex;gap:${spLg};align-items:center;">
+                <div style="width:24px;height:24px;border:3px solid ${bgMuted};border-top-color:${bgBrand};border-radius:50%;animation:spin 0.8s linear infinite;"></div>
+                <div style="display:flex;gap:4px;">
+                  <span style="width:8px;height:8px;border-radius:50%;background:${bgBrand};animation:pulse 1s ease-in-out infinite;"></span>
+                  <span style="width:8px;height:8px;border-radius:50%;background:${bgBrand};animation:pulse 1s ease-in-out 0.2s infinite;"></span>
+                  <span style="width:8px;height:8px;border-radius:50%;background:${bgBrand};animation:pulse 1s ease-in-out 0.4s infinite;"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        `)}
+
+        ${section(`
+          ${sTitle('Avatar / Indicator')}
+          <div style="display:flex;gap:${spMd};align-items:center;flex-wrap:wrap;">
+            <div style="width:48px;height:48px;border-radius:${rdFull};background:${bgBrand};display:flex;align-items:center;justify-content:center;color:${txtInverse};font-weight:${fwBold};font-size:${fsXl};">FM</div>
+            <div style="width:48px;height:48px;border-radius:${rdFull};background:${bgAccent};display:flex;align-items:center;justify-content:center;color:${txtInverse};font-weight:${fwBold};font-size:${fsXl};">AS</div>
+            <div style="width:48px;height:48px;border-radius:${rdFull};background:${bgTertiary};display:flex;align-items:center;justify-content:center;color:${txtInverse};font-weight:${fwBold};font-size:${fsXl};">MC</div>
+            <div style="width:40px;height:40px;border-radius:${rdMd};background:${bgMuted};display:flex;align-items:center;justify-content:center;color:${iconMuted};font-size:${fsXl};">👤</div>
+            <div style="position:relative;">
+              <div style="width:48px;height:48px;border-radius:${rdFull};background:${bgBrandSubtle};display:flex;align-items:center;justify-content:center;color:${iconBrand};font-weight:${fwBold};font-size:${fsXl};">JD</div>
+              <span style="position:absolute;top:0;right:0;width:14px;height:14px;border-radius:50%;background:${txtSuccess};border:2px solid ${bgSurface};"></span>
+            </div>
+            <div style="display:flex;margin-left:${spSm};">
+              <div style="width:36px;height:36px;border-radius:${rdFull};background:${bgBrand};display:flex;align-items:center;justify-content:center;color:${txtInverse};font-weight:${fwMedium};font-size:${fsSm};border:2px solid ${bgSurface};">A</div>
+              <div style="width:36px;height:36px;border-radius:${rdFull};background:${bgAccent};display:flex;align-items:center;justify-content:center;color:${txtInverse};font-weight:${fwMedium};font-size:${fsSm};margin-left:-10px;border:2px solid ${bgSurface};">B</div>
+              <div style="width:36px;height:36px;border-radius:${rdFull};background:${bgTertiary};display:flex;align-items:center;justify-content:center;color:${txtInverse};font-weight:${fwMedium};font-size:${fsSm};margin-left:-10px;border:2px solid ${bgSurface};">C</div>
+              <div style="width:36px;height:36px;border-radius:${rdFull};background:${bgMuted};display:flex;align-items:center;justify-content:center;color:${txtSecondary};font-weight:${fwMedium};font-size:${fsSm};margin-left:-10px;border:2px solid ${bgSurface};">+3</div>
+            </div>
+          </div>
+        `)}
+
+        ${section(`
+          ${sTitle('Badge / Pill')}
+          <div style="display:flex;flex-wrap:wrap;gap:${spSm};align-items:center;">
+            <span style="padding:${spXs} ${spMd};border-radius:${rdFull};background:${bgBrandSubtle};color:${txtBrandSubtle};font-size:${fsSm};font-weight:${fwMedium};">Primary</span>
+            <span style="padding:${spXs} ${spMd};border-radius:${rdFull};background:${bgAccentSubtle};color:${c('semantic/text/accent-subtle', mode)};font-size:${fsSm};font-weight:${fwMedium};">Accent</span>
+            <span style="padding:${spXs} ${spMd};border-radius:${rdFull};background:${bgTertiarySubtle};color:${c('semantic/text/tertiary-subtle', mode)};font-size:${fsSm};font-weight:${fwMedium};">Terciário</span>
+            <span style="padding:${spXs} ${spMd};border-radius:${rdFull};background:${bgSuccessBg};color:${txtSuccess};font-size:${fsSm};font-weight:${fwMedium};">Sucesso</span>
+            <span style="padding:${spXs} ${spMd};border-radius:${rdFull};background:${bgErrorBg};color:${txtError};font-size:${fsSm};font-weight:${fwMedium};">Erro</span>
+            <span style="padding:${spXs} ${spMd};border-radius:${rdFull};background:${bgWarningBg};color:${txtWarning};font-size:${fsSm};font-weight:${fwMedium};">Aviso</span>
+            <span style="padding:${spXs} ${spMd};border-radius:${rdSm};border:1px solid ${bgBrand};color:${bgBrand};font-size:${fsSm};font-weight:${fwMedium};">Outline</span>
+            <span style="padding:${spXs} ${spMd};border-radius:${rdSm};border:1px solid ${borderDefault};color:${txtSecondary};font-size:${fsSm};font-weight:${fwMedium};">Default</span>
+          </div>
+        `)}
+
+        ${section(`
+          ${sTitle('Alert / Notification')}
+          <div style="display:flex;flex-direction:column;gap:${spSm};">
+            <div style="padding:${spMd} ${spLg};border-radius:${rdMd};background:${bgSuccessBg};color:${txtSuccess};font-size:${fsSm};font-weight:${fwMedium};display:flex;align-items:center;gap:${spSm};">
+              <span style="font-size:${fsLg};">✓</span> Operação realizada com sucesso!
+            </div>
+            <div style="padding:${spMd} ${spLg};border-radius:${rdMd};background:${bgErrorBg};color:${txtError};font-size:${fsSm};font-weight:${fwMedium};display:flex;align-items:center;gap:${spSm};">
+              <span style="font-size:${fsLg};">✕</span> Falha ao processar a requisição.
+            </div>
+            <div style="padding:${spMd} ${spLg};border-radius:${rdMd};background:${bgWarningBg};color:${txtWarning};font-size:${fsSm};font-weight:${fwMedium};display:flex;align-items:center;gap:${spSm};">
+              <span style="font-size:${fsLg};">⚠</span> Atenção: dados serão sobrescritos.
+            </div>
+            <div style="padding:${spMd} ${spLg};border-radius:${rdMd};background:${bgInfoBg};color:${txtBrandSubtle};font-size:${fsSm};font-weight:${fwMedium};display:flex;align-items:center;gap:${spSm};">
+              <span style="font-size:${fsLg};">ℹ</span> Nova versão disponível.
+            </div>
+          </div>
+        `)}
+
+        ${section(`
+          ${sTitle('Card')}
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:${spMd};">
+            <div style="background:${bgBody};border:1px solid ${borderSubtle};border-radius:${rdLg};padding:${spLg};">
+              <div style="width:40px;height:40px;border-radius:${rdMd};background:${bgBrandSubtle};display:flex;align-items:center;justify-content:center;margin-bottom:${spMd};">
+                <span style="color:${iconBrand};font-size:${fsXl};">📊</span>
+              </div>
+              <h4 style="font-size:${fsLg};font-weight:${fwMedium};margin:0 0 ${spXs};">Dashboard</h4>
+              <p style="font-size:${fsSm};color:${txtSecondary};margin:0;line-height:${lhRelaxed};">Visualize métricas em tempo real.</p>
+            </div>
+            <div style="background:${bgBody};border:1px solid ${borderSubtle};border-radius:${rdLg};padding:${spLg};">
+              <div style="width:40px;height:40px;border-radius:${rdMd};background:${bgAccentSubtle};display:flex;align-items:center;justify-content:center;margin-bottom:${spMd};">
+                <span style="color:${c('semantic/icon/accent', mode)};font-size:${fsXl};">👥</span>
+              </div>
+              <h4 style="font-size:${fsLg};font-weight:${fwMedium};margin:0 0 ${spXs};">Usuários</h4>
+              <p style="font-size:${fsSm};color:${txtSecondary};margin:0;line-height:${lhRelaxed};">Gerencie permissões e perfis.</p>
+            </div>
+          </div>
+        `)}
+
+        ${section(`
+          ${sTitle('Tabs / SegmentedControl')}
+          <div style="display:flex;flex-direction:column;gap:${spLg};">
+            <div>
+              <label style="font-size:${fsSm};font-weight:${fwMedium};color:${txtSecondary};margin-bottom:${spSm};display:block;">Tabs</label>
+              <div style="display:flex;border-bottom:2px solid ${borderSubtle};">
+                <span style="padding:${spSm} ${spLg};font-size:${fsMd};font-weight:${fwMedium};color:${bgBrand};border-bottom:2px solid ${bgBrand};margin-bottom:-2px;cursor:pointer;">Geral</span>
+                <span style="padding:${spSm} ${spLg};font-size:${fsMd};color:${txtSecondary};cursor:pointer;transition:color ${durFast};">Configurações</span>
+                <span style="padding:${spSm} ${spLg};font-size:${fsMd};color:${txtSecondary};cursor:pointer;">Avançado</span>
+                <span style="padding:${spSm} ${spLg};font-size:${fsMd};color:${txtDisabled};cursor:not-allowed;">Desabilitado</span>
+              </div>
+            </div>
+            <div>
+              <label style="font-size:${fsSm};font-weight:${fwMedium};color:${txtSecondary};margin-bottom:${spSm};display:block;">SegmentedControl</label>
+              <div style="display:inline-flex;background:${bgMuted};border-radius:${rdMd};padding:3px;">
+                <span style="padding:${spXs} ${spMd};border-radius:${rdSm};background:${bgSurface};color:${txtPrimary};font-size:${fsSm};font-weight:${fwMedium};box-shadow:${shadowXs};cursor:pointer;">Dia</span>
+                <span style="padding:${spXs} ${spMd};border-radius:${rdSm};color:${txtSecondary};font-size:${fsSm};font-weight:${fwMedium};cursor:pointer;">Semana</span>
+                <span style="padding:${spXs} ${spMd};border-radius:${rdSm};color:${txtSecondary};font-size:${fsSm};font-weight:${fwMedium};cursor:pointer;">Mês</span>
+              </div>
+            </div>
+          </div>
+        `)}
+
+        ${section(`
+          ${sTitle('Table')}
+          <div style="border-radius:${rdMd};overflow:hidden;border:1px solid ${borderSubtle};">
+            <table style="width:100%;border-collapse:collapse;font-size:${fsMd};">
+              <thead>
+                <tr style="background:${bgMuted};">
+                  <th style="text-align:left;padding:${spSm} ${spMd};font-weight:${fwMedium};color:${txtSecondary};border-bottom:1px solid ${borderSubtle};">Nome</th>
+                  <th style="text-align:left;padding:${spSm} ${spMd};font-weight:${fwMedium};color:${txtSecondary};border-bottom:1px solid ${borderSubtle};">E-mail</th>
+                  <th style="text-align:left;padding:${spSm} ${spMd};font-weight:${fwMedium};color:${txtSecondary};border-bottom:1px solid ${borderSubtle};">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="transition:background ${durFast} ${easingDefault};" onmouseover="this.style.background='${bgHover}'" onmouseout="this.style.background='transparent'">
+                  <td style="padding:${spSm} ${spMd};border-bottom:1px solid ${borderSubtle};">Ana Silva</td>
+                  <td style="padding:${spSm} ${spMd};border-bottom:1px solid ${borderSubtle};color:${txtLink};">ana@email.com</td>
+                  <td style="padding:${spSm} ${spMd};border-bottom:1px solid ${borderSubtle};"><span style="padding:2px ${spSm};border-radius:${rdFull};background:${bgSuccessBg};color:${txtSuccess};font-size:${fsSm};font-weight:${fwMedium};">Ativo</span></td>
+                </tr>
+                <tr style="background:${bgHover};transition:background ${durFast} ${easingDefault};">
+                  <td style="padding:${spSm} ${spMd};border-bottom:1px solid ${borderSubtle};">Carlos Souza</td>
+                  <td style="padding:${spSm} ${spMd};border-bottom:1px solid ${borderSubtle};color:${txtLink};">carlos@email.com</td>
+                  <td style="padding:${spSm} ${spMd};border-bottom:1px solid ${borderSubtle};"><span style="padding:2px ${spSm};border-radius:${rdFull};background:${bgWarningBg};color:${txtWarning};font-size:${fsSm};font-weight:${fwMedium};">Pendente</span></td>
+                </tr>
+                <tr style="transition:background ${durFast} ${easingDefault};" onmouseover="this.style.background='${bgHover}'" onmouseout="this.style.background='transparent'">
+                  <td style="padding:${spSm} ${spMd};">Maria Costa</td>
+                  <td style="padding:${spSm} ${spMd};color:${txtLink};">maria@email.com</td>
+                  <td style="padding:${spSm} ${spMd};"><span style="padding:2px ${spSm};border-radius:${rdFull};background:${bgErrorBg};color:${txtError};font-size:${fsSm};font-weight:${fwMedium};">Inativo</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        `)}
+
+        ${section(`
+          ${sTitle('Tooltip / Popover')}
+          <div style="display:flex;gap:${spMd};align-items:flex-start;flex-wrap:wrap;">
+            <div style="position:relative;display:inline-block;">
+              <button style="background:${bgBrand};color:${txtInverse};border:none;padding:${spSm} ${spLg};border-radius:${rdMd};font-size:${fsMd};font-weight:${fwMedium};cursor:pointer;">Hover me</button>
+              <div style="position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:${c('color/dark/8', mode)};color:${c('color/neutral/0', mode)};padding:${spXs} ${spSm};border-radius:${rdSm};font-size:${fsSm};white-space:nowrap;box-shadow:${shadowXs};">
+                Tooltip de exemplo
+                <div style="position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:${c('color/dark/8', mode)};"></div>
+              </div>
+            </div>
+            <div style="background:${bgSurface};border:1px solid ${borderSubtle};border-radius:${rdMd};padding:${spMd};box-shadow:${shadowXs};max-width:220px;">
+              <div style="font-size:${fsMd};font-weight:${fwMedium};margin-bottom:${spXs};">Popover</div>
+              <div style="font-size:${fsSm};color:${txtSecondary};line-height:${lhRelaxed};">Conteúdo flutuante do popover com informações auxiliares.</div>
+            </div>
+          </div>
+        `)}
+
+        ${section(`
+          ${sTitle('Skeleton')}
+          <div style="display:flex;flex-direction:column;gap:${spSm};">
+            <div style="display:flex;gap:${spMd};align-items:center;">
+              <div style="width:48px;height:48px;border-radius:${rdFull};background:${bgMuted};animation:pulse 1.5s ease-in-out infinite;"></div>
+              <div style="flex:1;display:flex;flex-direction:column;gap:${spXs};">
+                <div style="height:14px;border-radius:${rdSm};background:${bgMuted};width:60%;animation:pulse 1.5s ease-in-out infinite;"></div>
+                <div style="height:12px;border-radius:${rdSm};background:${bgMuted};width:40%;animation:pulse 1.5s ease-in-out 0.2s infinite;"></div>
+              </div>
+            </div>
+            <div style="height:12px;border-radius:${rdSm};background:${bgMuted};width:100%;animation:pulse 1.5s ease-in-out infinite;"></div>
+            <div style="height:12px;border-radius:${rdSm};background:${bgMuted};width:85%;animation:pulse 1.5s ease-in-out 0.15s infinite;"></div>
+            <div style="height:12px;border-radius:${rdSm};background:${bgMuted};width:70%;animation:pulse 1.5s ease-in-out 0.3s infinite;"></div>
+          </div>
+        `)}
+
+        ${section(`
+          ${sTitle('Divider / Anchor / Breadcrumbs')}
+          <div style="display:flex;flex-direction:column;gap:${spMd};">
+            <div>
+              <label style="font-size:${fsSm};font-weight:${fwMedium};color:${txtSecondary};margin-bottom:${spSm};display:block;">Anchor</label>
+              <div style="display:flex;gap:${spMd};">
+                <a style="color:${txtLink};font-size:${fsMd};text-decoration:underline;cursor:pointer;">Link padrão</a>
+                <a style="color:${c('semantic/icon/accent', mode)};font-size:${fsMd};text-decoration:underline;cursor:pointer;">Link accent</a>
+                <a style="color:${txtDisabled};font-size:${fsMd};cursor:not-allowed;">Link disabled</a>
+              </div>
+            </div>
+            <hr style="border:none;border-top:1px solid ${borderSubtle};margin:0;" />
+            <div>
+              <label style="font-size:${fsSm};font-weight:${fwMedium};color:${txtSecondary};margin-bottom:${spSm};display:block;">Breadcrumbs</label>
+              <div style="display:flex;align-items:center;gap:${spXs};font-size:${fsMd};">
+                <a style="color:${txtLink};cursor:pointer;text-decoration:none;">Início</a>
+                <span style="color:${txtDisabled};">/</span>
+                <a style="color:${txtLink};cursor:pointer;text-decoration:none;">Usuários</a>
+                <span style="color:${txtDisabled};">/</span>
+                <span style="color:${txtPrimary};font-weight:${fwMedium};">Detalhes</span>
+              </div>
+            </div>
+            <hr style="border:none;border-top:1px dashed ${borderSubtle};margin:0;" />
+            <div>
+              <label style="font-size:${fsSm};font-weight:${fwMedium};color:${txtSecondary};margin-bottom:${spSm};display:block;">Divider com label</label>
+              <div style="display:flex;align-items:center;gap:${spMd};">
+                <hr style="flex:1;border:none;border-top:1px solid ${borderSubtle};margin:0;" />
+                <span style="font-size:${fsSm};color:${txtDisabled};white-space:nowrap;">ou continue com</span>
+                <hr style="flex:1;border:none;border-top:1px solid ${borderSubtle};margin:0;" />
+              </div>
+            </div>
+          </div>
+        `)}
+
+        ${section(`
+          ${sTitle('Typography')}
+          ${buildTypographyPreview(mode)}
+        `)}
+
+      </div>`;
+    };
+
+    const html = `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design System Preview</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+    .preview-container { display: flex; flex-wrap: wrap; min-height: 100vh; }
+    .preview-container > div { min-width: 0; }
+    h2, h3, h4 { letter-spacing: -0.01em; }
+    input:focus { outline: none; }
+    select:focus { outline: none; }
+    textarea:focus { outline: none; }
+    button { font-family: inherit; }
+    .mode-divider { width: 2px; background: linear-gradient(180deg, transparent, ${c('semantic/border/subtle', 'light')} 20%, ${c('semantic/border/subtle', 'dark')} 80%, transparent); }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+  </style>
+</head>
+<body>
+  <div class="preview-container">
+    ${renderMode('light')}
+    <div class="mode-divider"></div>
+    ${renderMode('dark')}
+  </div>
+</body>
+</html>`;
+
+    return html;
+  };
+
+  const handleGeneratePreview = (): void => {
+    const html = generatePreviewPage();
+    const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    window.open(url, '_blank');
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
   };
 
   const handleImportProject = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -3113,6 +3797,14 @@ export function App() {
             <button
               type="button"
               className="secondary-button"
+              onClick={handleGeneratePreview}
+            >
+              <IconEye size={16} stroke={2} />
+              Página de Exemplo
+            </button>
+            <button
+              type="button"
+              className="secondary-button"
               onClick={() => fileInputRef.current?.click()}
             >
               <IconUpload size={16} stroke={2} />
@@ -3252,10 +3944,16 @@ export function App() {
                   const isRadiusSection = activeSectionId === 'radius';
                   const isShadowsSection = activeSectionId === 'shadows';
                   const isGlowsSection = activeSectionId === 'glows';
-                  const lightColor =
+                  const rawLightColor =
                     (isColorSection && lightColors[row.token]) || row.light;
-                  const darkColor =
+                  const rawDarkColor =
                     (isColorSection && darkColors[row.token]) || row.dark;
+                  const lightColor = isColorSection
+                    ? resolveColorRef(rawLightColor, 'light')
+                    : rawLightColor;
+                  const darkColor = isColorSection
+                    ? resolveColorRef(rawDarkColor, 'dark')
+                    : rawDarkColor;
                   const otherKey = `${activeSection.id}:${row.token}`;
                   const otherValue = otherValues[otherKey] ?? row.light;
 
@@ -3278,13 +3976,13 @@ export function App() {
                       lastColorGroup = row.group;
                     }
 
+                    const storedLightRef = lightColors[row.token] ?? row.light;
+                    const storedDarkRef = darkColors[row.token] ?? row.dark;
                     const selectedLightBase = basePaletteOptions.find(
-                      (baseRow) =>
-                        baseRow.light.toLowerCase() === lightColor.toLowerCase(),
+                      (baseRow) => baseRow.token === storedLightRef,
                     );
                     const selectedDarkBase = basePaletteOptions.find(
-                      (baseRow) =>
-                        baseRow.dark.toLowerCase() === darkColor.toLowerCase(),
+                      (baseRow) => baseRow.token === storedDarkRef,
                     );
 
                     return (
@@ -3308,13 +4006,11 @@ export function App() {
                                     className="token-select"
                                     value={selectedLightBase?.token ?? ''}
                                     onChange={(event) => {
-                                      const baseToken = basePaletteOptions.find(
-                                        (baseRow) => baseRow.token === event.target.value,
-                                      );
-                                      if (!baseToken) return;
+                                      const selectedToken = event.target.value;
+                                      if (!selectedToken) return;
                                       setLightColors((previous) => ({
                                         ...previous,
-                                        [row.token]: baseToken.light,
+                                        [row.token]: selectedToken,
                                       }));
                                     }}
                                   >
@@ -3328,8 +4024,7 @@ export function App() {
                                   <span
                                     className="token-select-preview"
                                     style={{
-                                      backgroundColor:
-                                        selectedLightBase?.light ?? lightColor,
+                                      backgroundColor: lightColor,
                                     }}
                                   />
                                 </div>
@@ -3340,13 +4035,11 @@ export function App() {
                                     className="token-select"
                                     value={selectedDarkBase?.token ?? ''}
                                     onChange={(event) => {
-                                      const baseToken = basePaletteOptions.find(
-                                        (baseRow) => baseRow.token === event.target.value,
-                                      );
-                                      if (!baseToken) return;
+                                      const selectedToken = event.target.value;
+                                      if (!selectedToken) return;
                                       setDarkColors((previous) => ({
                                         ...previous,
-                                        [row.token]: baseToken.dark,
+                                        [row.token]: selectedToken,
                                       }));
                                     }}
                                   >
@@ -3360,8 +4053,7 @@ export function App() {
                                   <span
                                     className="token-select-preview"
                                     style={{
-                                      backgroundColor:
-                                        selectedDarkBase?.dark ?? darkColor,
+                                      backgroundColor: darkColor,
                                     }}
                                   />
                                 </div>
